@@ -54,7 +54,7 @@ app.post('/api/admins/anime/upload', adminAuth, (req, res) => {
         });
 });
 
-app.get('/api/anime/:id', (req, res) => {
+app.get('/api/anime/specific/:id', (req, res) => {
     const Anime = mongoose.model('Anime', animeSchema);
     Anime.findById(req.params.id)
         .then(anime => {
@@ -68,7 +68,7 @@ app.get('/api/anime/:id', (req, res) => {
 
 app.get('/api/anime/lastUpdated', (req, res) => {
     const Anime = mongoose.model('Anime', animeSchema);
-    Anime.find().sort({lastUpdated: -1}).limit(10)
+    Anime.find().sort({lastUpdated: -1}).limit(3)
         .then(anime => {
             res.send(anime);
         })
