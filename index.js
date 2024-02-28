@@ -54,6 +54,29 @@ app.post('/api/admins/anime/upload', adminAuth, (req, res) => {
         });
 });
 
+app.put('/api/admins/anime/update/:id', adminAuth, (req, res) => {
+    const Anime = mongoose.model('Anime', animeSchema);
+    req.body.lastUpdated = Date.now();
+    Anime.findByIdAndUpdate(req.params.id, req.body)
+        .then(() => {
+            res.send('Anime updated!');
+        })
+        .catch(err => {
+            res.status(400).send('Failed to update anime');
+        });
+});
+
+app.delete('/api/admins/anime/delete/:id', adminAuth, (req, res) => {
+    const Anime = mongoose.model('Anime', animeSchema);
+    Anime.findByIdAndDelete(req.params.id)
+        .then(() => {
+            res.send('Anime deleted!');
+        })
+        .catch(err => {
+            res.status(400).send('Failed to delete anime');
+        });
+});
+
 app.get('/api/anime/specific/:id', (req, res) => {
     const Anime = mongoose.model('Anime', animeSchema);
     Anime.findById(req.params.id)
@@ -68,7 +91,7 @@ app.get('/api/anime/specific/:id', (req, res) => {
 
 app.get('/api/anime/lastUpdated', (req, res) => {
     const Anime = mongoose.model('Anime', animeSchema);
-    Anime.find().sort({lastUpdated: -1}).limit(3)
+    Anime.find().sort({lastUpdated: -1}).limit(5)
         .then(anime => {
             res.send(anime);
         })
