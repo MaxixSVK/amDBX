@@ -1,7 +1,7 @@
 fetch('http://localhost:3000/api/anime/lastUpdated')
   .then(response => response.json())
   .then(data => {
-    const lastUpdatedDiv = document.querySelector('.anime-row');
+    const lastUpdatedDiv = document.querySelector('#lastUpdated_anime_row');
     data.forEach(anime => {
       const animeDiv = document.createElement('div');
       animeDiv.classList.add('anime');
