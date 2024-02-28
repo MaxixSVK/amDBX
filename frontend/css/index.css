@@ -11,40 +11,47 @@ body {
 header {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
     background-color: #333;
     align-items: center;
 }
 
-.logo img {
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    margin-left: 5rem;
     height: 50px;
 }
 
-nav ul {
+header .logo .title {
+    color: #fff;
+    font-size: 24px;
+    padding: 20px 0;
+}
+
+header nav  {
+    margin-right: 5rem;
+    padding: 20px 0;
+}
+
+header nav ul {
     list-style: none;
     display: flex;
 }
 
-nav ul li {
+header nav ul li {
     margin-left: 20px;
 }
 
-nav ul li a {
+header nav ul li a {
     color: #fff;
     font-size: 18px;
 }
 
-footer {
-    background-color: #4a4a4a;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
 
-.menu-toggle {
+header .menu-toggle {
     display: none;
     flex-direction: column;
     justify-content: space-around;
@@ -55,10 +62,12 @@ footer {
     cursor: pointer;
     padding: 0;
     z-index: 10;
-    margin-left: auto;
+    position: absolute;
+    right: 0;
+    margin-right: 3%;
 }
 
-.menu-toggle div {
+header .menu-toggle div {
     width: 2rem;
     height: 0.25rem;
     background: #fff;
@@ -72,16 +81,17 @@ footer {
     background-color: #f5f5f5;
 }
 
-.title {
+#lastUpdated_title {
     font-size: 24px;
     font-weight: bold;
     color: #333;
     padding: 20px 20px 0 20px;
+    margin-left: 5rem;
 }
 
-.anime-row {
+#lastUpdated_anime_row {    
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-around;
     padding: 20px;
 }
@@ -114,11 +124,16 @@ footer {
     header {
         justify-content: flex-start;
     }
-    .menu-toggle {
+
+    header .logo img {
+        margin-left: 0rem;
+    }
+
+    header .menu-toggle {
         display: flex;
     }
 
-    nav ul {
+    header nav ul {
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -130,20 +145,38 @@ footer {
         background-color: #333;
     }
 
-    nav ul {
+    header nav ul {
         transition: transform 0.3s ease-in-out;
         transform: translateY(-100%);
     }
     
-    nav.active ul {
+    header nav.active ul {
         transform: translateY(0);
     }
 
-    .anime-row {
-        flex-direction: row;
+    header nav ul li {
+        margin: 20px 0;
+    }
+
+    header nav ul li a {
+        font-size: 20px;
+    }
+
+    #lastUpdated_title {
+        margin-left: 0;
+    }
+
+    #lastUpdated_anime_row {
+        display: flex;
         flex-wrap: nowrap;
+        justify-content: flex-start;
         overflow-x: auto;
-        padding: 0;
+        padding: 20px 0;
+    }
+    
+    .anime {
+        flex: 0 0 auto;
+        margin: 0 10px;
     }
 
     .anime h3 {
