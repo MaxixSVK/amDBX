@@ -9,8 +9,8 @@ app.use(express.json());
 
 connectToDatabase();
 
-app.use('/api/anime', require('./routes/anime'));
-app.use('/api/manga', require('./routes/manga'));
+app.use('/api', require('./routes/anime'));
+app.use('/api', require('./routes/manga'));
 app.use(require('./routes/main'));
 
 const port = process.env.PORT;
