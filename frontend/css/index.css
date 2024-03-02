@@ -96,7 +96,7 @@ header .menu-toggle div {
     padding: 20px;
 }
 
-.anime {
+.lastUpdated_row_item {
     margin: 10px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
@@ -105,16 +105,16 @@ header .menu-toggle div {
     overflow: hidden;
 }
 
-.anime:hover {
+.lastUpdated_row_item:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
-.anime img {
+.lastUpdated_row_item img {
     width: 100%;
     height: auto;
 }
 
-.anime h3 {
+.lastUpdated_row_item h3 {
     text-align: center;
     padding: 10px;
     font-size: 18px;
@@ -162,11 +162,11 @@ header .menu-toggle div {
         font-size: 20px;
     }
 
-    #lastUpdated_title {
+    .lastUpdated_title {
         margin-left: 0;
     }
 
-    #lastUpdated_row {
+    .lastUpdated_row {
         display: flex;
         flex-wrap: nowrap;
         justify-content: flex-start;
@@ -174,12 +174,12 @@ header .menu-toggle div {
         padding: 20px 0;
     }
     
-    .anime {
+    .lastUpdated_row_item {
         flex: 0 0 auto;
         margin: 0 10px;
     }
 
-    .anime h3 {
+    .lastUpdated_row_item h3 {
         display: none;
     }
 }

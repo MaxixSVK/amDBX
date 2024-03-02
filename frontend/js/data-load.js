@@ -4,7 +4,7 @@ fetch('http://localhost:3000/api/anime/lastUpdated')
     const lastUpdatedDiv = document.querySelector('#lastUpdated_anime_row');
     data.forEach(anime => {
       const animeDiv = document.createElement('div');
-      animeDiv.classList.add('anime');
+      animeDiv.classList.add('lastUpdated_row_item');
       animeDiv.innerHTML = `
         <img id='anime-img' src="${anime.img}" alt="${anime.name}" />
         <h3>${anime.name}</h3>
@@ -23,7 +23,7 @@ fetch('http://localhost:3000/api/manga/lastUpdated')
     const lastUpdatedDiv = document.querySelector('#lastUpdated_manga_row');
     data.forEach(manga => {
       const mangaDiv = document.createElement('div');
-      mangaDiv.classList.add('manga');
+      mangaDiv.classList.add('lastUpdated_row_item');
       mangaDiv.innerHTML = `
         <img id='manga-img' src="${manga.img}" alt="${manga.name}" />
         <h3>${manga.name}</h3>
