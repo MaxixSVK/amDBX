@@ -33,12 +33,14 @@ header .logo img {
 header .logo .title {
     color: #333;
     font-size: 24px;
-    padding: 20px 0;
 }
+
+header .logo .title:hover {
+    color: #007BFF;
+}   
 
 header nav  {
     margin-right: 5rem;
-    padding: 20px 0;
 }
 
 header nav ul {
@@ -102,7 +104,7 @@ header .menu-toggle div {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-around;
-    padding: 15px;
+    padding: 10px;
 }
 
 .lastUpdated_row_item {
