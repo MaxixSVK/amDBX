@@ -10,7 +10,7 @@ function adminAuth(req, res, next) {
     }
 }
 
-router.post('/api/admin/manga/upload', adminAuth, (req, res) => {
+router.post('/admin/manga/upload', adminAuth, (req, res) => {
     const manga = new Manga(req.body);
     manga.save()
         .then(() => {
@@ -21,7 +21,7 @@ router.post('/api/admin/manga/upload', adminAuth, (req, res) => {
         });
 });
 
-router.put('/api/admin/manga/update/:id', adminAuth, (req, res) => {
+router.put('/admin/manga/update/:id', adminAuth, (req, res) => {
     req.body.lastUpdated = Date.now();
     Manga.findByIdAndUpdate(req.params.id, req.body)
         .then(() => {
@@ -32,7 +32,7 @@ router.put('/api/admin/manga/update/:id', adminAuth, (req, res) => {
         });
 });
 
-router.delete('/api/admin/manga/delete/:id', adminAuth, (req, res) => {
+router.delete('/admin/manga/delete/:id', adminAuth, (req, res) => {
     Manga.findByIdAndDelete(req.params.id)
         .then(() => {
             res.send('Manga deleted!');
@@ -42,7 +42,7 @@ router.delete('/api/admin/manga/delete/:id', adminAuth, (req, res) => {
         });
 });
 
-router.get('/api/manga/specific/:id', (req, res) => {
+router.get('/manga/specific/:id', (req, res) => {
     Manga.findById(req.params.id)
         .then(manga => {
             res.send(manga);
@@ -52,7 +52,7 @@ router.get('/api/manga/specific/:id', (req, res) => {
         });
 });
 
-router.get('/api/manga/lastUpdated', (req, res) => {
+router.get('/manga/lastUpdated', (req, res) => {
     Manga.find().sort({ lastUpdated: -1 }).limit(5)
         .then(manga => {
             res.send(manga);
