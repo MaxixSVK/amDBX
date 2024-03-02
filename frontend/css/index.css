@@ -2,17 +2,22 @@
     padding: 0;
     margin: 0;
     text-decoration: none;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    background-color: #f5f5f5;
 }
 
 header {
     display: flex;
     justify-content: space-between;
-    background-color: #333;
+    background-color: #f9f9f9;
     align-items: center;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header .logo {
@@ -26,7 +31,7 @@ header .logo img {
 }
 
 header .logo .title {
-    color: #fff;
+    color: #333;
     font-size: 24px;
     padding: 20px 0;
 }
@@ -46,10 +51,14 @@ header nav ul li {
 }
 
 header nav ul li a {
-    color: #fff;
+    color: #333;
     font-size: 18px;
+    transition: color 0.3s ease;
 }
 
+header nav ul li a:hover {
+    color: #007BFF;
+}
 
 header .menu-toggle {
     display: none;
@@ -70,7 +79,7 @@ header .menu-toggle {
 header .menu-toggle div {
     width: 2rem;
     height: 0.25rem;
-    background: #fff;
+    background: #333;
     border-radius: 10px;
     transition: all 0.3s linear;
     position: relative;
@@ -93,7 +102,7 @@ header .menu-toggle div {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-around;
-    padding: 20px;
+    padding: 15px;
 }
 
 .lastUpdated_row_item {
@@ -142,7 +151,7 @@ header .menu-toggle div {
         top: 0;
         left: 0;
         width: 100%;
-        background-color: #333;
+        background-color: #f9f9f9;
     }
 
     header nav ul {
