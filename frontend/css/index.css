@@ -77,11 +77,11 @@ header .menu-toggle div {
     transform-origin: 1px;
 }
 
-#lastUpdated {
+.lastUpdated {
     background-color: #f5f5f5;
 }
 
-#lastUpdated_title {
+.lastUpdated_title {
     font-size: 24px;
     font-weight: bold;
     color: #333;
@@ -89,7 +89,7 @@ header .menu-toggle div {
     margin-left: 5rem;
 }
 
-#lastUpdated_anime_row {    
+.lastUpdated_row {    
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-around;
@@ -166,7 +166,7 @@ header .menu-toggle div {
         margin-left: 0;
     }
 
-    #lastUpdated_anime_row {
+    #lastUpdated_row {
         display: flex;
         flex-wrap: nowrap;
         justify-content: flex-start;
