@@ -35,3 +35,22 @@ fetch('http://localhost:3000/api/manga/lastUpdated')
     const lastUpdatedDiv = document.querySelector('#lastUpdated_manga_row');
     lastUpdatedDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
   });
+
+fetch('http://localhost:3000/api/alerts')
+  .then(response => response.json())
+  .then(data => {
+    const alertsDiv = document.querySelector('#alerts');
+    data.forEach(alert => {
+      const alertDiv = document.createElement('div');
+      alertDiv.classList.add('alert');
+      alertDiv.innerHTML = `
+        <h3>${alert.name}</h3>
+        <p>${alert.description}</p>
+      `;
+      alertsDiv.appendChild(alertDiv);
+    });
+  })
+  .catch(error => {
+    const alertsDiv = document.querySelector('#alerts');
+    alertsDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
+  });

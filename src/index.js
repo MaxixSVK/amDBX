@@ -11,6 +11,7 @@ connectToDatabase();
 
 app.use('/api', require('./routes/anime'));
 app.use('/api', require('./routes/manga'));
+app.use('/api', require('./routes/alerts'));
 app.use(require('./routes/main'));
 
 const port = process.env.PORT;

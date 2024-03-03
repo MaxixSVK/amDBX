@@ -88,6 +88,32 @@ header .menu-toggle div {
     transform-origin: 1px;
 }
 
+#alerts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+}
+
+#alerts h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+#alerts p {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 1rem;
+}
+
+#alerts a {
+    color: #333;    
+}
+
 .lastUpdated {
     background-color: #f5f5f5;
 }
