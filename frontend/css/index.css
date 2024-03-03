@@ -16,8 +16,8 @@ header {
     justify-content: space-between;
     background-color: #f9f9f9;
     align-items: center;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.625rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 }
 
 header .logo {
@@ -25,14 +25,19 @@ header .logo {
     align-items: center;
 }
 
+header .logo a {
+    display: flex;
+    align-items: center;
+}
+
 header .logo img {
     margin-left: 5rem;
-    height: 50px;
+    height: 3.125rem;
 }
 
 header .logo .title {
     color: #333;
-    font-size: 24px;
+    font-size: 1.5rem;
 }
 
 header .logo .title:hover {
@@ -49,12 +54,12 @@ header nav ul {
 }
 
 header nav ul li {
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 header nav ul li a {
     color: #333;
-    font-size: 18px;
+    font-size: 1.125rem;
     transition: color 0.3s ease;
 }
 
@@ -80,9 +85,9 @@ header .menu-toggle {
 
 header .menu-toggle div {
     width: 2rem;
-    height: 0.25rem;
+    height: 0.015625rem;
     background: #333;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     transition: all 0.3s linear;
     position: relative;
     transform-origin: 1px;
@@ -93,21 +98,21 @@ header .menu-toggle div {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 20px;
+    padding: 1.25rem;
     text-align: center;
     color: #333;
 }
 
 #alerts h3 {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.03125rem;
 }
 
 #alerts p {
     color: #333;
-    font-size: 18px;
-    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    margin-bottom: 0.0625rem;
 }
 
 #alerts a {
@@ -119,10 +124,10 @@ header .menu-toggle div {
 }
 
 .lastUpdated_title {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #333;
-    padding: 20px 20px 0 20px;
+    padding: 1.25rem 1.25rem 0 1.25rem;
     margin-left: 5rem;
 }
 
@@ -130,20 +135,20 @@ header .menu-toggle div {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-around;
-    padding: 10px;
+    padding: 0.625rem;
 }
 
 .lastUpdated_row_item {
-    margin: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin: 0.625rem;
+    box-shadow: 0 0.25rem 0.5rem 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    width: 200px;
-    border-radius: 5px;
+    width: 12.5rem;
+    border-radius: 0.3125rem;
     overflow: hidden;
 }
 
 .lastUpdated_row_item:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.2);
 }
 
 .lastUpdated_row_item img {
@@ -153,11 +158,11 @@ header .menu-toggle div {
 
 .lastUpdated_row_item h3 {
     text-align: center;
-    padding: 10px;
-    font-size: 18px;
+    padding: 0.625rem;
+    font-size: 1.125rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
     header {
         justify-content: flex-start;
     }
@@ -192,11 +197,11 @@ header .menu-toggle div {
     }
 
     header nav ul li {
-        margin: 20px 0;
+        margin: 1.25rem 0;
     }
 
     header nav ul li a {
-        font-size: 20px;
+        font-size: 1.25rem;
     }
 
     .lastUpdated_title {
@@ -208,12 +213,12 @@ header .menu-toggle div {
         flex-wrap: nowrap;
         justify-content: flex-start;
         overflow-x: auto;
-        padding: 20px 0;
+        padding: 1.25rem 0;
     }
     
     .lastUpdated_row_item {
         flex: 0 0 auto;
-        margin: 0 10px;
+        margin: 0 0.625rem;
     }
 
     .lastUpdated_row_item h3 {
