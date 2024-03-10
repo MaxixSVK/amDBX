@@ -5,6 +5,8 @@ window.onload = function() {
     }
 };
 
+var errorMsgElement = document.getElementById('error-msg');
+
 document.getElementById('switch-btn').addEventListener('click', function () {
     const loginForm = document.getElementById('login');
     const registerForm = document.getElementById('register');
@@ -14,10 +16,12 @@ document.getElementById('switch-btn').addEventListener('click', function () {
         loginForm.style.display = 'none';
         registerForm.style.display = 'block';
         switchBtn.textContent = 'Už mám účet';
+        errorMsgElement.style.display = 'none';
     } else {
         registerForm.style.display = 'none';
         loginForm.style.display = 'block';
         switchBtn.textContent = 'Ešte nemám účet';
+        errorMsgElement.style.display = 'none';
     }
 });
 
@@ -25,7 +29,6 @@ document.getElementById('login-form').addEventListener('submit', function (event
     event.preventDefault();
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
-    const errorElement = document.getElementById('error-message');
 
     fetch('http://localhost:3000/login', {
         method: 'POST',
@@ -49,7 +52,8 @@ document.getElementById('login-form').addEventListener('submit', function (event
             }
         })
         .catch(error => {
-            errorElement.textContent = JSON.stringify(error.msg).replace(/\"/g, "");
+            errorMsgElement.textContent = error.msg;
+            errorMsgElement.style.display = 'block';
         });
 });
 document.getElementById('register-form').addEventListener('submit', function (event) {
@@ -82,6 +86,7 @@ document.getElementById('register-form').addEventListener('submit', function (ev
             }
         })
         .catch(error => {
-            errorElement.textContent = JSON.stringify(error.msg).replace(/\"/g, "");
+            errorMsgElement.textContent = error.msg;
+            errorMsgElement.style.display = 'block';
         });
 });

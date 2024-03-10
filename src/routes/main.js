@@ -13,11 +13,11 @@ router.post('/register', function(req, res) {
 
     User.findOne({ email })
         .then(user => {
-            if(user) return res.status(409).json({ msg: 'Email already exists' });
+            if(user) return res.status(409).json({ msg: 'Email je už použitý na inom účte' });
 
             User.findOne({ name })
                 .then(user => {
-                    if(user) return res.status(409).json({ msg: 'Username already exists' });
+                    if(user) return res.status(409).json({ msg: 'Používatelské meno už je zabrané' });
 
                     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -36,8 +36,21 @@ router.post('/register', function(req, res) {
         .catch(err => res.status(500).json({ msg: 'Server error' }));
 });
 
-router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.json(req.user);
+router.post('/login', function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) { 
+            return next(err); 
+        }
+        if (!user) { 
+            return res.status(401).json({ msg: 'Nesprávne prihlasovacie údaje' }); 
+        }
+        req.logIn(user, function(err) {
+            if (err) { 
+                return next(err); 
+            }
+            return res.json(req.user);
+        });
+    })(req, res, next);
 });
 
 
