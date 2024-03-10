@@ -35,7 +35,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
     })
         .then(response => {
             if (response.status === 401) {
-                alert('Wrong email or password');
+                alert('Zlé prihlasovacie údaje!');
                 return;
             }
             return response.json();
