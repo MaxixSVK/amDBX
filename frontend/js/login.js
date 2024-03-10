@@ -1,3 +1,10 @@
+window.onload = function() {
+    const user = localStorage.getItem('user');
+    if (user) {
+        window.location.href = 'account.html';
+    }
+};
+
 document.getElementById('switch-btn').addEventListener('click', function () {
     const loginForm = document.getElementById('login');
     const registerForm = document.getElementById('register');
