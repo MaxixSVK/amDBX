@@ -25,6 +25,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
     event.preventDefault();
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
+    const errorElement = document.getElementById('error-message');
 
     fetch('http://localhost:3000/login', {
         method: 'POST',
@@ -34,9 +35,10 @@ document.getElementById('login-form').addEventListener('submit', function (event
         body: JSON.stringify({ email, password })
     })
         .then(response => {
-            if (response.status === 401) {
-                alert('Zlé prihlasovacie údaje!');
-                return;
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw error;
+                });
             }
             return response.json();
         })
@@ -46,13 +48,16 @@ document.getElementById('login-form').addEventListener('submit', function (event
                 window.location.href = 'account.html';
             }
         })
+        .catch(error => {
+            errorElement.textContent = JSON.stringify(error.msg).replace(/\"/g, "");
+        });
 });
-
 document.getElementById('register-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const name = document.getElementById('register-name').value;
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
+    const errorElement = document.getElementById('error-message');
 
     fetch('http://localhost:3000/register', {
         method: 'POST',
@@ -61,7 +66,14 @@ document.getElementById('register-form').addEventListener('submit', function (ev
         },
         body: JSON.stringify({ name, email, password })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw error;
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             console.log(data);
             if (data) {
@@ -69,4 +81,7 @@ document.getElementById('register-form').addEventListener('submit', function (ev
                 window.location.href = 'account.html';
             }
         })
+        .catch(error => {
+            errorElement.textContent = JSON.stringify(error.msg).replace(/\"/g, "");
+        });
 });

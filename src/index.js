@@ -8,6 +8,10 @@ const mongoose = require('mongoose');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
+mongoose.connect(process.env.DB_CONNECTION)
+.then(() => console.log('Connected to MongoDB...'))
+.catch(err => console.error('Could not connect to MongoDB...' + err));
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -55,37 +59,13 @@ passport.deserializeUser(async function(id, done) {
     }
 });
 
-mongoose.connect(process.env.DB_CONNECTION)
-.then(() => console.log('Connected to MongoDB...'))
-.catch(err => console.error('Could not connect to MongoDB...' + err));
-
 app.use('/api', require('./routes/anime'));
 app.use('/api', require('./routes/manga'));
 app.use('/api', require('./routes/alerts'));
+app.use('/', require('./routes/main'));
 
-app.post('/register', function(req, res) {
-    const { name, email, password } = req.body;
-
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
-    const newUser = new User({
-        name,
-        email,
-        password: hashedPassword
-    });
-
-    newUser.save()
-        .then(user => res.json(user))
-        .catch(err => res.status(500));
-});
-
-app.post('/login', passport.authenticate('local'), function(req, res) {
-    res.json(req.user);
-});
-
-const port = process.env.PORT;
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
 
 app.get('/', (req, res) => {
