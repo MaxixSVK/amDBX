@@ -10,12 +10,20 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     },
     anime : [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Anime'
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Anime'
+        },
+        progress: Number,
+        status: String
     }],
     manga : [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Manga'
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Manga'
+        },
+        progress: Number,
+        status: String
     }]
 });
 
