@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>amDBX | Login</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" href="assets/logo.png">
+    <meta name="description" content="amDBX - Slovenská databáza anime a mangy.">
+    <meta name="keywords" content="amDBX, anime, manga, databáza">
+    <meta name="author" content="Maxix">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/logo.png" alt="amDB">
+                <a href="index.html" , class="title">amDBX</a>
+            </a>
+        </div>
+        <div class="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="anime.html">Anime</a></li>
+                <li><a href="manga.html">Manga</a></li>
+                <li><a href="account.html">Prihlásenie</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="login">
+            <h2>Prihlásenie</h2>
+            <form id="login-form">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" name="email" required>
+                <label for="login-password">Heslo:</label>
+                <input type="password" id="login-password" name="password" required>
+                <input type="submit" value="Prihlásenie">
+            </form>
+        </section>
+
+        <section id="register">
+            <h2>Registrácia</h2>
+            <form id="register-form">
+                <label for="register-name">Meno:</label>
+                <input type="text" id="register-name" name="name" required>
+                <label for="register-email">Email:</label>
+                <input type="email" id="register-email" name="email" required>
+                <label for="register-password">Heslo:</label>
+                <input type="password" id="register-password" name="password" required>
+                <input type="submit" value="Registrácia">
+            </form>
+        </section>
+
+        <button id="switch-btn">Ešte nemáte účet?</button>
+    </main>
+
+    <script src="js/login.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+
+</html>
