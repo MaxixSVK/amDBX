@@ -17,7 +17,7 @@ document.getElementById('switch-btn').addEventListener('click', function () {
     } else {
         registerForm.style.display = 'none';
         loginForm.style.display = 'block';
-        switchBtn.textContent = 'Ešte nemáte účet?';
+        switchBtn.textContent = 'Ešte nemám účet';
     }
 });
 
@@ -33,15 +33,19 @@ document.getElementById('login-form').addEventListener('submit', function (event
         },
         body: JSON.stringify({ email, password })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (response.status === 401) {
+                alert('Wrong email or password');
+                return;
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log(data);
             if (data) {
                 localStorage.setItem('user', JSON.stringify(data));
                 window.location.href = 'account.html';
             }
         })
-        .catch(error => console.error('Error:', error));
 });
 
 document.getElementById('register-form').addEventListener('submit', function (event) {
@@ -65,5 +69,4 @@ document.getElementById('register-form').addEventListener('submit', function (ev
                 window.location.href = 'account.html';
             }
         })
-        .catch(error => console.error('Error:', error));
 });

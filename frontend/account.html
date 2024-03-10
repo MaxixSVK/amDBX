@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>amDBX | Účet</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/account.css">
     <link rel="icon" href="assets/logo.png">
     <meta name="description" content="amDBX - Slovenská databáza anime a mangy.">
     <meta name="keywords" content="amDBX, anime, manga, databáza">
@@ -18,7 +18,7 @@
         <div class="logo">
             <a href="index.html">
                 <img src="assets/logo.png" alt="amDB">
-                <a href="index.html", class="title">amDBX</a>
+                <a href="index.html" , class="title">amDBX</a>
             </a>
         </div>
         <div class="menu-toggle">
@@ -30,21 +30,36 @@
             <ul>
                 <li><a href="anime.html">Anime</a></li>
                 <li><a href="manga.html">Manga</a></li>
-                <li><a href="account.html">Prihlásenie</a></li>
+                <li><a href="login.html" id="login-link">Prihlásenie</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <section id="account-info">
-            <h2>Welcome, <span id="user-name"></span>!</h2>
-            <button id="logout-btn">Logout</button>
+        <p id="user-name"></p>
+        <button id="edit-account-btn">Upraviť účet</button>
+        <section id="edit-account">
+            <p id="user-email"></p>
+            <button id="change-email-btn">Zmeniť email</button>
+            <button id="change-password-btn">Zmeniť heslo</button>
+            <button id="delete-account-btn">Zmazať účet</button>
+        </section>
+        <button id="logout-btn">Odhlásiť sa</button>
+        <section id="anime-list">
+            <h2>Moje anime</h2>
+            <div id="anime-list-container">
+            </div>
+        </section>
+        <section id="manga-list">
+            <h2>Moja manga</h2>
+            <div id="manga-list-container">
+            </div>
         </section>
     </main>
     <script>
-   
+
     </script>
     <script src="js/account.js"></script>
-    <script src="js/menu.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
