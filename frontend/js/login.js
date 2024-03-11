@@ -1,9 +1,9 @@
-window.onload = function() {
-    const user = localStorage.getItem('user');
-    if (user) {
-        window.location.href = 'account.html';
-    }
-};
+let userId = localStorage.getItem('userId');
+let token = localStorage.getItem('token');
+
+if (userId && token) {
+    window.location.href = 'account.html';
+}
 
 var errorMsgElement = document.getElementById('error-msg');
 
@@ -47,7 +47,8 @@ document.getElementById('login-form').addEventListener('submit', function (event
         })
         .then(data => {
             if (data) {
-                localStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userId', data.id);
                 window.location.href = 'account.html';
             }
         })
@@ -56,12 +57,12 @@ document.getElementById('login-form').addEventListener('submit', function (event
             errorMsgElement.style.display = 'block';
         });
 });
+
 document.getElementById('register-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const name = document.getElementById('register-name').value;
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
-    const errorElement = document.getElementById('error-message');
 
     fetch('http://localhost:3000/register', {
         method: 'POST',
@@ -79,9 +80,9 @@ document.getElementById('register-form').addEventListener('submit', function (ev
             return response.json();
         })
         .then(data => {
-            console.log(data);
             if (data) {
-                localStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userId', data.id);
                 window.location.href = 'account.html';
             }
         })

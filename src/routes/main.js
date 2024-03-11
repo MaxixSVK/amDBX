@@ -1,10 +1,13 @@
 const express = require('express');
 const passport = require('passport');
-const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 const router = express.Router();
+require('dotenv').config();
 
-router.post('/register', function(req, res) {
+
+router.post('/register', function (req, res) {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -13,11 +16,11 @@ router.post('/register', function(req, res) {
 
     User.findOne({ email })
         .then(user => {
-            if(user) return res.status(409).json({ msg: 'Email je už použitý na inom účte' });
+            if (user) return res.status(409).json({ msg: 'Email je už použitý na inom účte' });
 
             User.findOne({ name })
                 .then(user => {
-                    if(user) return res.status(409).json({ msg: 'Používatelské meno už je zabrané' });
+                    if (user) return res.status(409).json({ msg: 'Používatelské meno už je zabrané' });
 
                     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -28,7 +31,10 @@ router.post('/register', function(req, res) {
                     });
 
                     newUser.save()
-                        .then(user => res.json(user))
+                        .then(user => {
+                            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '31d' });
+                            res.json({ token, id: user._id });
+                        })
                         .catch(err => res.status(500).json({ msg: 'Server error' }));
                 })
                 .catch(err => res.status(500).json({ msg: 'Server error' }));
@@ -36,19 +42,20 @@ router.post('/register', function(req, res) {
         .catch(err => res.status(500).json({ msg: 'Server error' }));
 });
 
-router.post('/login', function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
-        if (err) { 
-            return next(err); 
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if (err) {
+            return next(err);
         }
-        if (!user) { 
-            return res.status(401).json({ msg: 'Nesprávne prihlasovacie údaje' }); 
+        if (!user) {
+            return res.status(401).json({ msg: 'Nesprávne prihlasovacie údaje' });
         }
-        req.logIn(user, function(err) {
+        req.logIn(user, function (err) {
             if (err) { 
                 return next(err); 
             }
-            return res.json(req.user);
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '31d' });
+            return res.json({ token, id: user._id });
         });
     })(req, res, next);
 });

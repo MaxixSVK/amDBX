@@ -14,16 +14,19 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Anime'
         },
-        progress: Number,
-        status: String
+        episodes: Number,
+        status: String,
+        rating: Number
     }],
     manga : [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Manga'
         },
-        progress: Number,
-        status: String
+        chapters: Number,
+        volumes: Number,
+        status: String,
+        rating: Number
     }]
 });
 
