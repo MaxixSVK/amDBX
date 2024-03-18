@@ -62,7 +62,7 @@ passport.deserializeUser(async function(id, done) {
 app.use('/api', require('./routes/anime'));
 app.use('/api', require('./routes/manga'));
 app.use('/api', require('./routes/alerts'));
-app.use('/api', require('./routes/user'));
+app.use('/api', require('./routes/account'));
 app.use('/', require('./routes/main'));
 
 app.listen(process.env.PORT, () => {

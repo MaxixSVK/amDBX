@@ -1,7 +1,6 @@
-let userId = localStorage.getItem('userId');
 let token = localStorage.getItem('token');
 
-if (userId && token) {
+if (token) {
     window.location.href = 'account.html';
 }
 
@@ -48,7 +47,6 @@ document.getElementById('login-form').addEventListener('submit', function (event
         .then(data => {
             if (data) {
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('userId', data.id);
                 window.location.href = 'account.html';
             }
         })
@@ -82,7 +80,6 @@ document.getElementById('register-form').addEventListener('submit', function (ev
         .then(data => {
             if (data) {
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('userId', data.id);
                 window.location.href = 'account.html';
             }
         })

@@ -32,8 +32,8 @@ router.post('/register', function (req, res) {
 
                     newUser.save()
                         .then(user => {
-                            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '31d' });
-                            res.json({ token, id: user._id });
+                            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '365d' });
+                            res.json({ token });
                         })
                         .catch(err => res.status(500).json({ msg: 'Server error' }));
                 })
@@ -54,8 +54,8 @@ router.post('/login', function (req, res, next) {
             if (err) { 
                 return next(err); 
             }
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '31d' });
-            return res.json({ token, id: user._id });
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '365d' });
+            res.json({ token });
         });
     })(req, res, next);
 });
