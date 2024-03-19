@@ -62,4 +62,15 @@ router.get('/manga/lastUpdated', (req, res) => {
         });
 });
 
+router.get('/manga/search/:name', (req, res) => {
+    const regex = new RegExp(req.params.name, 'i');
+    Manga.find({ name: regex })
+        .then(anime => {
+            res.send(anime);
+        })
+        .catch(err => {
+            res.status(404).send('Failed to find anime');
+        });
+});
+
 module.exports = router;

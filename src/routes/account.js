@@ -5,8 +5,9 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const authenticateToken = (req, res, next) => {
+  req.user = null;
+  
   const token = req.headers['authorization'];
-
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
@@ -30,6 +31,17 @@ router.get('/account', authenticateToken, (req, res) => {
       res.status(500);
     });
 });
+
+router.post('/account/anime/add', authenticateToken, (req, res) => {
+  User.findByIdAndUpdate(req.user.id, { $push: { anime: req.body } })
+    .then(() => {
+      res.send('Anime added to account');
+    })
+    .catch(err => {
+      res.status(400).send('Failed to add anime');
+    });
+});
+
 
 
 module.exports = router;

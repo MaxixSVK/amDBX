@@ -17,7 +17,7 @@
     <header>
         <div class="logo">
             <a href="index.html">
-                <img src="assets/logo.png" alt="amDB">
+                <img src="assets/logo.png" alt="amDBX">
                 <a href="index.html", class="title">amDBX</a>
             </a>
         </div>
@@ -28,13 +28,20 @@
         </div>
         <nav>
             <ul>
-                <li><a href="anime.html">Anime</a></li>
-                <li><a href="manga.html">Manga</a></li>
+                <button onclick="search()">Search</button>
                 <li><a href="account.html" id="login-link">Prihlásenie</a></li>
             </ul>
         </nav>
     </header>
     <main>
+        <div id="search-modal" class="modal">
+            <div class="modal-content">
+                <form id="search-form">
+                    <input type="text" id="search-input" placeholder="Search...">
+                </form>
+                <div id="search-results"></div>
+            </div>
+        </div>
         <div id="alerts" class="alerts"></div>
         <div class="lastUpdated">
             <p class="lastUpdated_title">Naposledy aktualizované Anime</p>

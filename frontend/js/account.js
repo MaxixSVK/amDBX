@@ -28,3 +28,4 @@ document.getElementById('edit-account-btn').addEventListener('click', function()
     document.getElementById('edit-account').style.display = 'block';
     document.getElementById('edit-account-btn').style.display = 'none';
 });
+

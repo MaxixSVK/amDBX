@@ -28,13 +28,20 @@
         </div>
         <nav>
             <ul>
-                <li><a href="anime.html">Anime</a></li>
-                <li><a href="manga.html">Manga</a></li>
+                <button onclick="search()">Search</button>
                 <li><a href="account.html" id="login-link">Prihlásenie</a></li>
             </ul>
         </nav>
     </header>
     <main>
+        <div id="search-modal" class="modal">
+            <div class="modal-content">
+                <form id="search-form">
+                    <input type="text" id="search-input" placeholder="Search...">
+                </form>
+                <div id="search-results"></div>
+            </div>
+        </div>
         <p id="user-name"></p>
         <button id="edit-account-btn">Upraviť účet</button>
         <section id="edit-account">
@@ -46,16 +53,21 @@
         <button id="logout-btn">Odhlásiť sa</button>
         <section id="anime-list">
             <h2>Moje anime</h2>
+            <div id="addAnime">
+                <button onclick="searchAnime()" id="add-anime-btn">Pridať anime</button>
+            </div>
             <div id="anime-list-container">
             </div>
         </section>
         <section id="manga-list">
             <h2>Moja manga</h2>
-            <div id="manga-list-container">
-            </div>
+            <div id="addManga">
+                <button onclick="searchManga()" id="add-manga-btn">Pridať mangu</button>
+                <div id="manga-list-container">
+                </div>
         </section>
     </main>
-    
+
     <script src="js/main.js"></script>
     <script src="js/account.js"></script>
 </body>

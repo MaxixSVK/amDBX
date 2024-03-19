@@ -18,7 +18,7 @@
         <div class="logo">
             <a href="index.html">
                 <img src="assets/logo.png" alt="amDB">
-                <a href="index.html" , class="title">amDBX</a>
+                <a href="index.html", class="title">amDBX</a>
             </a>
         </div>
         <div class="menu-toggle">
@@ -28,13 +28,20 @@
         </div>
         <nav>
             <ul>
-                <li><a href="anime.html">Anime</a></li>
-                <li><a href="manga.html">Manga</a></li>
+                <button onclick="search()">Search</button>
                 <li><a href="account.html" id="login-link">Prihlásenie</a></li>
             </ul>
         </nav>
     </header>
     <main>
+        <div id="search-modal" class="modal">
+            <div class="modal-content">
+                <form id="search-form">
+                    <input type="text" id="search-input" placeholder="Search...">
+                </form>
+                <div id="search-results"></div>
+            </div>
+        </div>
         <h1>404</h1>
         <p>Stránka sa nenašla.</p>
     </main>
