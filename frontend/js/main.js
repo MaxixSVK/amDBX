@@ -54,19 +54,19 @@ searchInput.addEventListener('input', function (event) {
     fetch(`http://localhost:3000/api/anime/search/${searchTerm}`)
         .then(response => response.json())
         .then(anime => {
-            console.log("search");
-            console.log(anime);
             const resultsDiv = document.getElementById('search-results');
             resultsDiv.innerHTML = '';
 
             if (anime.length === 0) {
                 const p = document.createElement('p');
                 p.textContent = 'No Anime found';
+                p.classList.add('noResults');
                 resultsDiv.appendChild(p);
                 return;
             } else {
                 const p = document.createElement('p');
                 p.textContent = 'Anime';
+                p.classList.add('searchSection');
                 resultsDiv.appendChild(p);
             }
 
@@ -88,11 +88,13 @@ searchInput.addEventListener('input', function (event) {
             if (manga.length === 0) {
                 const p = document.createElement('p');
                 p.textContent = 'No Manga found';
+                p.classList.add('noResults');
                 resultsDiv.appendChild(p);
                 return;
             } else {
                 const p = document.createElement('p');
                 p.textContent = 'Manga';
+                p.classList.add('searchSection');
                 resultsDiv.appendChild(p);
             }
 

@@ -54,6 +54,9 @@ header nav ul {
 }
 
 header nav ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-left: 1.25rem;
 }
 
@@ -65,6 +68,12 @@ header nav ul li a {
 
 header nav ul li a:hover {
     color: #007BFF;
+}
+
+header nav ul li button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 header .menu-toggle {
@@ -156,6 +165,32 @@ header .menu-toggle div {
     border-bottom: none;
 }
 
+.searchSection {
+    text-align: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.noResults {
+    text-align: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
 @media (max-width: 48rem) {
     header {
         justify-content: flex-start;
@@ -196,6 +231,31 @@ header .menu-toggle div {
 
     header nav ul li a {
         font-size: 1.25rem;
+    }
+
+    #search-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        width: 90%; 
+        margin: auto;
+        overflow: auto;
+    }
+
+    #search-form {
+        flex-direction: column;
+    }
+
+    #search-form input[type="text"] {
+        margin-bottom: 10px;
     }
 }
 

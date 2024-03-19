@@ -6,22 +6,22 @@ require('dotenv').config();
 
 const authenticateToken = (req, res, next) => {
   req.user = null;
-  
-  const token = req.headers['authorization'];
-  if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).send('No token provided');
+
+  jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
+    if (err) return res.status(403).send('Failed to authenticate token');
+
+    const dbUser = await User.findById(user.id);
+    if (!dbUser) return res.status(403).send('User not found');
+
     req.user = user;
     next();
   });
 };
 
 router.get('/account', authenticateToken, (req, res) => {
-  if (!req.user.id) {
-    return res.sendStatus(403);
-  }
-
   User.findById(req.user.id)
     .select('-_id -password')
     .then(user => {
