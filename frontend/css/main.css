@@ -102,7 +102,7 @@ header .menu-toggle div {
     transform-origin: 1px;
 }
 
-.modal {
+#search-modal {
     display: none;
     position: fixed;
     z-index: 20;
@@ -114,12 +114,12 @@ header .menu-toggle div {
     background-color: rgba(0,0,0,0.4);
 }
 
-.modal-content {
+#modal-content {
     background-color: #fff;
     margin: 5% auto;
     padding: 2rem;
     border-radius: 0.4rem;
-    width: 60%;
+    width: 75%;
     box-shadow: 0 0.2rem 1rem rgba(0,0,0,0.2);
 }
 
@@ -139,12 +139,6 @@ header .menu-toggle div {
     padding-left:1.5rem; 
 }
 
-
-#search-results {
-    max-height: 40rem;
-    overflow-y: auto;
-}
-
 #search-results {
     max-height: 40rem;
     overflow-y: auto;
@@ -153,14 +147,41 @@ header .menu-toggle div {
     transition: all 0.3s ease-in-out;
 }
 
-#search-results p:last-child {
-    border-bottom: none;
-}
-
 .searchSection {
     text-align: center;
     justify-content: space-between;
-    margin-top: 1rem;
+    font-size: 1.3rem;
+}
+
+.resultDivSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: 0.4rem;
+}
+
+.resultDivSection .title-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: center;
+}
+
+.resultDivSection p {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.resultDivSection img {
+    max-height: 7.5rem;
+    border-radius: 0.25rem;
+}
+
+.resultDivSection button {
+    margin-top: 0.5rem;
+    min-width: 7rem;
+    height: 2.5rem;
 }
 
 .noResults {
@@ -183,34 +204,6 @@ button {
 button:hover {
     background-color: #0056b3;
     color: #fff;
-}
-
-.resultDivSection {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 1rem;
-    border-radius: 0.4rem;
-}
-
-.resultDivSection .title-button-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    align-self: center;
-}
-
-.resultDivSection p {
-    margin-right: 1rem;
-}
-
-.resultDivSection img {
-    max-height: 7.5rem;
-    border-radius: 0.25rem;
-}
-
-.resultDivSection button {
-    margin-top: 1rem;
 }
 
 @media (max-width: 48rem) {
@@ -266,8 +259,7 @@ button:hover {
         padding: 1rem;
     }
 
-
-    .modal-content {
+    #modal-content {
         width: 100%; 
         max-width: 60rem;
         margin: 0 auto;
