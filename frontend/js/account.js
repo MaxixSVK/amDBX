@@ -9,7 +9,6 @@ fetch('http://localhost:3000/api/account/', {
 })
 .then(response => response.json())
 .then(user => {
-    console.log(user);
     document.getElementById('user-name').innerText = user.name;
     document.getElementById('user-email').innerText = user.email;
 })
@@ -29,3 +28,35 @@ document.getElementById('edit-account-btn').addEventListener('click', function()
     document.getElementById('edit-account-btn').style.display = 'none';
 });
 
+fetch('http://localhost:3000/api/account/anime/list', {
+    headers: {
+        'Authorization': token
+    }
+})
+.then(response => response.json())
+.then(animeList => {
+    const animeListDiv = document.getElementById('anime-list');
+    animeList.forEach(anime => {
+        const p = document.createElement('p');
+        p.textContent = anime.id.name; 
+        animeListDiv.appendChild(p);
+    });
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
+fetch('http://localhost:3000/api/account/manga/list', {
+    headers: {
+        'Authorization': token
+    }
+})
+.then(response => response.json())
+.then(mangaList => {
+    const mangaListDiv = document.getElementById('manga-list');
+    mangaList.forEach(manga => {
+        const p = document.createElement('p');
+        p.textContent = manga.id.name; 
+        mangaListDiv.appendChild(p);
+    });
+})

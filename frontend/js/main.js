@@ -1,36 +1,76 @@
 const token = localStorage.getItem('token');
 
+// Navbar
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('nav');
 
 menuToggle.addEventListener('click', () => {
     nav.classList.toggle('active');
 });
-window.onload = function () {
+
+// Check if user is logged in
+if (localStorage.getItem('token')) {
+    fetch('http://localhost:3000/api/account/', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+        .then(response => {
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('token');
+                throw new Error('Unauthorized or Forbidden');
+            }
+            return response.json();
+        })
+        .then(user => {
+            document.getElementById('login-link').innerText = user.name;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Search
+var modal = document.getElementById("search-modal");
+
+let userAnimeList = [];
+let userMangaList = [];
+
+function search() {
+    modal.style.display = "block";
+
     if (localStorage.getItem('token')) {
-        fetch('http://localhost:3000/api/account/', {
+        // Fetch user's anime list
+        fetch('http://localhost:3000/api/account/anime/list', {
             headers: {
-                'Authorization': token
+                'Authorization': localStorage.getItem('token')
             }
         })
             .then(response => response.json())
-            .then(user => {
-                console.log(user);
-                document.getElementById('login-link').innerText = user.name;
+            .then(animeList => {
+                userAnimeList = animeList.map(a => a.id._id);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        // Fetch user's manga list
+        fetch('http://localhost:3000/api/account/manga/list', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+            .then(response => response.json())
+            .then(mangaList => {
+                userMangaList = mangaList.map(m => m.id._id);
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     }
-};
-
-
-var modal = document.getElementById("search-modal");
-
-function search() {
-    modal.style.display = "block";
 }
 
+// Close the modal when clicking outside of it
 window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
@@ -39,6 +79,7 @@ window.onclick = function (event) {
 
 const searchInput = document.getElementById('search-input');
 
+// Search for anime and manga
 searchInput.addEventListener('input', function (event) {
     event.preventDefault();
 
@@ -71,9 +112,51 @@ searchInput.addEventListener('input', function (event) {
             }
 
             anime.forEach(a => {
+                const resultDivSection = document.createElement('div');
+                resultDivSection.classList.add('resultDivSection');
+
+                const titleButtonWrapper = document.createElement('div');
+                titleButtonWrapper.classList.add('title-button-wrapper');
+
                 const p = document.createElement('p');
                 p.textContent = a.name;
-                resultsDiv.appendChild(p);
+
+                const button = document.createElement('button');
+                if (token) {
+                    if (userAnimeList.includes(a._id)) {
+                        button.textContent = 'Upraviť';
+
+                    } else {
+                        button.textContent = 'Pridať';
+                        button.onclick = function () {
+                            fetch('http://localhost:3000/api/account/anime/add', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': localStorage.getItem('token')
+                                },
+                                body: JSON.stringify({
+                                    id: a._id
+                                })
+                            })
+                            button.textContent = 'Upraviť';
+                        };
+                    }
+                } else {
+                    button.textContent = 'Prihlásiť sa';
+                    button.onclick = function () {
+                        window.location.href = 'login.html';
+                    };
+                }
+                titleButtonWrapper.appendChild(p);
+                titleButtonWrapper.appendChild(button);
+
+                const img = document.createElement('img');
+                img.src = a.img;
+
+                resultDivSection.appendChild(titleButtonWrapper);
+                resultDivSection.appendChild(img);
+                resultsDiv.appendChild(resultDivSection);
             });
         })
         .catch(err => {
@@ -99,9 +182,50 @@ searchInput.addEventListener('input', function (event) {
             }
 
             manga.forEach(a => {
+                const resultDivSection = document.createElement('div');
+                resultDivSection.classList.add('resultDivSection');
+
+                const titleButtonWrapper = document.createElement('div');
+                titleButtonWrapper.classList.add('title-button-wrapper');
+
                 const p = document.createElement('p');
                 p.textContent = a.name;
-                resultsDiv.appendChild(p);
+
+                const button = document.createElement('button');
+                if (token) {
+                    if (userMangaList.includes(a._id)) {
+                        button.textContent = 'Upraviť';
+                    } else {
+                        button.textContent = 'Pridať';
+                        button.onclick = function () {
+                            fetch('http://localhost:3000/api/account/manga/add', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': localStorage.getItem('token')
+                                },
+                                body: JSON.stringify({
+                                    id: a._id
+                                })
+                            })
+                            button.textContent = 'Upraviť';
+                        };
+                    }
+                } else {
+                    button.textContent = 'Prihlásiť sa';
+                    button.onclick = function () {
+                        window.location.href = 'login.html';
+                    };
+                }
+                titleButtonWrapper.appendChild(p);
+                titleButtonWrapper.appendChild(button);
+
+                const img = document.createElement('img');
+                img.src = a.img;
+
+                resultDivSection.appendChild(titleButtonWrapper);
+                resultDivSection.appendChild(img);
+                resultsDiv.appendChild(resultDivSection);
             });
         })
         .catch(err => {
