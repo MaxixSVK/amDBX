@@ -1,3 +1,5 @@
+const api = 'http://localhost:3000/api';
+
 const token = localStorage.getItem('token');
 
 // Navbar
@@ -10,7 +12,7 @@ menuToggle.addEventListener('click', () => {
 
 // Check if user is logged in
 if (localStorage.getItem('token')) {
-    fetch('http://localhost:3000/api/account/', {
+    fetch(api + '/account', {
         headers: {
             'Authorization': localStorage.getItem('token')
         }
@@ -41,7 +43,7 @@ function search() {
 
     if (localStorage.getItem('token')) {
         // Fetch user's anime list
-        fetch('http://localhost:3000/api/account/anime/list', {
+        fetch(api + '/account/anime/list', {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
@@ -50,12 +52,9 @@ function search() {
             .then(animeList => {
                 userAnimeList = animeList.map(a => a.id._id);
             })
-            .catch(error => {
-                console.error('Error:', error);
-            });
 
         // Fetch user's manga list
-        fetch('http://localhost:3000/api/account/manga/list', {
+        fetch(api + '/account/manga/list', {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
@@ -64,9 +63,6 @@ function search() {
             .then(mangaList => {
                 userMangaList = mangaList.map(m => m.id._id);
             })
-            .catch(error => {
-                console.error('Error:', error);
-            });
     }
 }
 
@@ -77,9 +73,9 @@ window.onclick = function (event) {
     }
 }
 
+// Search for anime and manga
 const searchInput = document.getElementById('search-input');
 
-// Search for anime and manga
 searchInput.addEventListener('input', function (event) {
     event.preventDefault();
 
@@ -92,7 +88,7 @@ searchInput.addEventListener('input', function (event) {
         return;
     }
 
-    fetch(`http://localhost:3000/api/anime/search/${searchTerm}`)
+    fetch(api + `/anime/search/${searchTerm}`)
         .then(response => response.json())
         .then(anime => {
             const resultsDiv = document.getElementById('search-results');
@@ -129,7 +125,7 @@ searchInput.addEventListener('input', function (event) {
                     } else {
                         button.textContent = 'Pridať';
                         button.onclick = function () {
-                            fetch('http://localhost:3000/api/account/anime/add', {
+                            fetch(api + '/account/anime/add', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -158,12 +154,9 @@ searchInput.addEventListener('input', function (event) {
                 resultDivSection.appendChild(img);
                 resultsDiv.appendChild(resultDivSection);
             });
-        })
-        .catch(err => {
-            console.error(err);
         });
 
-    fetch(`http://localhost:3000/api/manga/search/${searchTerm}`)
+    fetch(api + `/manga/search/${searchTerm}`)
         .then(response => response.json())
         .then(manga => {
             const resultsDiv = document.getElementById('search-results');
@@ -198,7 +191,7 @@ searchInput.addEventListener('input', function (event) {
                     } else {
                         button.textContent = 'Pridať';
                         button.onclick = function () {
-                            fetch('http://localhost:3000/api/account/manga/add', {
+                            fetch(api + '/account/manga/add', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -227,8 +220,5 @@ searchInput.addEventListener('input', function (event) {
                 resultDivSection.appendChild(img);
                 resultsDiv.appendChild(resultDivSection);
             });
-        })
-        .catch(err => {
-            console.error(err);
         });
 });

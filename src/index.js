@@ -63,7 +63,6 @@ app.use('/api', require('./routes/anime'));
 app.use('/api', require('./routes/manga'));
 app.use('/api', require('./routes/alerts'));
 app.use('/api/account', require('./routes/account'));
-app.use('/', require('./routes/main'));
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on http://localhost:${process.env.PORT}`);

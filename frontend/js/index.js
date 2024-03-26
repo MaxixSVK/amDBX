@@ -1,4 +1,4 @@
-fetch('http://localhost:3000/api/anime/lastUpdated')
+fetch(api + '/anime/lastUpdated')
   .then(response => response.json())
   .then(data => {
     const lastUpdatedDiv = document.querySelector('#lastUpdated_anime_row');
@@ -17,7 +17,7 @@ fetch('http://localhost:3000/api/anime/lastUpdated')
   lastUpdatedDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
 });
 
-fetch('http://localhost:3000/api/manga/lastUpdated')
+fetch(api + '/manga/lastUpdated')
   .then(response => response.json())
   .then(data => {
     const lastUpdatedDiv = document.querySelector('#lastUpdated_manga_row');
@@ -36,7 +36,7 @@ fetch('http://localhost:3000/api/manga/lastUpdated')
     lastUpdatedDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
   });
 
-fetch('http://localhost:3000/api/alerts')
+fetch(api + '/api/alerts')
   .then(response => response.json())
   .then(data => {
     const alertsDiv = document.querySelector('#alerts');

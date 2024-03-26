@@ -2,7 +2,7 @@ if (!token) {
     window.location.href = 'login.html';
 }
 
-fetch('http://localhost:3000/api/account/', {
+fetch(api + '/account', {
     headers: {
         'Authorization': token
     }
@@ -28,7 +28,7 @@ document.getElementById('edit-account-btn').addEventListener('click', function()
     document.getElementById('edit-account-btn').style.display = 'none';
 });
 
-fetch('http://localhost:3000/api/account/anime/list', {
+fetch(api + '/account/anime/list', {
     headers: {
         'Authorization': token
     }
@@ -46,7 +46,7 @@ fetch('http://localhost:3000/api/account/anime/list', {
     console.error('Error:', error);
 });
 
-fetch('http://localhost:3000/api/account/manga/list', {
+fetch(api + '/account/manga/list', {
     headers: {
         'Authorization': token
     }
@@ -60,3 +60,93 @@ fetch('http://localhost:3000/api/account/manga/list', {
         mangaListDiv.appendChild(p);
     });
 })
+
+document.getElementById('change-password-btn').addEventListener('click', function() {
+    const oldPassword = prompt('Enter your old password:');
+    if (!oldPassword) {
+        return;
+    }
+    const newPassword = prompt('Enter your new password:');
+    if (!newPassword) {
+        return;
+    }
+    
+    fetch(api + '/account/change-password', {
+        method: 'PUT',
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ oldPassword, newPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.msg === 'Password changed') {
+            alert('Password successfully changed.');
+        } else {
+            alert('Failed to change password.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+document.getElementById('change-email-btn').addEventListener('click', function() {
+    const password = prompt('Enter your password:');
+    if (!password) {
+        return;
+    }
+    const newEmail = prompt('Enter your new email:');
+    if (!newEmail) {
+        return;
+    }
+    
+    fetch(api + '/account/change-email', {
+        method: 'PUT',
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password, email: newEmail })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.msg === 'Email changed') {
+            alert('Email successfully changed.');
+        } else {
+            alert('Failed to change email.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+document.getElementById('delete-account-btn').addEventListener('click', function() {
+    const password = prompt('Enter your password:');
+    if (!password) {
+        return;
+    }
+    
+    fetch(api + '/account/delete', {
+        method: 'DELETE',
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.msg === 'Account deleted') {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        } else {
+            alert('Failed to delete account.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
