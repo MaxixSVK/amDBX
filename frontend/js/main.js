@@ -30,6 +30,8 @@ if (localStorage.getItem('token')) {
         .catch(error => {
             console.error('Error:', error);
         });
+} else {
+    document.getElementById('login-link').innerText = 'Prihlásiť sa';
 }
 
 // Search

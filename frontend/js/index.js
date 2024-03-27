@@ -36,7 +36,7 @@ fetch(api + '/manga/lastUpdated')
     lastUpdatedDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
   });
 
-fetch(api + '/api/alerts')
+fetch(api + '/alerts')
   .then(response => response.json())
   .then(data => {
     const alertsDiv = document.querySelector('#alerts');

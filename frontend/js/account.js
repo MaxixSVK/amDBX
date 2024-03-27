@@ -36,11 +36,35 @@ fetch(api + '/account/anime/list', {
 .then(response => response.json())
 .then(animeList => {
     const animeListDiv = document.getElementById('anime-list');
-    animeList.forEach(anime => {
-        const p = document.createElement('p');
-        p.textContent = anime.id.name; 
-        animeListDiv.appendChild(p);
-    });
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Moje anime';
+    animeListDiv.appendChild(h2);
+    let counter = 0;
+    for(let i = 0; i < animeList.length; i++) {
+        if (counter < 3) {
+            const div = document.createElement('div');
+            div.classList.add('list-item');
+            const p = document.createElement('p');
+            p.textContent = animeList[i].id.name; 
+            const img = document.createElement('img');
+            img.src = animeList[i].id.img;
+            img.alt = animeList[i].id.name;
+            div.appendChild(p);
+            div.appendChild(img);
+            animeListDiv.appendChild(div);
+            counter++;
+        } else {
+            const div = document.createElement('div');
+            div.classList.add('list-item');
+            const p = document.createElement('p');
+            p.textContent = 'Anime list';
+            const img = document.createElement('img');
+            div.appendChild(p);
+            div.appendChild(img);
+            animeListDiv.appendChild(div);
+            break;
+        }
+    }
 })
 .catch(error => {
     console.error('Error:', error);
@@ -54,11 +78,35 @@ fetch(api + '/account/manga/list', {
 .then(response => response.json())
 .then(mangaList => {
     const mangaListDiv = document.getElementById('manga-list');
-    mangaList.forEach(manga => {
-        const p = document.createElement('p');
-        p.textContent = manga.id.name; 
-        mangaListDiv.appendChild(p);
-    });
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Moja manga';
+    mangaListDiv.appendChild(h2);
+    let counter = 0;
+    for(let i = 0; i < mangaList.length; i++) {
+        if (counter < 3) {
+            const div = document.createElement('div');
+            div.classList.add('list-item');
+            const p = document.createElement('p');
+            p.textContent = mangaList[i].id.name; 
+            const img = document.createElement('img');
+            img.src = mangaList[i].id.img;
+            img.alt = mangaList[i].id.name;
+            div.appendChild(p);
+            div.appendChild(img);
+            mangaListDiv.appendChild(div);
+            counter++;
+        } else {
+            const div = document.createElement('div');
+            div.classList.add('list-item');
+            const p = document.createElement('p');
+            p.textContent = 'Manga list';
+            const img = document.createElement('img');
+            div.appendChild(p);
+            div.appendChild(img);
+            mangaListDiv.appendChild(div);
+            break;
+        }
+    }
 })
 
 document.getElementById('change-password-btn').addEventListener('click', function() {
