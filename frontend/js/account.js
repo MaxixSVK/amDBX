@@ -10,7 +10,7 @@ fetch(api + '/account', {
 .then(response => response.json())
 .then(user => {
     document.getElementById('user-name').innerText = user.name;
-    document.getElementById('user-email').innerText = user.email;
+    document.getElementById('user-email').innerText = 'Email: ' + user.email;
 })
 .catch(error => {
     console.error('Error:', error);

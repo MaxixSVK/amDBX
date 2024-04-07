@@ -30,7 +30,7 @@ main #manga-list h2 {
 #account-main {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Add this line */
+    align-items: center;
     margin-bottom: 1rem;
     background-color: #f8f9fa;
     border-radius: 0.25rem;
@@ -46,13 +46,30 @@ main #manga-list h2 {
     margin: 0.75rem 0;
 }
 
+#logout-btn {
+    margin: 0rem;
+}
+
 #edit-account-btn {
     margin: 0rem;
 }
 
-#logout-btn {
-    margin: 0rem;
+#edit-account {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
 }
+
+#user-email {
+    font-size: 1.15rem;
+    margin: 0.75rem 0;
+}
+
 
 .list {
     margin: 1rem 0;
@@ -77,9 +94,6 @@ main #manga-list h2 {
 .list-btn {
     margin: 0.25rem 0 0 0;
 }
-
-
-
 
 @media (max-width: 48rem) {
     main {

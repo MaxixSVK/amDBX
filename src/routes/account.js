@@ -4,7 +4,6 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
-const user = require('../models/user');
 require('dotenv').config();
 
 const authenticateToken = (req, res, next) => {
