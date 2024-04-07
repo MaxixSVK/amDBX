@@ -131,6 +131,7 @@ document.getElementById('change-password-btn').addEventListener('click', functio
     .then(data => {
         if (data.msg === 'Password changed') {
             alert('Password successfully changed.');
+            localStorage.setItem('token', data.token);
         } else {
             alert('Failed to change password.');
         }

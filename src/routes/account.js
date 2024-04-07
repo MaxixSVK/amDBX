@@ -19,6 +19,12 @@ const authenticateToken = (req, res, next) => {
     const dbUser = await User.findById(user.id);
     if (!dbUser) return res.status(403).send({ msg: 'User not found' });
 
+    const tokenChangedPassword = user.changedPassword;
+    const dbChangedPassword = dbUser.changedPassword;
+
+    if (new Date(tokenChangedPassword).getTime() !== new Date(dbChangedPassword).getTime()) 
+    return res.status(403).send({ msg: 'Token is invalid' });
+
     req.user = user;
     next();
   });
@@ -26,7 +32,7 @@ const authenticateToken = (req, res, next) => {
 
 router.get('/', authenticateToken, (req, res) => {
   User.findById(req.user.id)
-    .select('-_id -password')
+    .select('-_id -password -changedPassword')
     .then(user => {
       res.json(user);
     })
@@ -55,12 +61,13 @@ router.post('/register', function (req, res) {
           const newUser = new User({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            changedPassword: new Date()
           });
 
           newUser.save()
             .then(user => {
-              const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '365d' });
+              const token = jwt.sign({ id: user._id, changedPassword: newUser.changedPassword }, process.env.JWT_SECRET, { expiresIn: '365d' });
               res.json({ token });
             })
             .catch(err => res.status(500).json({ msg: 'Server error' }));
@@ -82,7 +89,8 @@ router.post('/login', function (req, res, next) {
       if (err) {
         return next(err);
       }
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '365d' });
+
+      const token = jwt.sign({ id: user._id, changedPassword: user.changedPassword }, process.env.JWT_SECRET, { expiresIn: '365d' });
       res.json({ token });
     });
   })(req, res, next);
@@ -96,10 +104,12 @@ router.put('/change-password', authenticateToken, (req, res) => {
       }
 
       const hashedPassword = bcrypt.hashSync(req.body.newPassword, 10);
+      const changedPassword = new Date(); 
 
-      User.findByIdAndUpdate(req.user.id, { password: hashedPassword })
+      User.findByIdAndUpdate(req.user.id, { password: hashedPassword, changedPassword: changedPassword })
         .then(() => {
-          res.send({ msg: 'Password changed' });
+          const token = jwt.sign({ id: req.user.id, changedPassword: changedPassword }, process.env.JWT_SECRET);
+          res.send({ msg: 'Password changed', token: token });
         })
         .catch(err => {
           res.status(400).send({ msg: 'Failed to change password' });
