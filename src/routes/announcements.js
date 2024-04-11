@@ -10,7 +10,7 @@ function adminAuth(req, res, next) {
     }
 }
 
-router.get('/alerts', async (req, res) => {
+router.get('/', async (req, res) => {
     const now = new Date();
     const alerts = await Alert.find({ 
         created: { $lte: now },
@@ -19,7 +19,7 @@ router.get('/alerts', async (req, res) => {
     res.send(alerts);
 });
 
-router.post('/alerts', adminAuth, async (req, res) => {
+router.post('/', adminAuth, async (req, res) => {
     const alert = new Alert({
         name: req.body.name,
         description: req.body.description,
@@ -30,7 +30,7 @@ router.post('/alerts', adminAuth, async (req, res) => {
     res.send(result);
 });
 
-router.put('/alerts/:id', adminAuth, async (req, res) => {
+router.put('/:id', adminAuth, async (req, res) => {
     const result = await Alert.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         description: req.body.description,
@@ -44,7 +44,7 @@ router.put('/alerts/:id', adminAuth, async (req, res) => {
     }
 });
 
-router.delete('/alerts/:id', adminAuth, async (req, res) => {
+router.delete('/:id', adminAuth, async (req, res) => {
     const result = await Alert.findByIdAndDelete(req.params.id);
     if (!result) {
         res.status(404).send('The alert with the given ID was not found');

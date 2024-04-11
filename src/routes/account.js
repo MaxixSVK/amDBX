@@ -55,6 +55,18 @@ router.post('/register', function (req, res) {
         .then(user => {
           if (user) return res.status(409).json({ msg: 'Používatelské meno už je zabrané' });
 
+          if (password.length < 6) {
+            return res.status(400).json({ msg: 'Heslo musí mať aspoň 6 znakov' });
+          }
+          
+          if (name.length < 3) {
+            return res.status(400).json({ msg: 'Používatelské meno musí mať aspoň 3 znaky' });
+          }
+
+          if (name.length > 16) {
+            return res.status(400).json({ msg: 'Používatelské meno môže mať maximálne 20 znakov' });
+          }
+
           const hashedPassword = bcrypt.hashSync(password, 10);
 
           const newUser = new User({
@@ -69,11 +81,11 @@ router.post('/register', function (req, res) {
               const token = jwt.sign({ id: user._id, changedPassword: newUser.changedPassword }, process.env.JWT_SECRET, { expiresIn: '365d' });
               res.json({ token });
             })
-            .catch(err => res.status(500).json({ msg: 'Server error' }));
+            .catch(err => res.status(500).json({ msg: 'Internal server error' }));
         })
-        .catch(err => res.status(500).json({ msg: 'Server error' }));
+        .catch(err => res.status(500).json({ msg: 'Internal server error' }));
     })
-    .catch(err => res.status(500).json({ msg: 'Server error' }));
+    .catch(err => res.status(500).json({ msg: 'Internal server error' }));
 });
 
 router.post('/login', function (req, res, next) {
@@ -99,7 +111,15 @@ router.put('/change-password', authenticateToken, (req, res) => {
   User.findById(req.user.id)
     .then(user => {
       if (!bcrypt.compareSync(req.body.oldPassword, user.password)) {
-        return res.status(400).send({ msg: 'Incorrect password' });
+        return res.status(400).send({ msg: 'Nesprávne heslo' });
+      }
+
+      if (req.body.newPassword.length < 6) {
+        return res.status(400).send({ msg: 'Heslo musí mať aspoň 6 znakov' });
+      }
+
+      if (req.body.newPassword === req.body.oldPassword) {
+        return res.status(400).send({ msg: 'Nové heslo nesmie byť rovnaké ako staré heslo' });
       }
 
       const hashedPassword = bcrypt.hashSync(req.body.newPassword, 10);
@@ -108,10 +128,10 @@ router.put('/change-password', authenticateToken, (req, res) => {
       User.findByIdAndUpdate(req.user.id, { password: hashedPassword, changedPassword: changedPassword })
         .then(() => {
           const token = jwt.sign({ id: req.user.id, changedPassword: changedPassword }, process.env.JWT_SECRET);
-          res.send({ msg: 'Password changed', token: token });
+          res.send({ msg: 'Heslo zmenené', token: token });
         })
         .catch(err => {
-          res.status(400).send({ msg: 'Failed to change password' });
+          res.status(400).send({ msg: 'Nepodarilo sa zmeniť heslo' });
         });
     })
     .catch(err => {
@@ -123,15 +143,19 @@ router.put('/change-email', authenticateToken, (req, res) => {
   User.findById(req.user.id)
     .then(user => {
       if (!bcrypt.compareSync(req.body.password, user.password)) {
-        return res.status(400).send({ msg: 'Incorrect password' });
+        return res.status(400).send({ msg: 'Nesprávne heslo' });
+      }
+
+      if (req.body.email === user.email) {
+        return res.status(400).send({ msg: 'Nový email nesmie byť rovnaký ako starý email' });
       }
 
       User.findByIdAndUpdate(req.user.id, { email: req.body.email })
         .then(() => {
-          res.send({ msg: 'Email changed' });
+          res.send({ msg: 'Email zmenený' });
         })
         .catch(err => {
-          res.status(400).send({ msg: 'Failed to change email' });
+          res.status(400).send({ msg: 'Nepodarilo sa zmeniť email' });
         });
     })
     .catch(err => {
@@ -143,15 +167,15 @@ router.delete('/delete', authenticateToken, (req, res) => {
   User.findById(req.user.id)
     .then(user => {
       if (!bcrypt.compareSync(req.body.password, user.password)) {
-        return res.status(400).send({ msg: 'Incorrect password' });
+        return res.status(400).send({ msg: 'Nesprávne heslo' });
       }
 
       User.findByIdAndDelete(req.user.id)
         .then(() => {
-          res.send({ msg: 'Account deleted' });
+          res.send({ msg: 'Účet zmazaný' });
         })
         .catch(err => {
-          res.status(400).send({ msg: 'Failed to delete account' });
+          res.status(400).send({ msg: 'Nepodarilo sa zmazať účet'});
         });
     })
     .catch(err => {

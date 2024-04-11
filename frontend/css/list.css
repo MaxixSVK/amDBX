@@ -1,0 +1,27 @@
+main {
+    padding: 2rem 3.5rem;
+}
+
+.list {
+    margin: 1rem 0;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    font-size: 1.1rem;
+}
+
+.list-item img {
+    width: 5rem;
+    object-fit: cover;
+}
+
+.list-btn {
+    margin: 0.25rem 0 0 0;
+}
