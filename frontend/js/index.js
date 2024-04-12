@@ -17,10 +17,14 @@ fetch(api + '/announcements')
     alertsDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
   });
 
-fetch(api + '/anime/lastUpdated')
+  fetch(api + '/anime/lastUpdated')
   .then(response => response.json())
   .then(data => {
     const lastUpdatedDiv = document.querySelector('#lastUpdated_anime_row');
+    const title = document.createElement('p');
+    title.classList.add('lastUpdated_title');
+    title.textContent = 'Naposledy aktualizované Anime';
+    lastUpdatedDiv.before(title);
     data.forEach(anime => {
       const animeDiv = document.createElement('div');
       animeDiv.classList.add('lastUpdated_row_item');
@@ -31,15 +35,17 @@ fetch(api + '/anime/lastUpdated')
       lastUpdatedDiv.appendChild(animeDiv);
     });
   })
-.catch(error => {
-  const lastUpdatedDiv = document.querySelector('#lastUpdated_anime_row');
-  lastUpdatedDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
-});
+  .catch(error => {
+  });
 
-fetch(api + '/manga/lastUpdated')
+  fetch(api + '/manga/lastUpdated')
   .then(response => response.json())
   .then(data => {
     const lastUpdatedDiv = document.querySelector('#lastUpdated_manga_row');
+    const title = document.createElement('p');
+    title.classList.add('lastUpdated_title');
+    title.textContent = 'Naposledy aktualizovaná Manga';
+    lastUpdatedDiv.before(title);
     data.forEach(manga => {
       const mangaDiv = document.createElement('div');
       mangaDiv.classList.add('lastUpdated_row_item');
@@ -51,6 +57,4 @@ fetch(api + '/manga/lastUpdated')
     });
   })
   .catch(error => {
-    const lastUpdatedDiv = document.querySelector('#lastUpdated_manga_row');
-    lastUpdatedDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
   });

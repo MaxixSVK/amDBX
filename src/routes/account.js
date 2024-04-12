@@ -128,7 +128,7 @@ router.put('/change-password', authenticateToken, (req, res) => {
       User.findByIdAndUpdate(req.user.id, { password: hashedPassword, changedPassword: changedPassword })
         .then(() => {
           const token = jwt.sign({ id: req.user.id, changedPassword: changedPassword }, process.env.JWT_SECRET);
-          res.send({ msg: 'Heslo zmenené', token: token });
+          res.status(200).send({ msg: 'Heslo zmenené', token: token });
         })
         .catch(err => {
           res.status(400).send({ msg: 'Nepodarilo sa zmeniť heslo' });

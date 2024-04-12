@@ -70,6 +70,16 @@ main #manga-list h2 {
     margin: 0.75rem 0;
 }
 
+#change-msg-error {
+    margin: 1rem auto;
+    padding: 1rem;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    border-radius: 0.25rem;
+    text-align: center;
+}
+
 .list {
     margin: 1rem 0;
 }
@@ -105,7 +115,7 @@ main #manga-list h2 {
 
     main button {
         padding: 0.5rem 0.75rem;
-        margin-bottom: 0rem;
+        margin: 0.5rem 0;
     }
 
     main #anime-list h2,

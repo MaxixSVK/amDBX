@@ -165,7 +165,13 @@ document.getElementById('change-password-btn').addEventListener('click', functio
         })
             .then(response => response.json())
             .then(data => {
-
+                let changeMsg = document.getElementById('change-msg');
+                if (!changeMsg) {
+                    changeMsg = document.createElement('p');
+                    changeMsg.id = 'change-msg-error';
+                    document.getElementById('edit-account').appendChild(changeMsg);
+                }
+                changeMsg.textContent = data.msg;
             })
             .catch(error => {
                 console.error('Error:', error);
