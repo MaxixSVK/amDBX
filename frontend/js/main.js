@@ -5,9 +5,17 @@ const token = localStorage.getItem('token');
 // Navbar
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('nav');
+const body = document.body; // Get the body element
 
 menuToggle.addEventListener('click', () => {
     nav.classList.toggle('active');
+    // If the menu is active, disable scrolling on the body
+    if (nav.classList.contains('active')) {
+        body.classList.add('no-scroll');
+    } else {
+        // If the menu is not active, enable scrolling on the body
+        body.classList.remove('no-scroll');
+    }
 });
 
 // Check if user is logged in
