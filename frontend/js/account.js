@@ -138,20 +138,22 @@ fetch(api + '/account/manga/list', {
     })
 
 document.getElementById('change-password-btn').addEventListener('click', function () {
-    const div = document.createElement('div');
-    div.classList.add('change-div');
-    div.innerHTML = `
-        <input type="password" id="old-password" placeholder="Old password">
-        <input type="password" id="new-password" placeholder="New password">
-        <button id="change-password">Change password</button>
-    `;
-    document.getElementById('edit-account').appendChild(div);
+    var changeDiv = document.getElementById('change-password');
+    changeDiv.style.display = 'block';
 
-    document.getElementById('change-password').addEventListener('click', function () {
+    document.getElementById('change-password-form').addEventListener('submit', function (event) {
+        event.preventDefault();
         const oldPassword = document.getElementById('old-password').value;
         const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('new-password-again').value;
 
-        if (!oldPassword || !newPassword) {
+        const errorMsgElement = document.getElementById('error-message');
+        const successMsgElement = document.getElementById('success-message');
+
+        if (newPassword !== confirmPassword) {
+            errorMsgElement.textContent = 'Heslá sa nezhodujú';
+            errorMsgElement.style.display = 'block';
+            successMsgElement.style.display = 'none';
             return;
         }
 
@@ -165,14 +167,21 @@ document.getElementById('change-password-btn').addEventListener('click', functio
         })
             .then(response => response.json())
             .then(data => {
-                let changeMsg = document.getElementById('change-msg');
-                if (!changeMsg) {
-                    changeMsg = document.createElement('p');
-                    changeMsg.id = 'change-msg-error';
-                    document.getElementById('edit-account').appendChild(changeMsg);
+                if (!data.token) {
+                    errorMsgElement.textContent = data.msg;
+                    errorMsgElement.style.display = 'block';
+                    successMsgElement.style.display = 'none';
+                    return;
                 }
-                changeMsg.textContent = data.msg;
+                
+                errorMsgElement.style.display = 'none';
+                successMsgElement.textContent = data.msg;
+                successMsgElement.style.display = 'block';
+
+                const token = data.token;
+                localStorage.setItem('token', token);
             })
+            
             .catch(error => {
                 console.error('Error:', error);
             });

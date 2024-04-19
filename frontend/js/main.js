@@ -26,9 +26,9 @@ if (localStorage.getItem('token')) {
         }
     })
         .then(response => {
-            if (response.status === 401 || response.status === 403) {
+            if (!response.ok) {
                 localStorage.removeItem('token');
-                throw new Error('Unauthorized or Forbidden');
+                window.location.href = 'login.html';
             }
             return response.json();
         })

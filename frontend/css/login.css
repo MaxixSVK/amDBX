@@ -1,7 +1,6 @@
-/* Login & Register Form Styles */
 #login, #register {
     width: 80%;
-    max-width: 500px;
+    max-width: 31.25rem;
     margin: 2rem auto;
     padding: 2rem;
     background-color: #f9f9f9;
@@ -29,7 +28,7 @@
     width: 100%;
     padding: 0.625rem;
     margin-bottom: 1.25rem;
-    border: 1px solid #ccc;
+    border: 0.0625rem solid #ccc;
     border-radius: 0.25rem;
     font-size: 1rem;
     color: #333;
@@ -59,13 +58,14 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 #switch-btn:hover {
     background-color: #0056b3;
 }
 
 #error-msg {
     width: 80%;
-    max-width: 500px;
+    max-width: 31.25rem;
     margin: 1rem auto;
     padding: 1rem;
     color: #a94442;

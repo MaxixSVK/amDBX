@@ -57,7 +57,30 @@
             <p id="user-email"></p>
             <button id="change-email-btn">Zmeniť email</button>
             <button id="change-password-btn">Zmeniť heslo</button>
-            <button id="delete-account-btn">Zmazať účet</button>
+            <button id="delete-account-btn">Zmazať účet</button> 
+            <div id="change-email">
+                <form id="change-email-form">
+                    <input type="email" id="new-email" placeholder="Nový email">
+                    <input type="password" id="password-email" placeholder="Heslo">
+                    <button type="submit">Zmeniť email</button>
+                </form>
+            </div>
+            <div id="change-password">
+                <form id="change-password-form">
+                    <input type="password" id="old-password" placeholder="Staré heslo">
+                    <input type="password" id="new-password" placeholder="Nové heslo">
+                    <input type="password" id="new-password-again" placeholder="Nové heslo znova">
+                    <button type="submit">Zmeniť heslo</button>
+                </form>
+            </div>
+            <div id="delete-account">
+                <form id="delete-account-form">
+                    <input type="password" id="password-delete" placeholder="Heslo">
+                    <button type="submit">Zmazať účet</button>
+                </form>
+            </div>
+            <div id="error-message"></div>
+            <div id="success-message"></div>
         </section>
 
         <section id="anime-list" class="list">
