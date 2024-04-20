@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Manga = require('../models/manga');
 
-router.get('/manga/specific/:id', (req, res) => {
+router.get('/specific/:id', (req, res) => {
     Manga.findById(req.params.id)
         .then(manga => {
             res.send(manga);
@@ -12,7 +12,7 @@ router.get('/manga/specific/:id', (req, res) => {
         });
 });
 
-router.get('/manga/lastUpdated', (req, res) => {
+router.get('/lastUpdated', (req, res) => {
     Manga.find().sort({ lastUpdated: -1 }).limit(5)
         .then(manga => {
             res.send(manga);
@@ -22,7 +22,7 @@ router.get('/manga/lastUpdated', (req, res) => {
         });
 });
 
-router.get('/manga/search/:name', (req, res) => {
+router.get('/search/:name', (req, res) => {
     const regex = new RegExp(req.params.name, 'i');
     Manga.find({ name: regex })
         .then(anime => {
