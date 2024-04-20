@@ -21,8 +21,8 @@ const authenticateToken = (req, res, next) => {
     const tokenChangedPassword = user.changedPassword;
     const dbChangedPassword = dbUser.changedPassword;
 
-    if (new Date(tokenChangedPassword).getTime() !== new Date(dbChangedPassword).getTime()) 
-    return res.status(403).send({ msg: 'Token is invalid' });
+    if (new Date(tokenChangedPassword).getTime() !== new Date(dbChangedPassword).getTime())
+      return res.status(403).send({ msg: 'Token is invalid' });
 
     req.user = user;
     next();
@@ -47,6 +47,12 @@ router.post('/register', function (req, res) {
     return res.status(400).json({ msg: 'Please enter all fields' });
   }
 
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+
+  if (!emailRegex.test(req.body.email)) {
+    return res.status(400).send({ msg: 'Nesprávny formát emailu' });
+  }
+
   User.findOne({ email })
     .then(user => {
       if (user) return res.status(409).json({ msg: 'Email je už použitý na inom účte' });
@@ -58,7 +64,7 @@ router.post('/register', function (req, res) {
           if (password.length < 6) {
             return res.status(400).json({ msg: 'Heslo musí mať aspoň 6 znakov' });
           }
-          
+
           if (name.length < 3) {
             return res.status(400).json({ msg: 'Používatelské meno musí mať aspoň 3 znaky' });
           }
@@ -123,7 +129,7 @@ router.put('/change-password', authenticateToken, (req, res) => {
       }
 
       const hashedPassword = bcrypt.hashSync(req.body.newPassword, 10);
-      const changedPassword = new Date(); 
+      const changedPassword = new Date();
 
       User.findByIdAndUpdate(req.user.id, { password: hashedPassword, changedPassword: changedPassword })
         .then(() => {
@@ -140,6 +146,12 @@ router.put('/change-password', authenticateToken, (req, res) => {
 });
 
 router.put('/change-email', authenticateToken, (req, res) => {
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+
+  if (!emailRegex.test(req.body.email)) {
+    return res.status(400).send({ msg: 'Nesprávny formát emailu' });
+  }
+
   User.findById(req.user.id)
     .then(user => {
       if (!bcrypt.compareSync(req.body.password, user.password)) {
@@ -152,7 +164,7 @@ router.put('/change-email', authenticateToken, (req, res) => {
 
       User.findByIdAndUpdate(req.user.id, { email: req.body.email })
         .then(() => {
-          res.send({ msg: 'Email zmenený' });
+          res.send({ msg: 'Email zmenený', email: req.body.email });
         })
         .catch(err => {
           res.status(400).send({ msg: 'Nepodarilo sa zmeniť email' });
@@ -162,7 +174,6 @@ router.put('/change-email', authenticateToken, (req, res) => {
       res.status(500).send({ msg: 'Internal server error' });
     });
 });
-
 router.delete('/delete', authenticateToken, (req, res) => {
   User.findById(req.user.id)
     .then(user => {
@@ -172,10 +183,10 @@ router.delete('/delete', authenticateToken, (req, res) => {
 
       User.findByIdAndDelete(req.user.id)
         .then(() => {
-          res.send({ msg: 'Účet zmazaný' });
+          res.send({ msg: 'Účet zmazaný', deleted: true});
         })
         .catch(err => {
-          res.status(400).send({ msg: 'Nepodarilo sa zmazať účet'});
+          res.status(400).send({ msg: 'Nepodarilo sa zmazať účet' });
         });
     })
     .catch(err => {
