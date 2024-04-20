@@ -5,8 +5,8 @@ const userSchema = new mongoose.Schema({
     name: String,
     role: {
         type: String,
-        default: 'user', // 'user' will be the default role
-        enum: ['user', 'mod', 'admin'] // specify the possible roles
+        default: 'user', 
+        enum: ['user', 'mod', 'admin']
     },
     profileImg: String,
     email: String,

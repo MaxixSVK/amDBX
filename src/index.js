@@ -59,10 +59,13 @@ passport.deserializeUser(async function(id, done) {
     }
 });
 
+app.use('/cdn', require('./routes/cdn'));
 app.use('/api', require('./routes/anime'));
 app.use('/api', require('./routes/manga'));
 app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/account', require('./routes/account'));
+app.use('/api/admin', require('./routes/admin'));
+
 
 app.get('/', (req, res) => {
     res.send('API is running');
