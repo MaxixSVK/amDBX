@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>amDBX | Admin Panel</title>
+    <title>amDBX | Mod Panel</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/mod.css">
     <link rel="icon" href="assets/logo.png">
     <meta name="description" content="amDBX - Slovenská databáza anime a mangy.">
     <meta name="keywords" content="amDBX, anime, manga, databáza">
@@ -46,29 +46,23 @@
                 <div id="search-results"></div>
             </div>
         </div>
-        <div id="admin-panel">
-            <div id="admin-panel-content">
-                <h1>Admin Panel</h1>
-                <div id="admin-panel-buttons">
+        <div id="mod-panel">
+            <div id="mod-panel-content">
+                <h1>Mod Panel</h1>
+                <div id="cdn">
                     <br>
-                    <h2>Zmena role</h2>
-                    <p id="status"></p>
-                    <form id="promoteForm">
-                        <input type="text" id="promoteName" placeholder="Username">
-                        <select id="newRole">
-                            <option value="user">User</option>
-                            <option value="mod">Moderator</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                        <button type="submit">Zmeniť</button>
+                    <h2>CDN</h2>
+                    <p id="cdnStatus"></p>
+                    <form id="uploadForm">
+                        <input type="file" id="myFile" name="myFile">
+                        <input type="button" value="Upload" onclick="uploadFile()">
                     </form>
                 </div>
             </div>
-        </div>
     </main>
 
     <script src="js/main.js"></script>
-    <script src="js/admin.js"></script>
+    <script src="js/mod.js"></script>
 
 </body>
 

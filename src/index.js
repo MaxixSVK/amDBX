@@ -60,11 +60,15 @@ passport.deserializeUser(async function(id, done) {
 });
 
 app.use('/cdn', require('./routes/cdn'));
-app.use('/api', require('./routes/anime'));
+app.use('/api/anime', require('./routes/anime'));
 app.use('/api', require('./routes/manga'));
 app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/account', require('./routes/account'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/mod', require('./routes/mod'));
+app.use('/api/modannouncements', require('./routes/modAnnouncements'));
+app.use('/api/modanime', require('./routes/modAnime'));
+app.use('/api/modmanga', require('./routes/modManga'));
 
 
 app.get('/', (req, res) => {

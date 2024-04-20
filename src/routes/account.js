@@ -174,6 +174,7 @@ router.put('/change-email', authenticateToken, (req, res) => {
       res.status(500).send({ msg: 'Internal server error' });
     });
 });
+
 router.delete('/delete', authenticateToken, (req, res) => {
   User.findById(req.user.id)
     .then(user => {

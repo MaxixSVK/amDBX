@@ -1,24 +1,21 @@
 const api = 'http://localhost:3000/api';
+const cdn = 'http://localhost:3000/cdn';
 
 const token = localStorage.getItem('token');
 
-// Navbar
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('nav');
-const body = document.body; // Get the body element
+const body = document.body; 
 
 menuToggle.addEventListener('click', () => {
     nav.classList.toggle('active');
-    // If the menu is active, disable scrolling on the body
     if (nav.classList.contains('active')) {
         body.classList.add('no-scroll');
     } else {
-        // If the menu is not active, enable scrolling on the body
         body.classList.remove('no-scroll');
     }
 });
 
-// Check if user is logged in
 if (localStorage.getItem('token')) {
     fetch(api + '/account', {
         headers: {
@@ -42,7 +39,6 @@ if (localStorage.getItem('token')) {
     document.getElementById('login-link').innerText = 'Prihlásiť sa';
 }
 
-// Search
 var modal = document.getElementById("search-modal");
 
 let userAnimeList = [];
@@ -52,7 +48,6 @@ function search() {
     modal.style.display = "block";
 
     if (localStorage.getItem('token')) {
-        // Fetch user's anime list
         fetch(api + '/account/anime/list', {
             headers: {
                 'Authorization': localStorage.getItem('token')
@@ -63,7 +58,6 @@ function search() {
                 userAnimeList = animeList.map(a => a.id._id);
             })
 
-        // Fetch user's manga list
         fetch(api + '/account/manga/list', {
             headers: {
                 'Authorization': localStorage.getItem('token')
@@ -76,14 +70,12 @@ function search() {
     }
 }
 
-// Close the modal when clicking outside of it
 window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
 
-// Search for anime and manga
 const searchInput = document.getElementById('search-input');
 
 searchInput.addEventListener('input', function (event) {

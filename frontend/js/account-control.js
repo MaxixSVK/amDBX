@@ -11,6 +11,12 @@ fetch(api + '/account', {
     .then(user => {
         document.getElementById('user-name').innerText = user.name;
         document.getElementById('user-email').innerText = 'Email: ' + user.email;
+        if (user.role === 'user') {
+            document.getElementById('administration').style.display = 'none';
+        }
+        if (user.role === 'mod') {
+            document.getElementById('admin-panel').style.display = 'none';
+        }
     })
     .catch(error => {
         console.error('Error:', error);
