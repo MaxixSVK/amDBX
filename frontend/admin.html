@@ -49,10 +49,35 @@
         <div id="admin-panel">
             <div id="admin-panel-content">
                 <h1>Admin Panel</h1>
-                <div id="admin-panel-buttons">
-                    <br>
+                <div class="content">
+                    <h2>Oznamy</h2>
+                    <h3>Nový oznam</h3>
+                    <p id="announcement-create-status"></p>
+                    <form id="announcementForm">
+                        <input type="text" id="announcementTitle" placeholder="Názov">
+                        <input type="text" id="announcementContent" placeholder="Obsah">
+                        <input type="datetime-local" id="announcementDate" placeholder="Platné do">
+                        <button type="submit">Odoslať</button>
+                    </form>
+                    <h3>Aktualizácia oznamu</h3>
+                    <p id="announcement-update-status"></p>
+                    <form id="updateForm">
+                        <input type="text" id="updateId" placeholder="ID oznamu">
+                        <input type="text" id="updateTitle" placeholder="Názov">
+                        <input type="text" id="updateContent" placeholder="Obsah">
+                        <input type="datetime-local" id="updateDate" placeholder="Platné do">
+                        <button type="submit">Aktualizovať</button>
+                    </form>
+                    <h3>Vymazanie oznamu</h3>
+                    <p id="announcement-delete-status"></p>
+                    <form id="deleteForm">
+                        <input type="text" id="deleteId" placeholder="ID oznamu">
+                        <button type="submit">Vymazať</button>
+                    </form>
+                </div>
+                <div class="content">
                     <h2>Zmena role</h2>
-                    <p id="status"></p>
+                    <p id="role-status"></p>
                     <form id="promoteForm">
                         <input type="text" id="promoteName" placeholder="Username">
                         <select id="newRole">

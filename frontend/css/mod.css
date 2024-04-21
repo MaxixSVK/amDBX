@@ -20,7 +20,7 @@ select {
 
 @media (max-width: 48rem) {
     main {
-        padding: 0.5rem;
+        margin: 0.5rem;
     }
 
     input {

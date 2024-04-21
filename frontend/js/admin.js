@@ -31,7 +31,7 @@ document.getElementById('promoteForm').addEventListener('submit', function (even
     })
     .then(response => response.json())
     .then(data => {
-        document.querySelector('#status').textContent = data.msg;
+        document.querySelector('#role-status').textContent = data.msg;
     })
     .catch(error => {
         console.error('Error:', error);
