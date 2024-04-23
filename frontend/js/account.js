@@ -1,5 +1,5 @@
 if (!token) {
-    window.location.href = 'login.html';
+    window.location.href = '/login';
 }
 
 fetch(api + '/account', {
@@ -24,14 +24,7 @@ fetch(api + '/account', {
 
 document.getElementById('logout-btn').addEventListener('click', function () {
     localStorage.removeItem('token');
-    window.location.href = 'index.html';
-});
-
-document.getElementById('edit-account').style.display = 'none';
-
-document.getElementById('edit-account-btn').addEventListener('click', function () {
-    document.getElementById('edit-account').style.display = 'block';
-    document.getElementById('edit-account-btn').style.display = 'none';
+    window.location.href = '/';
 });
 
 const errorMsgElement = document.getElementById('error-message');
@@ -168,10 +161,14 @@ document.getElementById('delete-account-btn').addEventListener('click', function
                 }
 
                 localStorage.removeItem('token');
-                window.location.href = 'index.html';
+                window.location.href = '/';
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     });
+});
+
+document.getElementById('public-profile-btn').addEventListener('click', function () {
+    window.location.href = '/profile/' + document.getElementById('user-name').innerText;
 });

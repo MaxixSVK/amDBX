@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>amDBX | Účet</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/account.css">
-    <link rel="icon" href="assets/logo.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/account.css">
+    <link rel="icon" href="/assets/logo.png">
     <meta name="description" content="amDBX - Slovenská databáza anime a mangy.">
     <meta name="keywords" content="amDBX, anime, manga, databáza">
     <meta name="author" content="Maxix">
@@ -16,9 +16,9 @@
 <body>
     <header>
         <div class="logo">
-            <a href="index.html">
-                <img src="assets/logo.png" alt="amDBX">
-                <a href="index.html" , class="title">amDBX</a>
+            <a href="/">
+                <img src="/assets/logo.png" alt="amDBX">
+                <a href="/", class="title">amDBX</a>
             </a>
         </div>
         <div class="menu-toggle">
@@ -32,7 +32,7 @@
                     <button onclick="search()">Vyhľadávanie</button>
                 </li>
                 <li>
-                    <a href="account.html" id="login-link"></a>
+                    <a href="/account" id="login-link"></a>
                 </li>
             </ul>
         </nav>
@@ -49,15 +49,14 @@
         <div id="account-main">
             <h1 id="user-name"></h1>
             <div id="account-buttons">
-                <button id="edit-account-btn">Upraviť účet</button>
                 <button id="logout-btn">Odhlásiť sa</button>
             </div>
         </div>
         <div id="administration">
             <h1 id="administration-name">Správa amDBX</h1>
             <div id="administration-buttons">
-                <a href="moderator.html"><button id="mod-panel">Mod Panel</button></a>
-                <a href="admin.html"><button id="admin-panel">Admin Panel</button></a>
+                <a href="/moderator"><button id="mod-panel">Mod Panel</button></a>
+                <a href="/admin"><button id="admin-panel">Admin Panel</button></a>
             </div>
         </div>
         <section id="edit-account">
@@ -89,16 +88,14 @@
             <div id="error-message"></div>
             <div id="success-message"></div>
         </section>
-
-        <section id="anime-list" class="list">
-        </section>
-        <section id="manga-list" class="list">
-        </section>
+        <div id="public-profile">
+            <h2>Zobraziť verejný profil</h2>
+            <button id="public-profile-btn">Zobraziť</button>
+        </div>
     </main>
 
-    <script src="js/main.js"></script>
-    <script src="js/account-control.js"></script>
-    <script src="js/account-list.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/account.js"></script>
 </body>
 
 </html>

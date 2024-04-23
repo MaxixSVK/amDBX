@@ -1,4 +1,4 @@
-const api = 'http://localhost:3000/api';
+const api = 'http://localhost:3000';
 const cdn = 'http://localhost:3000/cdn';
 
 const token = localStorage.getItem('token');
@@ -25,7 +25,7 @@ if (localStorage.getItem('token')) {
         .then(response => {
             if (!response.ok) {
                 localStorage.removeItem('token');
-                window.location.href = 'login.html';
+                window.location.href = '/login';
             }
             return response.json();
         })
@@ -143,7 +143,7 @@ searchInput.addEventListener('input', function (event) {
                 } else {
                     button.textContent = 'Prihlásiť sa';
                     button.onclick = function () {
-                        window.location.href = 'login.html';
+                        window.location.href = '/login';
                     };
                 }
                 titleButtonWrapper.appendChild(p);
@@ -209,7 +209,7 @@ searchInput.addEventListener('input', function (event) {
                 } else {
                     button.textContent = 'Prihlásiť sa';
                     button.onclick = function () {
-                        window.location.href = 'login.html';
+                        window.location.href = '/login';
                     };
                 }
                 titleButtonWrapper.appendChild(p);

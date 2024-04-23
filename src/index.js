@@ -60,15 +60,16 @@ passport.deserializeUser(async function(id, done) {
 });
 
 app.use('/cdn', require('./routes/cdn'));
-app.use('/api/anime', require('./routes/anime'));
-app.use('/api/manga', require('./routes/manga'));
-app.use('/api/announcements', require('./routes/announcements'));
-app.use('/api/account', require('./routes/account'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/mod', require('./routes/mod'));
-app.use('/api/modannouncements', require('./routes/modAnnouncements'));
-app.use('/api/modanime', require('./routes/modAnime'));
-app.use('/api/modmanga', require('./routes/modManga'));
+app.use('/anime', require('./routes/anime'));
+app.use('/manga', require('./routes/manga'));
+app.use('/announcements', require('./routes/announcements'));
+app.use('/account', require('./routes/account'));
+app.use('/profile', require('./routes/profile'));
+app.use('/admin', require('./routes/admin'));
+app.use('/mod', require('./routes/mod'));
+app.use('/modannouncements', require('./routes/modAnnouncements'));
+app.use('/modanime', require('./routes/modAnime'));
+app.use('/modmanga', require('./routes/modManga'));
 
 
 app.get('/', (req, res) => {

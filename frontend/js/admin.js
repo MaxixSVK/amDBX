@@ -1,5 +1,5 @@
 if (!token) {
-    window.location.href = 'login.html';
+    window.location.href = '/login';
 }
 
 fetch(api + '/admin', {
@@ -8,7 +8,7 @@ fetch(api + '/admin', {
     }
 }).then(response => {
     if (!response.ok) {
-        window.location.href = 'index.html';
+        window.location.href = '/';
     }
 }).catch(error => {
     console.error('Error:', error);

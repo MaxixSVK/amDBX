@@ -1,5 +1,5 @@
 if (token) {
-    window.location.href = 'account.html';
+    window.location.href = '/account';
 }
 
 var errorMsgElement = document.getElementById('error-msg');
@@ -45,7 +45,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
         .then(data => {
             if (data) {
                 localStorage.setItem('token', data.token);
-                window.location.href = 'account.html';
+                window.location.href = '/account';
             }
         })
         .catch(error => {
@@ -78,7 +78,7 @@ document.getElementById('register-form').addEventListener('submit', function (ev
         .then(data => {
             if (data) {
                 localStorage.setItem('token', data.token);
-                window.location.href = 'account.html';
+                window.location.href = '/account';
             }
         })
         .catch(error => {
