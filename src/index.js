@@ -59,7 +59,6 @@ passport.deserializeUser(async function(id, done) {
     }
 });
 
-app.use('/cdn', require('./routes/cdn'));
 app.use('/anime', require('./routes/anime'));
 app.use('/manga', require('./routes/manga'));
 app.use('/announcements', require('./routes/announcements'));
@@ -86,5 +85,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(process.env.PORT, () => {
-    console.log(`Server is running on http://localhost:${process.env.PORT}`);
+    console.log(`API is running on http://localhost:${process.env.PORT}`);
 });

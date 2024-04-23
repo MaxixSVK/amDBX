@@ -1,12 +1,13 @@
 const express = require('express');
 const multer = require('multer');
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 
-const router = express.Router();
+const app = express();
+app.use(cors());
 
-const User = require('../models/user');
-const { link } = require('fs');
+const User = require('../src/models/user');
 
 const authenticateToken = (req, res, next) => {
     req.user = null;
@@ -33,8 +34,7 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-let pathToCDN = 'cdn';
-
+let pathToCDN = 'files';
 
 const storage = multer.diskStorage({
     destination: pathToCDN,
@@ -48,7 +48,7 @@ const upload = multer({
     limits: { fileSize: 50000000 }, 
 }).single('file');
 
-router.post('/upload', authenticateToken, (req, res) => {
+app.post('/upload', authenticateToken, (req, res) => {
     upload(req, res, (err) => {
         if (err) {
             res.send('An error occurred while uploading the file');
@@ -58,7 +58,7 @@ router.post('/upload', authenticateToken, (req, res) => {
     });
 });
 
-router.get('/:name', (req, res) => {
+app.get('/:name', (req, res) => {
     const options = {
         root: pathToCDN,
         dotfiles: 'deny',
@@ -77,5 +77,6 @@ router.get('/:name', (req, res) => {
     });
 });
 
-
-module.exports = router;
+app.listen(process.env.CDN_PORT, () => {
+    console.log(`CDN is running on http://localhost:${process.env.CDN_PORT}`);
+});
