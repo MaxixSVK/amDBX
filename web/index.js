@@ -23,7 +23,7 @@ app.get('/mangalist/:username', async (req, res) => {
 });
   
 app.use((req, res, next) => {
-    res.status(404).send("404-chan: Page not found");
+    res.status(404).sendFile(path.join(__dirname, '../frontend/404.html'));
 });
 
 app.use((err, req, res, next) => {
