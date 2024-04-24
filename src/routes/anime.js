@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Anime = require('../models/anime');
 
-router.get('/:name', (req, res) => {
+router.get('/name/:name', (req, res) => {
     Anime.findById(req.params.name)
         .then(anime => {
             res.send(anime);

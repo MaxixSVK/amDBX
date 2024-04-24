@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Manga = require('../models/manga');
 
-router.get('/specific/:id', (req, res) => {
-    Manga.findById(req.params.id)
+router.get('/name/:name', (req, res) => {
+    Manga.findById(req.params.name)
         .then(manga => {
             res.send(manga);
         })
