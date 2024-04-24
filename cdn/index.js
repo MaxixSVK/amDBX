@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const path = require('path');
 
 require('dotenv').config();
@@ -10,6 +11,11 @@ const app = express();
 app.use(cors());
 
 const User = require('../src/models/user');
+
+mongoose.connect(process.env.DB_CONNECTION)
+.then(() => console.log('Connected to MongoDB...'))
+.catch(err => console.error('Could not connect to MongoDB...' + err));
+
 
 const authenticateToken = (req, res, next) => {
     req.user = null;
@@ -55,7 +61,7 @@ app.post('/upload', authenticateToken, (req, res) => {
         if (err) {
             res.send('An error occurred while uploading the file');
         } else {
-            res.send({ msg: 'File uploaded successfully', file: `${req.protocol}://${req.get('host')}/cdn/${req.file.filename}` });
+            res.send({ msg: 'File uploaded successfully', file: `${req.protocol}://${req.get('host')}/${req.file.filename}` });
         }
     });
 });
@@ -70,10 +76,9 @@ app.get('/:name', (req, res) => {
         }
     };
 
-    const fileName = req.params.name;
+    const fileName = path.basename(req.params.name);
     res.sendFile(fileName, options, function (err) {
         if (err) {
-            console.log(err);
             res.status(err.status).end();
         }
     });

@@ -1,5 +1,5 @@
 const api = 'http://localhost:3000';
-const cdn = 'http://localhost:3000/cdn';
+const cdn = 'http://localhost:5000';
 
 const token = localStorage.getItem('token');
 

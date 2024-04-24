@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "api": "node src/index.js",
-    "web": "node web/index.js"
+    "web": "node web/index.js",
+    "cdn": "node cdn/index.js"
   },
   "keywords": [],
   "author": "",

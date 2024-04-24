@@ -32,7 +32,7 @@ const authenticateToken = (req, res, next) => {
 router.use(authenticateToken);
 
 router.get('/', (req, res) => {
-    res.status(200);
+    res.status(200).send({ msg: 'OK' });
 });
 
 router.post('/role', async (req, res) => {
