@@ -2,27 +2,28 @@ let urlString = window.location.href;
 
 let profileName = urlString.split("animelist/")[1];
 
-if (profileName == undefined) {
-    if (!token) {
-        window.location.href = "/login";
+async function fetchProfileAndAnimeList() {
+    if (profileName == undefined) {
+        if (!token) {
+            window.location.href = "/login";
+        }
+
+        try {
+            let response = await fetch(api + '/account', {
+                headers: {
+                    'Authorization': token
+                }
+            });
+            let user = await response.json();
+            profileName = user.name;
+            window.location.href = '/animelist/' + user.name;
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
-    fetch(api + '/account', {
-        headers: {
-            'Authorization': token
-        }
-    })
-        .then(response => response.json())
-        .then(user => {
-            window.location.href = '/profile/' + user.name;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
-fetch(api + '/profile/' + profileName + '/anime')
-    .then(response => {
+    try {
+        let response = await fetch(api + '/profile/' + profileName + '/anime');
         if (!response.ok) {
             if (response.status == 404) {
                 window.location.href = '/404';
@@ -30,9 +31,7 @@ fetch(api + '/profile/' + profileName + '/anime')
                 window.location.href = '/500';
             }
         }
-        return response.json();
-    })
-    .then(user => {
+        let user = await response.json();
         const userName = document.getElementById('user-name');
         userName.textContent = user.name;
 
@@ -53,7 +52,9 @@ fetch(api + '/profile/' + profileName + '/anime')
             div.appendChild(img);
             animeListDiv.appendChild(div);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error:', error);
-    });
+    }
+}
+
+fetchProfileAndAnimeList();

@@ -2,27 +2,28 @@ let urlString = window.location.href;
 
 let profileName = urlString.split("mangalist/")[1];
 
-if (profileName == undefined) {
-    if (!token) {
-        window.location.href = "/login";
+async function fetchProfileAndMangaList() {
+    if (profileName == undefined) {
+        if (!token) {
+            window.location.href = "/login";
+        }
+
+        try {
+            let response = await fetch(api + '/account', {
+                headers: {
+                    'Authorization': token
+                }
+            });
+            let user = await response.json();
+            profileName = user.name;
+            window.location.href = '/mangalist/' + user.name;
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
-    fetch(api + '/account', {
-        headers: {
-            'Authorization': token
-        }
-    })
-        .then(response => response.json())
-        .then(user => {
-            window.location.href = '/profile/' + user.name;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
-fetch(api + '/profile/' + profileName + '/manga')
-    .then(response => {
+    try {
+        let response = await fetch(api + '/profile/' + profileName + '/manga');
         if (!response.ok) {
             if (response.status == 404) {
                 window.location.href = '/404';
@@ -30,16 +31,14 @@ fetch(api + '/profile/' + profileName + '/manga')
                 window.location.href = '/500';
             }
         }
-        return response.json();
-    })
-    .then(user => {
+        let user = await response.json();
         const userName = document.getElementById('user-name');
         userName.textContent = user.name;
 
-        const animeListDiv = document.getElementById('list');
+        const mangaListDiv = document.getElementById('list');
         const h2 = document.createElement('h2');
         h2.textContent = 'Manga list';
-        animeListDiv.appendChild(h2);
+        mangaListDiv.appendChild(h2);
 
         for (let i = 0; i < user.manga.length; i++) {
             const div = document.createElement('div');
@@ -51,9 +50,11 @@ fetch(api + '/profile/' + profileName + '/manga')
             img.alt = user.manga[i].id.name;
             div.appendChild(p);
             div.appendChild(img);
-            animeListDiv.appendChild(div);
+            mangaListDiv.appendChild(div);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error:', error);
-    });
+    }
+}
+
+fetchProfileAndMangaList();

@@ -23,7 +23,7 @@ app.get('/mangalist/:username', async (req, res) => {
 });
   
 app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, '../frontend/404.html'));
+    res.status(404).redirect('/404');
 });
 
 app.use((err, req, res, next) => {
