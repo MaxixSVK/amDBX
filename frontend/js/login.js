@@ -27,7 +27,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
-    fetch(api + '/account/login', {
+    fetch(api + '/auth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ document.getElementById('register-form').addEventListener('submit', function (ev
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
 
-    fetch(api + '/account/register', {
+    fetch(api + '/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

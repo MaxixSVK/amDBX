@@ -9,7 +9,7 @@ router.get('/:name', (req, res) => {
         .populate('anime.id manga.id') 
         .then(user => {
             if (!user) {
-                res.status(404).send('User not found');
+                res.status(404).send({ msg: 'Používateľ nebol nájdený' });
             } else {
                 res.status(200).json(user);
             }
@@ -25,7 +25,7 @@ router.get('/:name/anime', (req, res) => {
         .populate('anime.id')
         .then(user => {
             if (!user) {
-                res.status(404).send('User not found');
+                res.status(404).send({ msg: 'Používateľ nebol nájdený' });
             } else {
                 res.status(200).json(user);
             }
@@ -41,7 +41,7 @@ router.get('/:name/manga', (req, res) => {
         .populate('manga.id')
         .then(user => {
             if (!user) {
-                res.status(404).send('User not found');
+                res.status(404).send({ msg: 'Používateľ nebol nájdený' });
             } else {
                 res.status(200).json(user);
             }

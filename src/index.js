@@ -1,11 +1,6 @@
 const express = require('express');
-const session = require('express-session');
 const cors = require('cors');
-const passport = require('passport');
-const User = require('./models/user');
-const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
 mongoose.connect(process.env.DB_CONNECTION)
@@ -16,59 +11,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(new LocalStrategy(
-    {
-        usernameField: 'email',
-        passwordField: 'password'
-    },
-    async function(email, password, done) {
-        try {
-            const user = await User.findOne({ email: email });
-            if (!user) { return done(null, false); }
-            bcrypt.compare(password, user.password, function(err, isMatch) {
-                if (err) { return done(err); }
-                if (!isMatch) { return done(null, false); }
-                return done(null, user);
-            });
-        } catch (err) {
-            return done(err);
-        }
-    }
-));
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(async function(id, done) {
-    try {
-        const user = await User.findById(id);
-        done(null, user);
-    } catch (err) {
-        done(err);
-    }
-});
-
 app.use('/anime', require('./routes/anime'));
 app.use('/manga', require('./routes/manga'));
 app.use('/announcements', require('./routes/announcements'));
+app.use('/auth', require('./routes/auth'));
 app.use('/account', require('./routes/account'));
 app.use('/profile', require('./routes/profile'));
 app.use('/admin', require('./routes/admin'));
 app.use('/mod', require('./routes/mod'));
-app.use('/modannouncements', require('./routes/modAnnouncements'));
-app.use('/modanime', require('./routes/modAnime'));
-app.use('/modmanga', require('./routes/modManga'));
 
 
 app.get('/', (req, res) => {
