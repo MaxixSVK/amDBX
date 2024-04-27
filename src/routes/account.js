@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
       res.json(user);
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: server error' });
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
     });
 });
 
@@ -48,8 +48,8 @@ router.put('/change-password', (req, res) => {
         return res.status(400).send({ msg: 'Nesprávne heslo' });
       }
 
-      if (req.body.newPassword.length < 6) {
-        return res.status(400).send({ msg: 'Heslo musí mať aspoň 6 znakov' });
+      if (req.body.newPassword.length < 8) {
+        return res.status(400).send({ msg: 'Heslo musí mať aspoň 8 znakov' });
       }
 
       if (req.body.newPassword === req.body.oldPassword) {
@@ -69,7 +69,7 @@ router.put('/change-password', (req, res) => {
         });
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: server error' });
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
     });
 });
 
@@ -105,11 +105,11 @@ router.put('/change-email', (req, res) => {
             });
         })
         .catch(err => {
-          res.status(500).send({ msg: '500-chan: server error' });
+          res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
         });
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: server error' });
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
     });
 });
 
@@ -129,7 +129,7 @@ router.delete('/delete', (req, res) => {
         });
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: server error' });
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
     });
 });
 

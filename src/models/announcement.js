@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const  alertSchema = new mongoose.Schema({
+const  announcementSchema = new mongoose.Schema({
     name: String,
     description: String,
     until: Date,
@@ -10,4 +10,4 @@ const  alertSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Alert', alertSchema);
+module.exports = mongoose.model('Announcement', announcementSchema);

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Alert = require('../models/alerts');
+const Announcement = require('../models/announcement');
 
 router.get('/', async (req, res) => {
     const now = new Date();
-    const alerts = await Alert.find({
+    const alerts = await Announcement.find({
         created: { $lte: now },
         until: { $gte: now }
     });
