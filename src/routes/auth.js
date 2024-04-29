@@ -76,8 +76,9 @@ router.post('/register', async function (req, res, next) {
   } catch (err) {
     if (err instanceof Joi.ValidationError) {
       res.status(400).json({ msg: err.details[0].message });
-    } else if (err.name === 'MongoError' && err.code === 11000) {
-      let field = err.errmsg.split('index:')[1].split(' dup key')[0].split('_')[0];
+    } else if (err.name === 'MongoServerError' && err.code === 11000) {
+      let field = Object.keys(err.keyValue)[0];
+      let msg;
       if (field === 'email') {
         msg = 'Email už je použitý na inom účte.';
       } else if (field === 'name') {
