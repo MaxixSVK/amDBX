@@ -74,14 +74,16 @@ router.post('/register', async function (req, res, next) {
     const token = jwt.sign({ id: user._id, changedPassword: newUser.changedPassword }, process.env.JWT_SECRET, { expiresIn: '365d' });
     res.json({ token });
   } catch (err) {
-    if (err instanceof mongoose.Error.ValidationError) {
-      if (err.errors.email) {
-        res.status(400).json({ msg: 'Tento email už bol použitý na inom účte' });
-      } else if (err.errors.name) {
-        res.status(400).json({ msg: 'Prihlasovacie meno už bolo zabrané' });
-      }
-    } else if (err instanceof Joi.ValidationError) {
+    if (err instanceof Joi.ValidationError) {
       res.status(400).json({ msg: err.details[0].message });
+    } else if (err.name === 'MongoError' && err.code === 11000) {
+      let field = err.errmsg.split('index:')[1].split(' dup key')[0].split('_')[0];
+      if (field === 'email') {
+        msg = 'Email už je použitý na inom účte.';
+      } else if (field === 'name') {
+        msg = 'Meno už je použité na inom účte.';
+      }
+      res.status(400).json({ msg: `${msg}` });
     } else {
       next(err);
     }
