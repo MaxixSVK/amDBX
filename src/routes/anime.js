@@ -3,8 +3,10 @@ const router = express.Router();
 const Anime = require('../models/anime');
 
 router.get('/name/:name', (req, res) => {
-    Anime.findById(req.params.name)
+    let name = req.params.name.replace(/-/g, ' ');
+    Anime.findOne({ name: name })
         .then(anime => {
+            if (!anime) throw new Error();
             res.send(anime);
         })
         .catch(err => {

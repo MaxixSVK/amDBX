@@ -56,7 +56,7 @@ router.put('/change-password', (req, res) => {
         return res.status(400).send({ msg: 'Nové heslo nesmie byť rovnaké ako staré heslo' });
       }
 
-      const hashedPassword = bcrypt.hashSync(req.body.newPassword, 10);
+      const hashedPassword = bcrypt.hashSync(req.body.newPassword, 12);
       const changedPassword = new Date();
 
       User.findByIdAndUpdate(req.user.id, { password: hashedPassword, changedPassword: changedPassword })

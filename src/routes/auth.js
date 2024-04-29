@@ -1,7 +1,6 @@
 const express = require('express');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
-const rateLimit = require('express-rate-limit');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -13,14 +12,6 @@ const User = require('../models/user');
 const validateRegister = require('../dataValidation/register');
 const validateLogin = require('../dataValidation/login');
 const router = express.Router();
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
-  message: { msg: 'Príliš veľa požiadaviek z tohto zdroja, skúste to znova o chvíľu' }
-});
-
-router.use(limiter);
 
 router.use(session({
   secret: process.env.SESSION_SECRET,
@@ -69,13 +60,7 @@ router.post('/register', async function (req, res, next) {
   try {
     const { name, email, password } = await validateRegister(req.body);
 
-    const userWithEmail = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } });
-    if (userWithEmail) return res.status(422).json({ msg: 'Tento email už bol použitý na inom účte' });
-
-    const userWithName = await User.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
-    if (userWithName) return res.status(422).json({ msg: 'Prihlasovacie meno už bolo zabrané' });
-
-    const salt = await bcrypt.genSalt(14);
+    const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
@@ -89,7 +74,13 @@ router.post('/register', async function (req, res, next) {
     const token = jwt.sign({ id: user._id, changedPassword: newUser.changedPassword }, process.env.JWT_SECRET, { expiresIn: '365d' });
     res.json({ token });
   } catch (err) {
-    if (err instanceof Joi.ValidationError) {
+    if (err instanceof mongoose.Error.ValidationError) {
+      if (err.errors.email) {
+        res.status(400).json({ msg: 'Tento email už bol použitý na inom účte' });
+      } else if (err.errors.name) {
+        res.status(400).json({ msg: 'Prihlasovacie meno už bolo zabrané' });
+      }
+    } else if (err instanceof Joi.ValidationError) {
       res.status(400).json({ msg: err.details[0].message });
     } else {
       next(err);
