@@ -10,7 +10,7 @@ router.get('/name/:slug', (req, res) => {
             res.send(manga);
         })
         .catch(err => {
-            res.status(404).send('Manga not found');
+            res.status(404).send({ msg: 'Manga nenájdená'});
         });
 });
 
@@ -20,7 +20,7 @@ router.get('/lastUpdated', (req, res) => {
             res.send(manga);
         })
         .catch(err => {
-            res.status(404).send('Failed to get updated manga');
+            res.status(404).send({ msg: 'Žiadne informácie' });
         });
 });
 
@@ -31,7 +31,7 @@ router.get('/search/:name', (req, res) => {
             res.send(anime);
         })
         .catch(err => {
-            res.status(404).send('Failed to find anime');
+            res.status(404).send({ msg: 'Manga nenájdená' });
         });
 });
 

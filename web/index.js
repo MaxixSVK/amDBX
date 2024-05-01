@@ -5,6 +5,24 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors());
+
+app.use((req, res, next) => {
+    if (path.extname(req.path).toLowerCase() === '.html') {
+        const noExtPath = req.path.substr(0, req.path.lastIndexOf('.'));
+        res.redirect(noExtPath);
+    } else {
+        next();
+    }
+});
+
+app.use((req, res, next) => {
+    if (req.path.toLowerCase() === '/index') {
+        res.redirect('/');
+    } else {
+        next();
+    }
+});
+
 app.use(express.static('frontend', { extensions: ['html'] }));
 
 app.use('/css', express.static(path.join(__dirname, '../frontend/css')));

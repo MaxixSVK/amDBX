@@ -2,7 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let urlString = window.location.href;
     let Name = urlString.split("anime/")[1];
     fetch(api + '/anime/name/' + Name)
-      .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
       .then(anime => {
         const mainElement = document.querySelector('main');
         const animeDiv = document.createElement('div');
@@ -19,5 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         mainElement.appendChild(animeDiv);
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => {
+        window.location.href = '/404';
+      });
   });
