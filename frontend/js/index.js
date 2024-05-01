@@ -29,7 +29,7 @@ fetch(api + '/announcements')
       const animeDiv = document.createElement('div');
       animeDiv.classList.add('lastUpdated_row_item');
       animeDiv.innerHTML = `
-      <a href="${location.protocol}//${location.hostname}:4000/anime/${anime.slug}">
+      <a href="${location.protocol}//${location.hostname}/anime/${anime.slug}">
           <img id='anime-img' src="${anime.img}" alt="${anime.name}" />
           <h3>${anime.name}</h3>
         </a>
@@ -52,7 +52,7 @@ fetch(api + '/announcements')
       const mangaDiv = document.createElement('div');
       mangaDiv.classList.add('lastUpdated_row_item');
       mangaDiv.innerHTML = `
-      <a href="${location.protocol}//${location.hostname}:4000/manga/${manga.slug}">
+      <a href="${location.protocol}//${location.hostname}/manga/${manga.slug}">
           <img id='manga-img' src="${manga.img}" alt="${manga.name}" />
           <h3>${manga.name}</h3>
         </a>
