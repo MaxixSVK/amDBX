@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Manga = require('../models/manga');
 
-router.get('/name/:name', (req, res) => {
-    Manga.findById(req.params.name)
+router.get('/name/:slug', (req, res) => {
+    let slug = req.params.slug;
+    Manga.findOne({ slug: slug })
         .then(manga => {
+            if (!manga) throw new Error();
             res.send(manga);
         })
         .catch(err => {

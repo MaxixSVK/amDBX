@@ -21,6 +21,14 @@ app.get('/animelist/:username', async (req, res) => {
 app.get('/mangalist/:username', async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/mangalist.html'));
 });
+
+app.get('/anime/:name', async (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/anime.html'));
+});
+
+app.get('/manga/:name', async (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/manga.html'));
+});
   
 app.use((req, res, next) => {
     res.status(404).redirect('/404');
@@ -28,9 +36,9 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Something broke!');
+    res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
 });
 
 app.listen(process.env.WEB_PORT, () => {
-    console.log(`Web server is running on http://localhost:${process.env.WEB_PORT}`);
+    console.log(`Web-chan: Web beží na porte: ${process.env.WEB_PORT}`);
 });

@@ -1,5 +1,4 @@
 const api = 'http://localhost:3000';
-const cdn = 'http://localhost:5000';
 
 const token = localStorage.getItem('token');
 
@@ -31,6 +30,7 @@ if (localStorage.getItem('token')) {
         })
         .then(user => {
             document.getElementById('login-link').innerText = user.name;
+            document.getElementById('login-link').href = '/account';
         })
         .catch(error => {
             console.error('Error:', error);

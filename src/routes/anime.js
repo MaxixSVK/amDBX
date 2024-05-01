@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Anime = require('../models/anime');
 
-router.get('/name/:name', (req, res) => {
-    let name = req.params.name.replace(/-/g, ' ');
-    Anime.findOne({ name: name })
+router.get('/name/:slug', (req, res) => {
+    let slug = req.params.slug;
+    Anime.findOne({ slug: slug })
         .then(anime => {
             if (!anime) throw new Error();
             res.send(anime);
