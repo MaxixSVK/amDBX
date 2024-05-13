@@ -15,27 +15,6 @@ menuToggle.addEventListener('click', () => {
     }
 });
 
-let userAnimeList = [];
-let userMangaList = [];
-
-async function getLists() {
-    const [animeList, mangaList] = await Promise.all([
-        fetchData(api + '/account/anime/list', {
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        }),
-        fetchData(api + '/account/manga/list', {
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        })
-    ]);
-
-    userAnimeList = animeList.map(a => a.id._id);
-    userMangaList = mangaList.map(m => m.id._id);
-}
-
 if (localStorage.getItem('token')) {
     fetch(api + '/account', {
         headers: {
@@ -52,7 +31,6 @@ if (localStorage.getItem('token')) {
         .then(user => {
             document.getElementById('login-link').innerText = user.name;
             document.getElementById('login-link').href = '/account';
-            getLists();
         })
         .catch(error => {
             console.error('Error:', error);

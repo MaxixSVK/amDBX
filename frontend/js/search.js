@@ -1,4 +1,25 @@
+let userAnimeList = [];
+let userMangaList = [];
+
 var modal = document.getElementsByTagName("search")[0];
+
+async function getLists() {
+    const [animeList, mangaList] = await Promise.all([
+        fetchData(api + '/account/anime/list', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }),
+        fetchData(api + '/account/manga/list', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+    ]);
+
+    userAnimeList = animeList.map(a => a.id._id);
+    userMangaList = mangaList.map(m => m.id._id);
+}
 
 function search() {
     modal.style.display = "block";
