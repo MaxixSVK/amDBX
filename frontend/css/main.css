@@ -113,7 +113,7 @@ header .menu-toggle div {
     margin-top: 2rem;
 }
 
-#search-modal {
+search {
     display: none;
     position: fixed;
     z-index: 20;
