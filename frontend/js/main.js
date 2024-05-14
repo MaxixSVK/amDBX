@@ -1,19 +1,5 @@
 const api = 'http://localhost:3000';
-
 const token = localStorage.getItem('token');
-
-const menuToggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('nav');
-const body = document.body;
-
-menuToggle.addEventListener('click', () => {
-    nav.classList.toggle('active');
-    if (nav.classList.contains('active')) {
-        body.classList.add('no-scroll');
-    } else {
-        body.classList.remove('no-scroll');
-    }
-});
 
 if (localStorage.getItem('token')) {
     fetch(api + '/account', {
@@ -29,7 +15,7 @@ if (localStorage.getItem('token')) {
             return response.json();
         })
         .then(user => {
-            document.getElementById('login-link').innerText = user.name;
+            document.getElementById('login-link').innerText = 'Účet';
             document.getElementById('login-link').href = '/account';
         })
         .catch(error => {

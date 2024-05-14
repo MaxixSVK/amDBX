@@ -1,64 +1,94 @@
-fetch(api + '/announcements')
-  .then(response => response.json())
-  .then(data => {
+async function fetchData() {
+  const mainElement = document.querySelector('main');
+
+  const alertDiv = document.createElement('div');
+  alertDiv.id = 'alerts';
+  mainElement.appendChild(alertDiv);
+
+  try {
+    const response = await fetch(api + '/announcements');
+    const data = await response.json();
     const alertsDiv = document.querySelector('#alerts');
     data.forEach(alert => {
       const alertDiv = document.createElement('div');
-      alertDiv.classList.add('alert');
+      alertDiv.classList.add('alert', 'p-4', 'bg-blue-100', 'rounded', 'mb-4', 'text-center');
       alertDiv.innerHTML = `
-        <h3>${alert.name}</h3>
+        <h3 class="text-blue-500 text-xl">${alert.name}</h3>
         <p>${alert.description}</p>
       `;
       alertsDiv.appendChild(alertDiv);
     });
-  })
-  .catch(error => {
+  } catch (error) {
     const alertsDiv = document.querySelector('#alerts');
-    alertsDiv.innerHTML = `<h3>Nastala chyba pri načítavaní dát</h3>`;
-  });
+    alertDiv.classList.add('alert', 'p-4', 'bg-blue-100', 'rounded', 'mb-4');
+    alertsDiv.innerHTML = `<h3 class="text-red-500">Nastala chyba pri načítavaní dát</h3>`;
+  }
 
-  fetch(api + '/anime/lastUpdated')
-  .then(response => response.json())
-  .then(data => {
-    const lastUpdatedDiv = document.querySelector('#lastUpdated_anime_row');
-    const title = document.createElement('p');
-    title.classList.add('lastUpdated_title');
-    title.textContent = 'Naposledy aktualizované Anime';
-    lastUpdatedDiv.before(title);
-    data.forEach(anime => {
-      const animeDiv = document.createElement('div');
-      animeDiv.classList.add('lastUpdated_row_item');
-      animeDiv.innerHTML = `
-      <a href="${location.protocol}//${location.hostname}/anime/${anime.slug}">
-          <img id='anime-img' src="${anime.img}" alt="${anime.name}" />
-          <h3>${anime.name}</h3>
-        </a>
-      `;
-      lastUpdatedDiv.appendChild(animeDiv);
-    });
-  })
-  .catch(error => {
-  });
+  try {
+    const response = await fetch(api + '/anime/lastUpdated');
+    const data = await response.json();
+    const { lastUpdatedDiv, itemsDiv } = createLastUpdatedDiv('lastUpdated_anime_row', 'Naposledy aktualizované Anime');
+    mainElement.appendChild(lastUpdatedDiv);
+    data.forEach(anime => appendLastUpdatedItem(itemsDiv, anime, 'anime'));
+  } catch (error) {
+    console.error(error);
+  }
 
-  fetch(api + '/manga/lastUpdated')
-  .then(response => response.json())
-  .then(data => {
-    const lastUpdatedDiv = document.querySelector('#lastUpdated_manga_row');
-    const title = document.createElement('p');
-    title.classList.add('lastUpdated_title');
-    title.textContent = 'Naposledy aktualizovaná Manga';
-    lastUpdatedDiv.before(title);
-    data.forEach(manga => {
-      const mangaDiv = document.createElement('div');
-      mangaDiv.classList.add('lastUpdated_row_item');
-      mangaDiv.innerHTML = `
-      <a href="${location.protocol}//${location.hostname}/manga/${manga.slug}">
-          <img id='manga-img' src="${manga.img}" alt="${manga.name}" />
-          <h3>${manga.name}</h3>
-        </a>
-      `;
-      lastUpdatedDiv.appendChild(mangaDiv);
-    });
-  })
-  .catch(error => {
-  });
+  try {
+    const response = await fetch(api + '/manga/lastUpdated');
+    const data = await response.json();
+    const { lastUpdatedDiv, itemsDiv } = createLastUpdatedDiv('lastUpdated_manga_row', 'Naposledy aktualizovaná Manga');
+    mainElement.appendChild(lastUpdatedDiv);
+    data.forEach(manga => appendLastUpdatedItem(itemsDiv, manga, 'manga'));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function createLastUpdatedDiv(id, titleText) {
+  const lastUpdatedDiv = document.createElement('div');
+  lastUpdatedDiv.id = id;
+  lastUpdatedDiv.classList.add('mx-auto', 'w-full', 'flex', 'flex-col', 'justify-start');
+
+  const title = document.createElement('p');
+  title.classList.add('text-lg', 'font-bold');
+  title.textContent = titleText;
+  lastUpdatedDiv.appendChild(title);
+
+  const itemsDiv = document.createElement('div');
+  itemsDiv.classList.add('flex', 'flex-row', 'overflow-x-auto', 'justify-between');
+  lastUpdatedDiv.appendChild(itemsDiv);
+
+  return { lastUpdatedDiv, itemsDiv };
+}
+
+function appendLastUpdatedItem(itemsDiv, item, type) {
+  const itemDiv = document.createElement('div');
+  itemDiv.classList.add('p-4', 'bg-white', 'rounded', 'flex', 'flex-col', 'lg:w-1/6', 'w-full');
+
+  const innerDiv = document.createElement('div');
+  innerDiv.classList.add('w-44', 'mx-auto');
+
+  const link = document.createElement('a');
+  link.href = `${location.protocol}//${location.hostname}/${type}/${item.slug}`;
+
+  const img = document.createElement('img');
+  img.id = `${type}-img`;
+  img.src = item.img;
+  img.alt = item.name;
+  img.classList.add('object-cover', 'rounded', 'w-full');
+
+  link.appendChild(img);
+  innerDiv.appendChild(link);
+
+  const h3 = document.createElement('h3');
+  h3.classList.add('mt-2', 'text-center', 'hidden', 'lg:block');
+  h3.textContent = item.name;
+
+  innerDiv.appendChild(h3);
+  itemDiv.appendChild(innerDiv);
+
+  itemsDiv.appendChild(itemDiv);
+}
+
+fetchData();

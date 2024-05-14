@@ -1,82 +1,104 @@
-let userAnimeList = [];
-let userMangaList = [];
+let userAnimeListSearch = [];
+let userMangaListSearch = [];
 
-var modal = document.getElementsByTagName("search")[0];
+var searchModal = document.getElementsByTagName("search")[0];
 
-async function getLists() {
+async function getSearchLists() {
     const [animeList, mangaList] = await Promise.all([
-        fetchData(api + '/account/anime/list', {
+        fetchDataSearch(api + '/account/anime/list', {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
         }),
-        fetchData(api + '/account/manga/list', {
+        fetchDataSearch(api + '/account/manga/list', {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
         })
     ]);
 
-    userAnimeList = animeList.map(a => a.id._id);
-    userMangaList = mangaList.map(m => m.id._id);
+    userAnimeListSearch = animeList.map(a => a.id._id);
+    userMangaListSearch = mangaList.map(m => m.id._id);
 }
 
-function search() {
-    modal.style.display = "block";
+const searchInputSearch = document.getElementById('search-input');
+const resultsDivSearch = document.getElementById('search-results');
+
+searchModalDisplay = function () {
     if (token) {
-        getLists();
+        getSearchLists();
     }
+
+    searchModal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+
+    searchInputSearch.value = '';
+    resultsDivSearch.innerHTML = '<p>Začnite hľadať vaše obľúbené anime/mangu</p>';
+
+    searchInputSearch.focus();
 }
 
-const searchInput = document.getElementById('search-input');
-function createElement(type, properties = {}) {
+function createSearchElement(type, properties = {}) {
     const element = document.createElement(type);
     Object.assign(element, properties);
     return element;
 }
 
-function appendChildren(parent, children) {
+function appendSearchChildren(parent, children) {
     children.forEach(child => parent.appendChild(child));
 }
 
-async function fetchData(url, options = {}) {
+async function fetchDataSearch(url, options = {}) {
     const response = await fetch(url, options);
     return response.json();
 }
 
-searchInput.addEventListener('input', async function (event) {
+searchInputSearch.addEventListener('input', async function (event) {
     event.preventDefault();
 
-    modal.style.display = "block";
+    searchModal.classList.remove('hidden');
 
-    const searchTerm = searchInput.value;
+    const searchTerm = searchInputSearch.value;
 
     if (searchTerm.length === 0) {
         document.getElementById('search-results').innerHTML = '';
+        document.getElementById('search-results').innerHTML = '<p>Začnite hľadať vaše obľúbené anime/mangu</p>';
         return;
     }
 
     const [anime, manga] = await Promise.all([
-        fetchData(api + `/anime/search/${searchTerm}`),
-        fetchData(api + `/manga/search/${searchTerm}`)
+        fetchDataSearch(api + `/anime/search/${searchTerm}`),
+        fetchDataSearch(api + `/manga/search/${searchTerm}`)
     ]);
 
-    const resultsDiv = document.getElementById('search-results');
-    resultsDiv.innerHTML = '';
 
-    function createSearchResults(type, list, addUrl) {
+    resultsDivSearch.innerHTML = '';
+
+    function createSearchResultsSearch(type, list, addUrl) {
         if (list.length === 0) {
-            appendChildren(resultsDiv, [createElement('p', {textContent: `No ${type} found`, classList: ['noResults']})]);
+            const noResultsElement = createSearchElement('p', { textContent: `Žiadne výsledky - ${type}`, classList: ['noResults'] });
+            noResultsElement.classList.add('text-2xl', 'font-semibold', 'mb-2');
+            appendSearchChildren(resultsDivSearch, [noResultsElement]);
         } else {
-            appendChildren(resultsDiv, [createElement('p', {textContent: type, classList: ['searchSection']})]);
+            appendSearchChildren(resultsDivSearch, [createSearchElement('p', { textContent: type, classList: ['searchSection'] })]);
+            const searchSections = document.querySelectorAll('.searchSection');
+            searchSections.forEach(section => {
+                section.classList.add('text-2xl', 'font-semibold', 'mb-2');
+            });
         }
-    
+
         list.forEach(item => {
-            const resultDivSection = createElement('div', {classList: ['resultDivSection']});
-            const titleButtonWrapper = createElement('div', {classList: ['title-button-wrapper']});
-            const p = createElement('p', {textContent: item.name});
-            const button = createElement('button', {
-                textContent: token && (type === 'Anime' ? userAnimeList.includes(item._id) : userMangaList.includes(item._id)) ? 'Upraviť' : 'Pridať',
+            const resultDivSectionSearch = createSearchElement('div', { classList: ['resultDivSection'] });
+            resultDivSectionSearch.classList.add('resultDivSection', 'flex', 'items-center', 'justify-between', 'border-b', 'border-gray-200', 'py-2');
+
+            const titleButtonWrapperSearch = createSearchElement('div', { classList: ['title-button-wrapper'] });
+            titleButtonWrapperSearch.classList.add('flex', 'flex-col', 'items-start', 'justify-start',);
+
+            const pSearch = createSearchElement('p', { textContent: item.name });
+            pSearch.classList.add('text-lg', 'font-semibold');
+
+            const buttonSearch = createSearchElement('button', {
+                textContent: token && (type === 'Anime' ? userAnimeListSearch.includes(item._id) : userMangaListSearch.includes(item._id)) ? 'Upraviť' : 'Pridať',
                 onclick: function () {
                     if (!token) {
                         window.location.href = '/login';
@@ -95,20 +117,30 @@ searchInput.addEventListener('input', async function (event) {
                     this.textContent = 'Upraviť';
                 }
             });
-            const img = createElement('img', {src: item.img});
-    
-            appendChildren(titleButtonWrapper, [p, button]);
-            appendChildren(resultDivSection, [titleButtonWrapper, img]);
-            resultsDiv.appendChild(resultDivSection);
+
+            buttonSearch.classList.add('bg-blue-500', 'text-white', 'px-4', 'py-1', 'rounded', 'hover:bg-blue-600');
+
+            const imgSearch = createSearchElement('img', { src: item.img });
+            imgSearch.classList.add('w-16', 'object-cover', 'rounded');
+
+            appendSearchChildren(titleButtonWrapperSearch, [pSearch, buttonSearch]);
+            appendSearchChildren(resultDivSectionSearch, [titleButtonWrapperSearch, imgSearch]);
+            resultsDivSearch.appendChild(resultDivSectionSearch);
         });
     }
 
-    createSearchResults('Anime', anime, api + '/account/anime/add');
-    createSearchResults('Manga', manga, api + '/account/manga/add');
+    createSearchResultsSearch('Anime', anime, api + '/account/anime/add');
+    createSearchResultsSearch('Manga', manga, api + '/account/manga/add');
 });
 
 window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    if (event.target == document.querySelector('#search-modal > div:first-child')) {
+        searchModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden')
     }
 }
+
+document.getElementById('close-modal').addEventListener('click', function () {
+    document.getElementById('search-modal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+});
