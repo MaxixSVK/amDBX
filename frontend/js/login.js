@@ -8,17 +8,20 @@ document.getElementById('switch-btn').addEventListener('click', function () {
     const loginForm = document.getElementById('login');
     const registerForm = document.getElementById('register');
     const switchBtn = document.getElementById('switch-btn');
+    const errorMsgElement = document.getElementById('error-msg');
 
-    if (loginForm.style.display !== 'none') {
-        loginForm.style.display = 'none';
-        registerForm.style.display = 'block';
+    if (!loginForm.classList.contains('hidden')) {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
         switchBtn.textContent = 'Už mám účet';
         errorMsgElement.style.display = 'none';
+        document.getElementById('register-name').focus();
     } else {
-        registerForm.style.display = 'none';
-        loginForm.style.display = 'block';
+        registerForm.classList.add('hidden');
+        loginForm.classList.remove('hidden');
         switchBtn.textContent = 'Ešte nemám účet';
         errorMsgElement.style.display = 'none';
+        document.getElementById('login-email').focus();
     }
 });
 
