@@ -5,48 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>amDBX | Anime</title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/anime.css">
+    <link rel="stylesheet" href="/css/index.css">
     <link rel="icon" href="/assets/logo.png">
     <meta name="description" content="amDBX - Slovenská databáza anime a mangy.">
     <meta name="keywords" content="amDBX, anime, manga, databáza">
     <meta name="author" content="Maxix">
 </head>
 
-<body>
-    <header>
-        <div class="logo">
-            <a href="/">
-                <img src="/assets/logo.png" alt="amDBX">
-                <a href="/" , class="title">amDBX</a>
+<body class="antialiased flex flex-col min-h-screen">
+    <header class="flex items-center justify-between p-2 lg:p-6 bg-white border-b border-gray-200">
+        <div class="flex items-center space-x-4">
+            <a href="/" class="flex items-center">
+                <img src="/assets/logo.png" alt="amDBX" class="h-12">
+                <span class="text-2xl font-semibold">amDBX</span>
             </a>
         </div>
-        <div class="menu-toggle">
-            <div></div>
-            <div></div>
-            <div></div>
+        <div class="flex items-center space-x-2">
+            <button onclick="searchModalDisplay()"
+                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded">Vyhľadávanie</button>
+            <a href="/login" id="login-link"
+                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded"></a>
         </div>
-        <nav>
-            <ul>
-                <li>
-                    <button onclick="search()">Vyhľadávanie</button>
-                </li>
-                <li>
-                    <a href="/login" id="login-link"></a>
-                </li>
-            </ul>
-        </nav>
     </header>
-    <search>
-        <div id="modal-content">
-            <form id="search-form">
-                <input type="text" id="search-input" placeholder="Vyhľadávanie...">
+    <search class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidden" id="search-modal">
+        <div class="fixed inset-0 bg-black opacity-50 blur z-10"></div>
+        <div class="bg-white p-6 rounded shadow-lg flex flex-col items-start space-y-4 w-full h-full md:w-3/4 md:h-3/4 z-20">
+            <button id="close-modal" class="absolute top-2 right-2 w-10 h-10 bg-red-500 text-white rounded-full p-2 focus:outline-none lg:hidden">X</button>
+            <form id="search-form" class="w-full">
+                <input type="text" id="search-input" placeholder="Vyhľadávanie..." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
             </form>
-            <div id="search-results"></div>
+            <div id="search-results" class="w-full overflow-y-auto"></div>
         </div>
     </search>
-    <main>
+    <main class="p-2 lg:p-6 flex-grow">
+
     </main>
+    <footer class="p-5 bg-white flex justify-between items-center shadow-md">
+        <p class="text-gray-600">&copy; 2024 Maxix</p>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a href="http://maxix.sk/status" class="text-gray-500 hover:text-gray-800">Status</a></li>
+                <li><a href="https://github.com/MaxixSVK" class="text-gray-500 hover:text-gray-800">Github</a></li>
+                <li><a href="https://discord.gg/KqwTjKX4BY" class="text-gray-500 hover:text-gray-800">Discord</a></li>
+            </ul>
+        </nav>
+    </footer>
 
     <script src="/js/main.js"></script>
     <script src="/js/search.js"></script>
