@@ -13,7 +13,7 @@ async function fetchData() {
       const alertDiv = document.createElement('div');
       alertDiv.classList.add('alert', 'p-4', 'bg-blue-100', 'rounded', 'mb-4', 'text-center');
       alertDiv.innerHTML = `
-        <h3 class="text-blue-500 text-xl">${alert.name}</h3>
+        <h3 class="text-2xl font-bold">${alert.name}</h3>
         <p>${alert.description}</p>
       `;
       alertsDiv.appendChild(alertDiv);

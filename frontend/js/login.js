@@ -4,6 +4,8 @@ if (token) {
 
 var errorMsgElement = document.getElementById('error-msg');
 
+document.getElementById('login-email').focus();
+
 document.getElementById('switch-btn').addEventListener('click', function () {
     const loginForm = document.getElementById('login');
     const registerForm = document.getElementById('register');
