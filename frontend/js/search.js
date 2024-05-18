@@ -118,7 +118,7 @@ searchInputSearch.addEventListener('input', async function (event) {
                 }
             });
 
-            buttonSearch.classList.add('bg-blue-500', 'text-white', 'px-4', 'py-1', 'rounded', 'hover:bg-blue-600');
+            buttonSearch.classList.add('border', 'border-blue-500', 'hover:border-blue-700', 'text-blue-500', 'hover:text-blue-700', 'py-1', 'px-4', 'rounded');
 
             const imgSearch = createSearchElement('img', { src: item.img });
             imgSearch.classList.add('w-16', 'object-cover', 'rounded');

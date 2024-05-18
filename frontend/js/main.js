@@ -1,4 +1,5 @@
 const api = 'https://apiamdbx.maxix.sk';
+const cdn = 'https://cdnamdbx.maxix.sk';
 const token = localStorage.getItem('token');
 
 if (localStorage.getItem('token')) {
