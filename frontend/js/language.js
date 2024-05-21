@@ -1,17 +1,23 @@
+if (!localStorage.getItem('language')) {
+  localStorage.setItem('language', 'sk');
+}
+
+const language = localStorage.getItem('language');
 const langSelect = document.getElementById('lang');
 
 async function syncSelectWithStorage() {
+  if (!langSelect) return;
+
   const storedLang = localStorage.getItem('language');
-  if (storedLang) {
-    langSelect.value = storedLang;
-  }
+  langSelect.value = storedLang;
 }
+
 async function loadLanguage(lang) {
   const response = await fetch(`/../locales/${lang}.json`);
   return response.json();
 }
 
-async function initializeI18n() {
+async function initializeTranslation() {
   await syncSelectWithStorage();
 
   const languages = ['en', 'sk'];
@@ -22,7 +28,7 @@ async function initializeI18n() {
   }
 
   i18next.init({
-    lng: langSelect.value,
+    lng: language,
     resources
   }, function (err, t) {
     $('[data-translate]').each(function () {
@@ -30,15 +36,17 @@ async function initializeI18n() {
     });
   });
 
-  langSelect.addEventListener('change', function () {
-    localStorage.setItem('language', langSelect.value);
-    i18next.changeLanguage(langSelect.value, function (err, t) {
-      if (err) return console.log('something went wrong loading', err);
-      $('[data-translate]').each(function () {
-        $(this).text(i18next.t($(this).data('translate')));
+  if (langSelect) {
+    langSelect.addEventListener('change', function () {
+      localStorage.setItem('language', langSelect.value);
+      i18next.changeLanguage(langSelect.value, function (err, t) {
+        if (err) return console.log('something went wrong loading', err);
+        $('[data-translate]').each(function () {
+          $(this).text(i18next.t($(this).data('translate')));
+        });
       });
     });
-  });
+  }
 
   const observer = new MutationObserver((mutationsList) => {
     for (let mutation of mutationsList) {
@@ -53,4 +61,4 @@ async function initializeI18n() {
   observer.observe(document, { childList: true, subtree: true });
 }
 
-initializeI18n();
+initializeTranslation();

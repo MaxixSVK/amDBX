@@ -2,12 +2,6 @@ const api = 'https://apiamdbx.maxix.sk';
 const cdn = 'https://cdnamdbx.maxix.sk';
 const token = localStorage.getItem('token');
 
-if (!localStorage.getItem('language')) {
-    localStorage.setItem('language', 'sk');
-}
-
-const language = localStorage.getItem('language');
-
 if (localStorage.getItem('token')) {
     fetch(api + '/account', {
         headers: {
