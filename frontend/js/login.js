@@ -50,6 +50,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
         .then(data => {
             if (data) {
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('language', data.language);
                 window.location.href = '/account';
             }
         })
@@ -70,7 +71,7 @@ document.getElementById('register-form').addEventListener('submit', function (ev
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password, language })
     })
         .then(response => {
             if (!response.ok) {

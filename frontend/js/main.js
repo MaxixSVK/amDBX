@@ -2,6 +2,12 @@ const api = 'https://apiamdbx.maxix.sk';
 const cdn = 'https://cdnamdbx.maxix.sk';
 const token = localStorage.getItem('token');
 
+if (!localStorage.getItem('language')) {
+    localStorage.setItem('language', 'sk');
+}
+
+const language = localStorage.getItem('language');
+
 if (localStorage.getItem('token')) {
     fetch(api + '/account', {
         headers: {
@@ -16,7 +22,6 @@ if (localStorage.getItem('token')) {
             return response.json();
         })
         .then(user => {
-            document.getElementById('login-link').innerText = 'Účet';
             document.getElementById('login-link').href = '/account';
         })
         .catch(error => {

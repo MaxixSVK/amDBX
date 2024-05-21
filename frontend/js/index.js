@@ -27,7 +27,7 @@ async function fetchData() {
   try {
     const response = await fetch(api + '/anime/lastUpdated');
     const data = await response.json();
-    const { lastUpdatedDiv, itemsDiv } = createLastUpdatedDiv('lastUpdated_anime_row', 'Naposledy aktualizované Anime');
+    const { lastUpdatedDiv, itemsDiv } = createLastUpdatedDiv('lastUpdated_anime_row', 'last-updated-anime');
     mainElement.appendChild(lastUpdatedDiv);
     data.forEach(anime => appendLastUpdatedItem(itemsDiv, anime, 'anime'));
   } catch (error) {
@@ -37,7 +37,7 @@ async function fetchData() {
   try {
     const response = await fetch(api + '/manga/lastUpdated');
     const data = await response.json();
-    const { lastUpdatedDiv, itemsDiv } = createLastUpdatedDiv('lastUpdated_manga_row', 'Naposledy aktualizovaná Manga');
+    const { lastUpdatedDiv, itemsDiv } = createLastUpdatedDiv('lastUpdated_manga_row', 'last-updated-manga');
     mainElement.appendChild(lastUpdatedDiv);
     data.forEach(manga => appendLastUpdatedItem(itemsDiv, manga, 'manga'));
   } catch (error) {
@@ -52,7 +52,7 @@ function createLastUpdatedDiv(id, titleText) {
 
   const title = document.createElement('p');
   title.classList.add('text-lg', 'font-bold');
-  title.textContent = titleText;
+  title.setAttribute('data-translate', titleText);
   lastUpdatedDiv.appendChild(title);
 
   const itemsDiv = document.createElement('div');

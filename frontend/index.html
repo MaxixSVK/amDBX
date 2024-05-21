@@ -10,6 +10,8 @@
     <meta name="description" content="amDBX - Slovenská databáza anime a mangy.">
     <meta name="keywords" content="amDBX, anime, manga, databáza">
     <meta name="author" content="Maxix">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.11.5/i18next.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 </head>
 
 <body class="antialiased flex flex-col min-h-screen">
@@ -17,22 +19,25 @@
         <div class="flex items-center space-x-4">
             <a href="/" class="flex items-center">
                 <img src="/assets/logo.png" alt="amDBX" class="h-12">
-                <span class="text-2xl font-semibold">amDBX</span>
+                <span class="text-2xl font-semibold"data-translate="title"></span>
             </a>
         </div>
         <div class="flex items-center space-x-2">
             <button onclick="searchModalDisplay()"
                 class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded">Vyhľadávanie</button>
             <a href="/login" id="login-link"
-                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded"></a>
+                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded">Účet</a>
         </div>
     </header>
     <search class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidden" id="search-modal">
         <div class="fixed inset-0 bg-black opacity-50 blur z-10"></div>
-        <div class="bg-white p-6 rounded shadow-lg flex flex-col items-start space-y-4 w-full h-full md:w-3/4 md:h-3/4 z-20">
-            <button id="close-modal" class="absolute top-2 right-2 w-10 h-10 bg-red-500 text-white rounded-full p-2 focus:outline-none lg:hidden">X</button>
+        <div
+            class="bg-white p-6 rounded shadow-lg flex flex-col items-start space-y-4 w-full h-full md:w-3/4 md:h-3/4 z-20">
+            <button id="close-modal"
+                class="absolute top-2 right-2 w-10 h-10 bg-red-500 text-white rounded-full p-2 focus:outline-none lg:hidden">X</button>
             <form id="search-form" class="w-full">
-                <input type="text" id="search-input" placeholder="Vyhľadávanie..." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                <input type="text" id="search-input" placeholder="Vyhľadávanie..."
+                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
             </form>
             <div id="search-results" class="w-full overflow-y-auto"></div>
         </div>
@@ -41,7 +46,14 @@
 
     </main>
     <footer class="p-5 bg-white flex justify-between items-center shadow-md">
-        <p class="text-gray-600">&copy; 2024 Maxix</p>
+        <ul class="flex space-x-4">
+            <li><a href="https://maxix.sk" class="text-gray-500 hover:text-gray-800">&copy; 2024 Maxix</a></li>
+                <select id="lang" class="border border-gray-300 bg-gray-100 rounded focus:outline-none focus:border-gray-500 hover:border-gray-500">
+                    <option value="sk">Slovenčina</option>
+                    <option value="en">English</option>
+                </select>
+            </li>
+        </ul>
         <nav>
             <ul class="flex space-x-4">
                 <li><a href="http://maxix.sk/status" class="text-gray-500 hover:text-gray-800">Status</a></li>
@@ -52,6 +64,7 @@
     </footer>
 
     <script src="/js/main.js"></script>
+    <script src="/js/language.js"></script>
     <script src="/js/search.js"></script>
     <script src="/js/index.js"></script>
 

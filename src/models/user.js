@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { string } = require('joi');
 
 const userSchema = new mongoose.Schema({
     name: { type: String, unique: true },
@@ -12,6 +13,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: String,
     changedPassword: Date,
+    language: String,
     register: {
         type: Date,
         default: Date.now
