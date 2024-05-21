@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: String,
     changedPassword: Date,
-    language: String,
     register: {
         type: Date,
         default: Date.now
