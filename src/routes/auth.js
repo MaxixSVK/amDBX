@@ -67,7 +67,6 @@ router.post('/register', async function (req, res, next) {
       name,
       email,
       password: hashedPassword,
-      language,
       changedPassword: new Date()
     });
 

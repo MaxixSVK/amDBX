@@ -29,13 +29,6 @@ const registerSchema = Joi.object({
         'string.empty': `Heslo nemôže byť prázdne pole`,
         'string.min': `Heslo by malo mať minimálnu dĺžku {#limit}`,
         'any.required': `Heslo je povinné pole`
-      }),
-      language: Joi.string()
-      .required()
-      .messages({
-        'string.base': `Jazyk by mal byť typu 'text'`,
-        'string.empty': `Jazyk nemôže byť prázdne pole`,
-        'any.required': `Jazyk je povinné pole`
       })
 });
 
