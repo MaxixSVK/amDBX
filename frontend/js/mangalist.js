@@ -1,5 +1,4 @@
 let urlString = window.location.href;
-
 let profileName = urlString.split("mangalist/")[1];
 
 async function fetchProfileAndMangaList() {
@@ -33,21 +32,20 @@ async function fetchProfileAndMangaList() {
         }
         let user = await response.json();
         const userName = document.getElementById('user-name');
-        userName.textContent = user.name;
+        userName.classList.add('text-2xl', 'font-bold', 'mb-4');
+        userName.textContent = user.name + " - Manga List";
 
         const mangaListDiv = document.getElementById('list');
-        const h2 = document.createElement('h2');
-        h2.textContent = 'Manga list';
-        mangaListDiv.appendChild(h2);
-
         for (let i = 0; i < user.manga.length; i++) {
             const div = document.createElement('div');
-            div.classList.add('list-item');
+            div.classList.add('resultDivSection', 'flex', 'items-center', 'justify-between', 'border-b', 'border-gray-200', 'py-2');
             const p = document.createElement('p');
             p.textContent = user.manga[i].id.name;
+            p.classList.add('text-lg', 'font-semibold');
             const img = document.createElement('img');
             img.src = user.manga[i].id.img;
             img.alt = user.manga[i].id.name;
+            img.classList.add('w-16', 'object-cover', 'rounded');
             div.appendChild(p);
             div.appendChild(img);
             mangaListDiv.appendChild(div);

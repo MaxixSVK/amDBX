@@ -11,7 +11,16 @@ router.get('/:name', (req, res) => {
             if (!user) {
                 res.status(404).send({ msg: 'Používateľ nebol nájdený' });
             } else {
-                res.status(200).json(user);
+                const animeCount = user.anime.length;
+                const mangaCount = user.manga.length;
+
+                res.status(200).json({
+                    user,
+                    stats: {
+                        animeCount,
+                        mangaCount
+                    }
+                });
             }
         })
         .catch(err => {
