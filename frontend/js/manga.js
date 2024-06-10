@@ -45,11 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
       releaseDate.classList.add('text-sm', 'text-gray-500', 'mb-2');
       textDiv.appendChild(releaseDate);
 
-      const volumes = document.createElement('p');
-      volumes.textContent = `Volumes: ${manga.volumes}`;
-      volumes.classList.add('text-sm', 'text-gray-500', 'mb-2');
-      textDiv.appendChild(volumes);
-
       const chapters = document.createElement('p');
       chapters.textContent = `Chapters: ${manga.chapters}`;
       chapters.classList.add('text-sm', 'text-gray-500', 'mb-2');

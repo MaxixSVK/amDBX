@@ -53,6 +53,10 @@ async function fetchDataSearch(url, options = {}) {
     return response.json();
 }
 
+async function editUserEntry(item, type) {
+    // TODO: Implement editing user entry
+}
+
 searchInputSearch.addEventListener('input', async function (event) {
     event.preventDefault();
 
@@ -87,6 +91,19 @@ searchInputSearch.addEventListener('input', async function (event) {
             });
         }
 
+        function addUserEntry(item, type) {
+            fetch(addUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: JSON.stringify({
+                    id: item._id,
+                })
+            })
+        }
+
         list.forEach(item => {
             const resultDivSectionSearch = createSearchElement('div', { classList: ['resultDivSection'] });
             resultDivSectionSearch.classList.add('resultDivSection', 'flex', 'items-center', 'justify-between', 'border-b', 'border-gray-200', 'py-2');
@@ -104,19 +121,16 @@ searchInputSearch.addEventListener('input', async function (event) {
                         window.location.href = '/login';
                         return;
                     }
-                    fetch(addUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': localStorage.getItem('token')
-                        },
-                        body: JSON.stringify({
-                            id: item._id
-                        })
-                    })
-                    this.textContent = 'Upraviť';
+                    if (this.textContent === 'Upraviť') {
+                        editUserEntry(item, type);
+                    } else {
+                        addUserEntry(item, type);
+                        this.textContent = 'Upraviť';
+                        // TODO: fix function not running
+                    }
                 }
             });
+
 
             buttonSearch.classList.add('border', 'border-blue-500', 'hover:border-blue-700', 'text-blue-500', 'hover:text-blue-700', 'py-1', 'px-4', 'rounded');
 

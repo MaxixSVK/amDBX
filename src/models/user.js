@@ -3,42 +3,71 @@ const bcrypt = require('bcryptjs');
 const { string } = require('joi');
 
 const userSchema = new mongoose.Schema({
-    name: { type: String, unique: true },
+    name: {
+        type: String,
+        unique: true
+    },
     role: {
         type: String,
-        default: 'user', 
+        default: 'user',
         enum: ['user', 'mod', 'admin']
     },
-    profileImg: String,
-    email: { type: String, unique: true },
+    email: {
+        type: String,
+        unique: true
+    },
     password: String,
     changedPassword: Date,
+    profileImg: String,
     register: {
         type: Date,
         default: Date.now
     },
-    anime : [{
+    anime: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Anime'
         },
-        episodes: Number,
-        status: String,
-        rating: Number
+        userEpisodes: {
+            type: Number,
+            default: 0
+        },
+        userStatus: {
+            type: String,
+            enum: ['Watching', 'Completed', 'On Hold', 'Dropped', 'Plan to Watch'],
+            default: 'Watching'
+        },
+        userRating: {
+            type: Number,
+            default: 0,
+            min: 0,
+            max: 10
+        }
     }],
-    manga : [{
+    manga: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Manga'
         },
-        chapters: Number,
-        volumes: Number,
-        status: String,
-        rating: Number
+        userChapters: {
+            type: Number,
+            default: 0
+        },
+        userStatus: {
+            type: String,
+            enum: ['Reading', 'Completed', 'On Hold', 'Dropped', 'Plan to Read'],
+            default: 'Reading'
+        },
+        userRating: {
+            type: Number,
+            default: 0,
+            min: 0,
+            max: 10
+        }
     }]
 });
 
-userSchema.methods.isValidPassword = function(password) {
+userSchema.methods.isValidPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 
