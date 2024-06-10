@@ -61,8 +61,8 @@ function displayUserStats(stats) {
     const statsElement = document.getElementById('user-info');
     statsElement.innerHTML = `
         <div class="grid grid-cols-2 gap-4">
-            ${createStatCard('Anime count', stats.animeCount)}
-            ${createStatCard('Manga count', stats.mangaCount)}
+            ${createStatCard('Anime', stats.animeCount)}
+            ${createStatCard('Manga', stats.mangaCount)}
         </div>
     `;
 }
