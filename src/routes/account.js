@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
       res.json(user);
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
     });
 });
 
@@ -69,7 +69,7 @@ router.put('/change-password', (req, res) => {
         });
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
     });
 });
 
@@ -105,11 +105,11 @@ router.put('/change-email', (req, res) => {
             });
         })
         .catch(err => {
-          res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
+          res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
         });
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
     });
 });
 
@@ -122,14 +122,26 @@ router.delete('/delete', (req, res) => {
 
       User.findByIdAndDelete(req.user.id)
         .then(() => {
-          res.send({ msg: 'Účet zmazaný', deleted: true});
+          res.send({ msg: 'Účet zmazaný', deleted: true });
         })
         .catch(err => {
           res.status(400).send({ msg: 'Nepodarilo sa zmazať účet' });
         });
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!'});
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
+    });
+});
+
+router.get('/anime', (req, res) => {
+  User.findById(req.user.id)
+    .populate('anime.id')
+    .select('anime')
+    .then(user => {
+      res.json(user.anime);
+    })
+    .catch(err => {
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
     });
 });
 
@@ -153,7 +165,7 @@ router.post('/anime/add', (req, res) => {
     });
 });
 
-router.post('/anime/remove', (req, res) => {
+router.delete('/anime/remove', (req, res) => {
   User.findByIdAndUpdate(req.user.id, { $pull: { anime: req.body } })
     .then(() => {
       res.send({ msg: 'Anime removed from account' });
@@ -163,8 +175,17 @@ router.post('/anime/remove', (req, res) => {
     });
 });
 
-router.post('/anime/update', (req, res) => {
-  User.updateOne({ _id: req.user.id, 'anime._id': req.body._id }, { $set: { 'anime.$': req.body } })
+router.put('/anime/update', (req, res) => {
+  User.updateOne(
+    { _id: req.user.id, 'anime.id': req.body.id },
+    {
+      $set: {
+        'anime.$.userEpisodes': req.body.userEpisodes,
+        'anime.$.userStatus': req.body.userStatus,
+        'anime.$.userRating': req.body.userRating
+      }
+    }
+  )
     .then(() => {
       res.send({ msg: 'Anime updated' });
     })
@@ -173,15 +194,15 @@ router.post('/anime/update', (req, res) => {
     });
 });
 
-router.get('/anime/list', (req, res) => {
+router.get('/manga', (req, res) => {
   User.findById(req.user.id)
-    .populate('anime.id')
-    .select('anime')
+    .populate('manga.id')
+    .select('manga')
     .then(user => {
-      res.json(user.anime);
+      res.json(user.manga);
     })
     .catch(err => {
-      res.status(500);
+      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
     });
 });
 
@@ -205,7 +226,7 @@ router.post('/manga/add', (req, res) => {
     });
 });
 
-router.post('/manga/remove', (req, res) => {
+router.delete('/manga/remove', (req, res) => {
   User.findByIdAndUpdate(req.user.id, { $pull: { manga: req.body } })
     .then(() => {
       res.send({ msg: 'Manga removed from account' });
@@ -215,25 +236,21 @@ router.post('/manga/remove', (req, res) => {
     });
 });
 
-router.post('/manga/update', (req, res) => {
-  User.updateOne({ _id: req.user.id, 'manga._id': req.body._id }, { $set: { 'manga.$': req.body } })
+router.put('/manga/update', (req, res) => {
+  User.updateOne({ _id: req.user.id, 'manga.id': req.body.id },
+    {
+      $set: {
+        'manga.$.userChapters': req.body.userChapters,
+        'manga.$.userStatus': req.body.userStatus,
+        'manga.$.userRating': req.body.userRating
+      }
+    }
+  )
     .then(() => {
       res.send({ msg: 'Manga updated' });
     })
     .catch(err => {
       res.status(400).send({ msg: 'Failed to update manga' });
-    });
-});
-
-router.get('/manga/list', (req, res) => {
-  User.findById(req.user.id)
-    .populate('manga.id')
-    .select('manga')
-    .then(user => {
-      res.json(user.manga);
-    })
-    .catch(err => {
-      res.status(500);
     });
 });
 
