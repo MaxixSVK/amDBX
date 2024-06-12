@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   let urlString = window.location.href;
-  let Name = urlString.split("anime/")[1];
-  fetch(api + '/anime/name/' + Name)
+  let Slug = urlString.split("anime/")[1];
+  fetch(api + '/anime/slug/' + Slug)
   .then(response => {
     if (!response.ok) {
         throw new Error('Network response was not ok');

@@ -63,6 +63,8 @@ function displayUserStats(stats) {
         <div class="grid grid-cols-2 gap-4">
             ${createStatCard('Anime', stats.animeCount)}
             ${createStatCard('Manga', stats.mangaCount)}
+            ${createStatCard('Epizódy', stats.episodeCount)}
+            ${createStatCard('Kapitoly', stats.chapterCount)}
         </div>
     `;
 }

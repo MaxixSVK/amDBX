@@ -5,135 +5,97 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
-const authenticateToken = (req, res, next) => {
-  req.user = null;
-
-  const token = req.headers['authorization'];
-  if (!token) return res.status(401).send({ msg: 'Nebol poskytnutý token' });
-
-  jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
-    if (err) return res.status(404).send({ msg: 'Nebolo možné overiť token' });
-
-    const dbUser = await User.findById(user.id);
-    if (!dbUser) return res.status(403).send({ msg: 'Používateľ nenájdený' });
-
-    const tokenChangedPassword = user.changedPassword;
-    const dbChangedPassword = dbUser.changedPassword;
-
-    if (new Date(tokenChangedPassword).getTime() !== new Date(dbChangedPassword).getTime())
-      return res.status(403).send({ msg: 'Token je neplatný' });
-
-    req.user = user;
-    next();
-  });
-};
-
+const authenticateToken = require('../auth/account');
 router.use(authenticateToken);
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   User.findById(req.user.id)
     .select('-_id -password -changedPassword')
     .then(user => {
       res.json(user);
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
+      next(err);
     });
 });
 
-router.put('/change-password', (req, res) => {
-  User.findById(req.user.id)
-    .then(user => {
-      if (!bcrypt.compareSync(req.body.oldPassword, user.password)) {
-        return res.status(400).send({ msg: 'Nesprávne heslo' });
-      }
+router.put('/change-password', async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
 
-      if (req.body.newPassword.length < 8) {
-        return res.status(400).send({ msg: 'Heslo musí mať aspoň 8 znakov' });
-      }
+    if (!bcrypt.compareSync(req.body.oldPassword, user.password)) {
+      return res.status(400).send({ msg: 'Nesprávne heslo' });
+    }
 
-      if (req.body.newPassword === req.body.oldPassword) {
-        return res.status(400).send({ msg: 'Nové heslo nesmie byť rovnaké ako staré heslo' });
-      }
+    if (req.body.newPassword.length < 8) {
+      return res.status(400).send({ msg: 'Heslo musí mať aspoň 8 znakov' });
+    }
 
-      const hashedPassword = bcrypt.hashSync(req.body.newPassword, 12);
-      const changedPassword = new Date();
+    if (req.body.newPassword === req.body.oldPassword) {
+      return res.status(400).send({ msg: 'Nové heslo nesmie byť rovnaké ako staré heslo' });
+    }
 
-      User.findByIdAndUpdate(req.user.id, { password: hashedPassword, changedPassword: changedPassword })
-        .then(() => {
-          const token = jwt.sign({ id: req.user.id, changedPassword: changedPassword }, process.env.JWT_SECRET);
-          res.status(200).send({ msg: 'Heslo zmenené', token: token });
-        })
-        .catch(err => {
-          res.status(400).send({ msg: 'Nepodarilo sa zmeniť heslo' });
-        });
-    })
-    .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
-    });
+    const hashedPassword = bcrypt.hashSync(req.body.newPassword, 12);
+    const changedPassword = new Date();
+
+    await User.findByIdAndUpdate(req.user.id, { password: hashedPassword, changedPassword: changedPassword });
+
+    const token = jwt.sign({ id: req.user.id, changedPassword: changedPassword }, process.env.JWT_SECRET);
+    res.status(200).send({ msg: 'Heslo zmenené', token: token });
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.put('/change-email', (req, res) => {
+router.put('/change-email', async (req, res, next) => {
   const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
   if (!emailRegex.test(req.body.email)) {
     return res.status(400).send({ msg: 'Nesprávny formát emailu' });
   }
 
-  User.findById(req.user.id)
-    .then(user => {
-      if (!bcrypt.compareSync(req.body.password, user.password)) {
-        return res.status(400).send({ msg: 'Nesprávne heslo' });
-      }
+  try {
+    const user = await User.findById(req.user.id);
 
-      if (req.body.email === user.email) {
-        return res.status(400).send({ msg: 'Nový email nesmie byť rovnaký ako starý email' });
-      }
+    if (!bcrypt.compareSync(req.body.password, user.password)) {
+      return res.status(400).send({ msg: 'Nesprávne heslo' });
+    }
 
-      User.findOne({ email: { $regex: new RegExp(`^${req.body.email}$`, 'i') } })
-        .then(existingUser => {
-          if (existingUser) {
-            return res.status(400).send({ msg: 'Tento email už bol použitý na inom účte' });
-          }
+    if (req.body.email === user.email) {
+      return res.status(400).send({ msg: 'Nový email nesmie byť rovnaký ako starý email' });
+    }
 
-          User.findByIdAndUpdate(req.user.id, { email: req.body.email })
-            .then(() => {
-              res.send({ msg: 'Email zmenený', email: req.body.email });
-            })
-            .catch(err => {
-              res.status(400).send({ msg: 'Nepodarilo sa zmeniť email' });
-            });
-        })
-        .catch(err => {
-          res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
-        });
-    })
-    .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
-    });
+    const existingUser = await User.findOne({ email: { $regex: new RegExp(`^${req.body.email}$`, 'i') } });
+
+    if (existingUser) {
+      return res.status(400).send({ msg: 'Tento email už bol použitý na inom účte' });
+    }
+
+    await User.findByIdAndUpdate(req.user.id, { email: req.body.email });
+
+    res.send({ msg: 'Email zmenený', email: req.body.email });
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.delete('/delete', (req, res) => {
-  User.findById(req.user.id)
-    .then(user => {
-      if (!bcrypt.compareSync(req.body.password, user.password)) {
-        return res.status(400).send({ msg: 'Nesprávne heslo' });
-      }
+router.delete('/delete', async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
 
-      User.findByIdAndDelete(req.user.id)
-        .then(() => {
-          res.send({ msg: 'Účet zmazaný', deleted: true });
-        })
-        .catch(err => {
-          res.status(400).send({ msg: 'Nepodarilo sa zmazať účet' });
-        });
-    })
-    .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
-    });
+    if (!bcrypt.compareSync(req.body.password, user.password)) {
+      return res.status(400).send({ msg: 'Nesprávne heslo' });
+    }
+
+    await User.findByIdAndDelete(req.user.id);
+
+    res.send({ msg: 'Účet zmazaný', deleted: true });
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.get('/anime', (req, res) => {
+router.get('/anime', (req, res, next) => {
   User.findById(req.user.id)
     .populate('anime.id')
     .select('anime')
@@ -141,11 +103,11 @@ router.get('/anime', (req, res) => {
       res.json(user.anime);
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
+      next(err);
     });
 });
 
-router.post('/anime/add', (req, res) => {
+router.post('/anime/add', (req, res, next) => {
   User.findOne({ _id: req.user.id, 'anime.id': req.body.id })
     .then(user => {
       if (user) {
@@ -156,26 +118,26 @@ router.post('/anime/add', (req, res) => {
             res.send({ msg: 'Anime added to account' });
           })
           .catch(err => {
-            res.status(400).send({ msg: 'Failed to add anime' });
+            next(err);
           });
       }
     })
     .catch(err => {
-      res.status(500).send({ msg: 'Internal server error' });
+      next(err);
     });
 });
 
-router.delete('/anime/remove', (req, res) => {
+router.delete('/anime/remove', (req, res, next) => {
   User.findByIdAndUpdate(req.user.id, { $pull: { anime: req.body } })
     .then(() => {
       res.send({ msg: 'Anime removed from account' });
     })
     .catch(err => {
-      res.status(400).send({ msg: 'Failed to remove anime' });
+      next(err);
     });
 });
 
-router.put('/anime/update', (req, res) => {
+router.put('/anime/update', (req, res, next) => {
   User.updateOne(
     { _id: req.user.id, 'anime.id': req.body.id },
     {
@@ -190,11 +152,11 @@ router.put('/anime/update', (req, res) => {
       res.send({ msg: 'Anime updated' });
     })
     .catch(err => {
-      res.status(400).send({ msg: 'Failed to update anime' });
+      next(err);
     });
 });
 
-router.get('/manga', (req, res) => {
+router.get('/manga', (req, res, next) => {
   User.findById(req.user.id)
     .populate('manga.id')
     .select('manga')
@@ -202,11 +164,11 @@ router.get('/manga', (req, res) => {
       res.json(user.manga);
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: Niečo sa pokazilo!' });
+      next(err);
     });
 });
 
-router.post('/manga/add', (req, res) => {
+router.post('/manga/add', (req, res, next) => {
   User.findOne({ _id: req.user.id, 'manga.id': req.body.id })
     .then(user => {
       if (user) {
@@ -217,26 +179,26 @@ router.post('/manga/add', (req, res) => {
             res.send({ msg: 'Manga added to account' });
           })
           .catch(err => {
-            res.status(400).send({ msg: 'Failed to add manga' });
+            next(err);
           });
       }
     })
     .catch(err => {
-      res.status(500).send({ msg: '500-chan: server error' });
+      next(err);
     });
 });
 
-router.delete('/manga/remove', (req, res) => {
+router.delete('/manga/remove', (req, res, next) => {
   User.findByIdAndUpdate(req.user.id, { $pull: { manga: req.body } })
     .then(() => {
       res.send({ msg: 'Manga removed from account' });
     })
     .catch(err => {
-      res.status(400).send({ msg: 'Failed to remove manga' });
+      next(err);
     });
 });
 
-router.put('/manga/update', (req, res) => {
+router.put('/manga/update', (req, res, next) => {
   User.updateOne({ _id: req.user.id, 'manga.id': req.body.id },
     {
       $set: {
@@ -250,7 +212,7 @@ router.put('/manga/update', (req, res) => {
       res.send({ msg: 'Manga updated' });
     })
     .catch(err => {
-      res.status(400).send({ msg: 'Failed to update manga' });
+      next(err);
     });
 });
 

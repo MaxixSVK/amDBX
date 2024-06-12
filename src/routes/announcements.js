@@ -2,13 +2,16 @@ const express = require('express');
 const router = express.Router();
 const Announcement = require('../models/announcement');
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     const now = new Date();
-    const alerts = await Announcement.find({
+    await Announcement.find({
         created: { $lte: now },
         until: { $gte: now }
+    }).then(announcements => {
+        res.status(200).json(announcements);
+    }).catch(err => {
+        next(err);
     });
-    res.send(alerts);
 });
 
 module.exports = router;

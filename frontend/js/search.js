@@ -159,14 +159,37 @@ async function editUserEntry(item, type) {
         editEntryForm.append(editEntryScoreLabel, editEntryScoreInput, editChaptersLabel, editChaptersInput, editStatusLabel, editStatusInput);
     }
 
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('flex');
+    
     const editEntrySubmit = document.createElement('button');
-    editEntrySubmit.classList.add('border', 'border-blue-500', 'hover:border-blue-700', 'text-blue-500', 'hover:text-blue-700', 'py-1', 'px-4', 'rounded');
+    editEntrySubmit.classList.add('border', 'border-blue-500', 'hover:border-blue-700', 'text-blue-500', 'hover:text-blue-700', 'py-1', 'px-4', 'rounded', 'mr-1');
     editEntrySubmit.type = 'submit';
     editEntrySubmit.textContent = 'Uložiť';
+    
+    const deleteEntryButton = document.createElement('button');
+    deleteEntryButton.classList.add('border', 'border-red-500', 'hover:border-red-700', 'text-red-500', 'hover:text-red-700', 'py-1', 'px-4', 'rounded');
+    deleteEntryButton.textContent = 'Odstrániť';
 
-    editEntryForm.append(editEntryScoreLabel, editEntryScoreInput, editEntrySubmit);
+    deleteEntryButton.addEventListener('click', async function () {
+        fetch(api + `/account/${type.toLowerCase()}/remove`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                id: item._id
+            })
+        });
+        document.body.classList.remove('overflow-hidden')
+        editEntryModal.remove();
+    });
+
+    buttonContainer.append(editEntrySubmit, deleteEntryButton);
+    editEntryForm.append(editEntryScoreLabel, editEntryScoreInput, buttonContainer);
     editEntryModal.appendChild(editEntryForm);
-
+    
     document.body.appendChild(editEntryModal)
 
     editEntryModalElement = document.getElementById('edit-entry-modal');
@@ -243,7 +266,7 @@ searchInputSearch.addEventListener('input', async function (event) {
         }
 
         function addUserEntry(item, type) {
-            fetch(addUrl, {
+            return fetch(addUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,7 +275,7 @@ searchInputSearch.addEventListener('input', async function (event) {
                 body: JSON.stringify({
                     id: item._id,
                 })
-            })
+            });
         }
 
         list.forEach(item => {
@@ -275,8 +298,8 @@ searchInputSearch.addEventListener('input', async function (event) {
                     if (this.textContent === 'Upraviť') {
                         editUserEntry(item, type);
                     } else {
-                        addUserEntry(item, type);
-                        this.textContent = 'Upraviť';
+                        await addUserEntry(item, type);
+                        editUserEntry(item, type);
                     }
                 }
             });
