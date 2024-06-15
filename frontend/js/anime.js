@@ -1,14 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   let urlString = window.location.href;
   let Slug = urlString.split("anime/")[1];
   fetch(api + '/anime/slug/' + Slug)
-  .then(response => {
-    if (!response.ok) {
+    .then(response => {
+      if (!response.ok) {
         throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(anime => {
+      }
+      return response.json();
+    })
+    .then(anime => {
       const mainElement = document.querySelector('main');
       const animeDiv = document.createElement('div');
       animeDiv.classList.add('p-4', 'mx-auto', 'mt-4', 'max-w-4xl', 'bg-white', 'rounded-lg', 'flex', 'flex-wrap', 'md:flex-nowrap');
@@ -29,6 +29,36 @@ document.addEventListener('DOMContentLoaded', function() {
       h2.textContent = anime.name;
       h2.classList.add('text-2xl', 'font-bold', 'mb-2');
       textDiv.appendChild(h2);
+
+      const userEntry = document.createElement('button');
+      userEntry.classList.add('border', 'border-blue-500', 'hover:border-blue-700', 'text-blue-500', 'hover:text-blue-700', 'py-2', 'px-4', 'rounded');
+      if (token) {
+        fetchDataSearch(api + '/account/anime', {
+          headers: {
+            'Authorization': localStorage.getItem('token')
+          }
+        }).then(data => {
+          if (data.some(item => item.id._id === anime._id)) {
+            userEntry.textContent = 'Upraviť';
+            userEntry.onclick = () => {
+              editUserEntry(anime, 'Anime');
+            };
+          } else {
+            userEntry.textContent = 'Pridať';
+            userEntry.onclick = async () => {
+              await addUserEntry(anime, 'Anime');
+              userEntry.textContent = 'Upraviť';
+              editUserEntry(anime, 'Anime');
+            };
+          }
+        });
+      } else {
+        userEntry.textContent = 'Pridať';
+        userEntry.onclick = () => {
+          window.location.href = '/login';
+        };
+      }
+      textDiv.appendChild(userEntry);
 
       const description = document.createElement('p');
       description.textContent = anime.description;
@@ -67,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       animeDiv.appendChild(textDiv);
       mainElement.appendChild(animeDiv);
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       window.location.href = '/404';
-  });
+    });
 });

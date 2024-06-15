@@ -30,6 +30,37 @@ document.addEventListener('DOMContentLoaded', function() {
       h2.classList.add('text-2xl', 'font-bold', 'mb-2');
       textDiv.appendChild(h2);
 
+      const userEntry = document.createElement('button');
+      userEntry.classList.add('border', 'border-blue-500', 'hover:border-blue-700', 'text-blue-500', 'hover:text-blue-700', 'py-2', 'px-4', 'rounded');
+      if (token) {
+        fetchDataSearch(api + '/account/manga', {
+          headers: {
+            'Authorization': localStorage.getItem('token')
+          }
+        }).then(data => {
+          if (data.some(item => item.id._id === manga._id)) {
+            userEntry.textContent = 'Upraviť';
+            userEntry.onclick = () => {
+              editUserEntry(manga, 'Manga');
+            };
+          } else {
+            userEntry.textContent = 'Pridať';
+            userEntry.onclick = async () => {
+              await addUserEntry(manga, 'Manga');
+              userEntry.textContent = 'Upraviť';
+              editUserEntry(manga, 'Manga');
+            };
+          }
+        });
+      } else {
+        userEntry.textContent = 'Pridať';
+        userEntry.onclick = () => {
+          window.location.href = '/login';
+        };
+      }
+      textDiv.appendChild(userEntry);
+
+
       const description = document.createElement('p');
       description.textContent = manga.description;
       description.classList.add('text-gray-700', 'mb-2');
