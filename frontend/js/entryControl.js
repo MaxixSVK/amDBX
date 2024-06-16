@@ -15,20 +15,24 @@ async function editUserEntry(item, type) {
     searchModal.classList.add('hidden');
     document.body.classList.add('overflow-hidden')
 
-    const response = await fetch(api + `/account`, {
-        headers: {
-            'Authorization': localStorage.getItem('token')
-        }
-    });
-
-    const data = await response.json();
-
     let anime, manga;
 
     if (type == 'Anime') {
-        anime = data.anime.find(a => a.id === item._id);
+        await fetch(api + `/account/anime`, {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(response => response.json()).then(data => {
+            anime = data.find(a => a.id._id === item._id);
+        });
     } else {
-        manga = data.manga.find(m => m.id === item._id);
+        await fetch(api + `/account/manga`, {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(response => response.json()).then(data => {
+            manga = data.find(m => m.id._id === item._id);
+        });
     }
 
     const editEntryModal = document.createElement('div');
@@ -47,7 +51,6 @@ async function editUserEntry(item, type) {
     closeButton.id = 'close-modal-edit-entry';
     closeButton.classList.add('absolute', 'top-2', 'right-2', 'w-10', 'h-10', 'bg-red-500', 'text-white', 'rounded-full', 'p-2', 'focus:outline-none', 'lg:hidden');
     closeButton.textContent = 'X';
-    editEntryForm.appendChild(closeButton);
 
     const editEntryTitle = document.createElement('h2');
     editEntryTitle.textContent = item.name;
@@ -56,14 +59,13 @@ async function editUserEntry(item, type) {
     const editEntryScoreLabel = document.createElement('label');
     editEntryScoreLabel.textContent = 'Hodnotenie';
     editEntryScoreLabel.classList.add('block', 'text-sm', 'font-medium', 'text-gray-700');
+
     const editEntryScoreInput = document.createElement('input');
     editEntryScoreInput.type = 'number';
     editEntryScoreInput.min = 0;
     editEntryScoreInput.max = 10;
+    editEntryScoreInput.name = 'userRating';
     editEntryScoreInput.value = type == 'Anime' ? anime.userRating : manga.userRating;
-
-
-    editEntryForm.append(editEntryTitle);
 
     let editEpisodesInput, editStatusInput;
 
@@ -73,15 +75,17 @@ async function editUserEntry(item, type) {
         editEpisodesInput = document.createElement('input');
         editEpisodesInput.type = 'number';
         editEpisodesInput.min = 0;
+        editEpisodesInput.name = 'userEpisodes';
         editEpisodesInput.value = anime.userEpisodes;
 
         const editStatusLabel = document.createElement('label');
         editStatusLabel.textContent = 'Status';
         editStatusInput = document.createElement('select');
+        editStatusInput.name = 'userStatus';
 
         const statusOptions = ['Watching', 'Completed', 'On Hold', 'Dropped', 'Plan to Watch'];
         const displayTexts = ['Práve sledujem', 'Dokončené', 'Odložené', 'Dropnuté', 'Plánujem'];
-        
+
         statusOptions.forEach((option, index) => {
             const statusOption = document.createElement('option');
             statusOption.value = option;
@@ -90,18 +94,20 @@ async function editUserEntry(item, type) {
             editStatusInput.appendChild(statusOption);
         });
 
-        editEntryForm.append(editEntryScoreLabel, editEntryScoreInput, editEpisodesLabel, editEpisodesInput, editStatusLabel, editStatusInput);
+        editEntryForm.append(editEntryTitle, editEntryScoreLabel, editEntryScoreInput, editEpisodesLabel, editEpisodesInput, editStatusLabel, editStatusInput);
     } else {
         const editChaptersLabel = document.createElement('label');
         editChaptersLabel.textContent = 'Kapitoly';
         editChaptersInput = document.createElement('input');
         editChaptersInput.type = 'number';
         editChaptersInput.min = 0;
+        editChaptersInput.name = 'userChapters';
         editChaptersInput.value = manga.userChapters;
 
         const editStatusLabel = document.createElement('label');
         editStatusLabel.textContent = 'Status';
         editStatusInput = document.createElement('select');
+        editStatusInput.name = 'userStatus';
 
         const statusOptions = ['Reading', 'Completed', 'On Hold', 'Dropped', 'Plan to Read'];
 
@@ -113,58 +119,47 @@ async function editUserEntry(item, type) {
             editStatusInput.appendChild(statusOption);
         });
 
-        editEntryForm.append(editEntryScoreLabel, editEntryScoreInput, editChaptersLabel, editChaptersInput, editStatusLabel, editStatusInput);
+        editEntryForm.append(editEntryTitle, editEntryScoreLabel, editEntryScoreInput, editChaptersLabel, editChaptersInput, editStatusLabel, editStatusInput);
     }
 
     const buttonContainer = document.createElement('div');
     buttonContainer.classList.add('flex');
-    
+
     const editEntrySubmit = document.createElement('button');
     editEntrySubmit.classList.add('border', 'border-blue-500', 'hover:border-blue-700', 'text-blue-500', 'hover:text-blue-700', 'py-1', 'px-4', 'rounded', 'mr-1');
     editEntrySubmit.type = 'submit';
     editEntrySubmit.textContent = 'Uložiť';
-    
+
     const deleteEntryButton = document.createElement('button');
     deleteEntryButton.classList.add('border', 'border-red-500', 'hover:border-red-700', 'text-red-500', 'hover:text-red-700', 'py-1', 'px-4', 'rounded');
     deleteEntryButton.textContent = 'Odstrániť';
 
-    deleteEntryButton.addEventListener('click', async function () {
-        fetch(api + `/account/${type.toLowerCase()}/remove`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
-            },
-            body: JSON.stringify({
-                id: item._id
-            })
-        });
-        document.body.classList.remove('overflow-hidden')
-        editEntryModal.remove();
-    });
-
-    buttonContainer.append(editEntrySubmit, deleteEntryButton);
+    buttonContainer.append(editEntrySubmit, deleteEntryButton, closeButton);
     editEntryForm.append(editEntryScoreLabel, editEntryScoreInput, buttonContainer);
     editEntryModal.appendChild(editEntryForm);
-    
+
     document.body.appendChild(editEntryModal)
+
+    editEntrySubmit.focus();
 
     editEntryModalElement = document.getElementById('edit-entry-modal');
 
     editEntryForm.addEventListener('submit', async function (event) {
-        event.preventDefault();
+        event.preventDefault(); 
         let entryData;
 
         if (type == 'Anime') {
-            const userRating = editEntryScoreInput.value;
-            const userEpisodes = editEpisodesInput.value;
-            const userStatus = editStatusInput.value;
-            entryData = { userRating, userEpisodes, userStatus };
+            entryData = {
+                userRating: editEntryScoreInput.value,
+                userEpisodes: editEpisodesInput.value,
+                userStatus: editStatusInput.value
+            };
         } else {
-            const userRating = editEntryScoreInput.value;
-            const userChapters = editChaptersInput.value;
-            const userStatus = editStatusInput.value;
-            entryData = { userRating, userChapters, userStatus };
+            entryData = {
+                userRating: editEntryScoreInput.value,
+                userChapters: editChaptersInput.value,
+                userStatus: editStatusInput.value
+            };
         }
 
         fetch(api + `/account/${type.toLowerCase()}/update`, {
@@ -176,6 +171,21 @@ async function editUserEntry(item, type) {
             body: JSON.stringify({
                 id: item._id,
                 ...entryData
+            })
+        });
+        document.body.classList.remove('overflow-hidden')
+        editEntryModal.remove();
+    });
+
+    deleteEntryButton.addEventListener('click', async function () {
+        fetch(api + `/account/${type.toLowerCase()}/remove`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                id: item._id
             })
         });
         document.body.classList.remove('overflow-hidden')

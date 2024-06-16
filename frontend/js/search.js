@@ -146,6 +146,10 @@ searchInputSearch.addEventListener('input', async function (event) {
     createSearchResultsSearch('Manga', manga, api + '/account/manga/add');
 });
 
+document.getElementById('search-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+});
+
 document.getElementById('close-modal').addEventListener('click', function () {
     searchModal.classList.add('hidden');
     document.body.classList.remove('overflow-hidden')
