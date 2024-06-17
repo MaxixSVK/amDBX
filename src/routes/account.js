@@ -10,7 +10,7 @@ router.use(authenticateToken);
 
 router.get('/', (req, res, next) => {
   User.findById(req.user.id)
-    .select('-_id -password -changedPassword')
+    .select('-_id -password -changedPassword -anime -manga -__v')
     .then(user => {
       res.json(user);
     })
@@ -97,7 +97,10 @@ router.delete('/delete', async (req, res, next) => {
 
 router.get('/anime', (req, res, next) => {
   User.findById(req.user.id)
-    .populate('anime.id')
+    .populate({
+      path: 'anime.id',
+      select: 'name'
+    })
     .select('anime')
     .then(user => {
       res.json(user.anime);
@@ -113,7 +116,17 @@ router.post('/anime/add', (req, res, next) => {
       if (user) {
         res.status(400).send({ msg: 'Anime already added' });
       } else {
-        User.findByIdAndUpdate(req.user.id, { $push: { anime: req.body } })
+        const animeToAdd = {
+          id: req.body.id,
+          userEpisodes: req.body.userEpisodes,
+          userStatus: req.body.userStatus,
+          userRating: req.body.userRating,
+          userLastUpdated: new Date()
+        };
+
+        User.findByIdAndUpdate(req.user.id, {
+          $push: { anime: animeToAdd },
+        })
           .then(() => {
             res.send({ msg: 'Anime added to account' });
           })
@@ -121,6 +134,26 @@ router.post('/anime/add', (req, res, next) => {
             next(err);
           });
       }
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+router.put('/anime/update', (req, res, next) => {
+  User.updateOne(
+    { _id: req.user.id, 'anime.id': req.body.id },
+    {
+      $set: {
+        'anime.$.userEpisodes': req.body.userEpisodes,
+        'anime.$.userStatus': req.body.userStatus,
+        'anime.$.userRating': req.body.userRating,
+        'anime.$.userLastUpdated': new Date()
+      }
+    }
+  )
+    .then(() => {
+      res.send({ msg: 'Anime updated' });
     })
     .catch(err => {
       next(err);
@@ -137,29 +170,12 @@ router.delete('/anime/remove', (req, res, next) => {
     });
 });
 
-router.put('/anime/update', (req, res, next) => {
-  User.updateOne(
-    { _id: req.user.id, 'anime.id': req.body.id },
-    {
-      $set: {
-        'anime.$.userEpisodes': req.body.userEpisodes,
-        'anime.$.userStatus': req.body.userStatus,
-        'anime.$.userRating': req.body.userRating
-      }
-    }
-  )
-    .then(() => {
-      res.send({ msg: 'Anime updated' });
-    })
-    .catch(err => {
-      next(err);
-    });
-});
-
 router.get('/manga', (req, res, next) => {
   User.findById(req.user.id)
-    .populate('manga.id')
-    .select('manga')
+    .populate({
+      path: 'manga.id',
+      select: 'name'
+    })
     .then(user => {
       res.json(user.manga);
     })
@@ -174,7 +190,17 @@ router.post('/manga/add', (req, res, next) => {
       if (user) {
         res.status(400).send({ msg: 'Manga already added' });
       } else {
-        User.findByIdAndUpdate(req.user.id, { $push: { manga: req.body } })
+        const mangaToAdd = {
+          id: req.body.id,
+          userChapters: req.body.userChapters,
+          userStatus: req.body.userStatus,
+          userRating: req.body.userRating,
+          userLastUpdated: new Date()
+        };
+
+        User.findByIdAndUpdate(req.user.id, {
+          $push: { manga: mangaToAdd },
+        })
           .then(() => {
             res.send({ msg: 'Manga added to account' });
           })
@@ -188,28 +214,30 @@ router.post('/manga/add', (req, res, next) => {
     });
 });
 
-router.delete('/manga/remove', (req, res, next) => {
-  User.findByIdAndUpdate(req.user.id, { $pull: { manga: req.body } })
+router.put('/manga/update', (req, res, next) => {
+  User.updateOne(
+    { _id: req.user.id, 'manga.id': req.body.id },
+    {
+      $set: {
+        'manga.$.userChapters': req.body.userChapters,
+        'manga.$.userStatus': req.body.userStatus,
+        'manga.$.userRating': req.body.userRating,
+        'manga.$.userLastUpdated': new Date()
+      }
+    }
+  )
     .then(() => {
-      res.send({ msg: 'Manga removed from account' });
+      res.send({ msg: 'Manga updated' });
     })
     .catch(err => {
       next(err);
     });
 });
 
-router.put('/manga/update', (req, res, next) => {
-  User.updateOne({ _id: req.user.id, 'manga.id': req.body.id },
-    {
-      $set: {
-        'manga.$.userChapters': req.body.userChapters,
-        'manga.$.userStatus': req.body.userStatus,
-        'manga.$.userRating': req.body.userRating
-      }
-    }
-  )
+router.delete('/manga/remove', (req, res, next) => {
+  User.findByIdAndUpdate(req.user.id, { $pull: { manga: req.body } })
     .then(() => {
-      res.send({ msg: 'Manga updated' });
+      res.send({ msg: 'Manga removed from account' });
     })
     .catch(err => {
       next(err);

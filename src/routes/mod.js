@@ -24,8 +24,9 @@ router.post('/anime/upload', (req, res, next) => {
         });
 });
 
-router.put('/anime/update/:id', async (req, res, next) => {
-    if (!req.params.id) {
+router.put('/anime/update', async (req, res, next) => {
+    const id = req.body.id;
+    if (!id) {
         return res.status(400).send({ msg: 'Nebolo poskytnuté ID' });
     }
 
@@ -36,7 +37,7 @@ router.put('/anime/update/:id', async (req, res, next) => {
     req.body.lastUpdated = Date.now();
 
     try {
-        const updatedAnime = await Anime.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedAnime = await Anime.findByIdAndUpdate(id, req.body, { new: true });
         if (!updatedAnime) {
             return res.status(404).send({ msg: 'Anime nebolo nájdené' });
         }
@@ -46,13 +47,14 @@ router.put('/anime/update/:id', async (req, res, next) => {
     }
 });
 
-router.delete('/anime/delete/:id', async (req, res, next) => {
-    if (!req.params.id) {
+router.delete('/anime/delete', async (req, res, next) => {
+    const id = req.body.id;
+    if (!id) {
         return res.status(400).send({ msg: 'Nebolo poskytnuté ID' });
     }
 
     try {
-        const deletedAnime = await Anime.findByIdAndDelete(req.params.id);
+        const deletedAnime = await Anime.findByIdAndDelete(id);
         if (!deletedAnime) {
             return res.status(404).send({ msg: 'Anime nebolo nájdené' });
         }
@@ -73,8 +75,9 @@ router.post('/manga/upload', (req, res, next) => {
         });
 });
 
-router.put('/manga/update/:id', async (req, res, next) => {
-    if (!req.params.id) {
+router.put('/manga/update', async (req, res, next) => {
+    const id = req.body.id;
+    if (!id) {
         return res.status(400).send({ msg: 'Nebolo poskytnuté ID' });
     }
 
@@ -85,7 +88,7 @@ router.put('/manga/update/:id', async (req, res, next) => {
     req.body.lastUpdated = Date.now();
 
     try {
-        const updatedManga = await Manga.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedManga = await Manga.findByIdAndUpdate(id, req.body, { new: true });
         if (!updatedManga) {
             return res.status(404).send({ msg: 'Manga nebola nájdená' });
         }
@@ -95,13 +98,14 @@ router.put('/manga/update/:id', async (req, res, next) => {
     }
 });
 
-router.delete('/manga/delete/:id', async (req, res, next) => {
-    if (!req.params.id) {
+router.delete('/manga/delete', async (req, res, next) => {
+    const id = req.body.id;
+    if (!id) {
         return res.status(400).send({ msg: 'Nebolo poskytnuté ID' });
     }
 
     try {
-        const deletedManga = await Manga.findByIdAndDelete(req.params.id);
+        const deletedManga = await Manga.findByIdAndDelete(id);
         if (!deletedManga) {
             return res.status(404).send({ msg: 'Manga nebola nájdená' });
         }

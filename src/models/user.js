@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { string } = require('joi');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -42,6 +41,9 @@ const userSchema = new mongoose.Schema({
             default: 0,
             min: 0,
             max: 10
+        },
+        userLastUpdated: {
+            type: Date
         }
     }],
     manga: [{
@@ -63,6 +65,9 @@ const userSchema = new mongoose.Schema({
             default: 0,
             min: 0,
             max: 10
+        },
+        userLastUpdated: {
+            type: Date
         }
     }]
 });
