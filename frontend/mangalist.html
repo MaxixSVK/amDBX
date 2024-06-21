@@ -41,7 +41,15 @@
         </div>
     </search>
     <main class="p-2 lg:p-6 flex-grow">
-        <h1 id="user-name"></h1>
+        <div class="flex justify-between items-center">
+            <h1 id="user-name"></h1>
+            <select id="sort"
+                class="text-gray-500 hover:text-gray-800 align-middle bg-white border border-gray-300 rounded-md mb-4">
+                <option value="">Názov</option>
+                <option value="rating">Hodnotenie</option>
+                <option value="lastUpdated">Naposledy zmenené</option>
+            </select>
+        </div>
         <div id="list"></div>
     </main>
     <footer class="p-5 bg-white flex justify-between items-center shadow-md">

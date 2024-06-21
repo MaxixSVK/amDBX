@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const Joi = require('joi');
 require('dotenv').config();
 
 const authenticateToken = require('../auth/account');
@@ -27,13 +28,12 @@ router.put('/change-password', async (req, res, next) => {
       return res.status(400).send({ msg: 'Nesprávne heslo' });
     }
 
-    if (req.body.newPassword.length < 8) {
-      return res.status(400).send({ msg: 'Heslo musí mať aspoň 8 znakov' });
-    }
-
     if (req.body.newPassword === req.body.oldPassword) {
       return res.status(400).send({ msg: 'Nové heslo nesmie byť rovnaké ako staré heslo' });
     }
+
+    const validatePassword = require('../dataValidation/changePassword');
+    await validatePassword(req.body);
 
     const hashedPassword = bcrypt.hashSync(req.body.newPassword, 12);
     const changedPassword = new Date();
@@ -43,17 +43,13 @@ router.put('/change-password', async (req, res, next) => {
     const token = jwt.sign({ id: req.user.id, changedPassword: changedPassword }, process.env.JWT_SECRET);
     res.status(200).send({ msg: 'Heslo zmenené', token: token });
   } catch (err) {
+    if (err instanceof Joi.ValidationError)
+      return res.status(400).json({ msg: err.details[0].message });
     next(err);
   }
 });
 
 router.put('/change-email', async (req, res, next) => {
-  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-
-  if (!emailRegex.test(req.body.email)) {
-    return res.status(400).send({ msg: 'Nesprávny formát emailu' });
-  }
-
   try {
     const user = await User.findById(req.user.id);
 
@@ -70,11 +66,15 @@ router.put('/change-email', async (req, res, next) => {
     if (existingUser) {
       return res.status(400).send({ msg: 'Tento email už bol použitý na inom účte' });
     }
+    const validateEmail = require('../dataValidation/changeEmail');
+    await validateEmail(req.body);
 
     await User.findByIdAndUpdate(req.user.id, { email: req.body.email });
 
     res.send({ msg: 'Email zmenený', email: req.body.email });
   } catch (err) {
+    if (err instanceof Joi.ValidationError)
+      return res.status(400).json({ msg: err.details[0].message });
     next(err);
   }
 });

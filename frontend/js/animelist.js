@@ -1,6 +1,8 @@
 let urlString = window.location.href;
 let profileName = urlString.split("animelist/")[1];
 
+const sortElement = document.getElementById('sort');
+
 async function fetchProfileAndAnimeList() {
     if (profileName == undefined) {
         if (!token) {
@@ -22,7 +24,7 @@ async function fetchProfileAndAnimeList() {
     }
 
     try {
-        let response = await fetch(api + '/profile/' + profileName + '/anime');
+        let response = await fetch(api + '/profile/' + profileName + '/anime?sort=' + sortElement.value);
         if (!response.ok) {
             if (response.status == 404) {
                 window.location.href = '/404';
@@ -36,6 +38,7 @@ async function fetchProfileAndAnimeList() {
         userName.textContent = user.name + " - Anime List";
 
         const animeListDiv = document.getElementById('list');
+        animeListDiv.innerHTML = '';
         for (let i = 0; i < user.anime.length; i++) {
             const div = document.createElement('div');
             div.classList.add('resultDivSection', 'flex', 'items-center', 'justify-between', 'border-b', 'border-gray-200', 'py-2');
@@ -56,3 +59,5 @@ async function fetchProfileAndAnimeList() {
 }
 
 fetchProfileAndAnimeList();
+
+sortElement.addEventListener('change', fetchProfileAndAnimeList);

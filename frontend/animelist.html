@@ -17,7 +17,7 @@
         <div class="flex items-center space-x-4">
             <a href="/" class="flex items-center">
                 <img src="/assets/logo.png" alt="amDBX" class="h-12">
-                <span class="text-2xl font-semibold"data-translate="title"></span>
+                <span class="text-2xl font-semibold" data-translate="title"></span>
             </a>
         </div>
         <div class="flex items-center space-x-2">
@@ -41,14 +41,23 @@
         </div>
     </search>
     <main class="p-2 lg:p-6 flex-grow">
-        <h1 id="user-name"></h1>
+        <div class="flex justify-between items-center">
+            <h1 id="user-name"></h1>
+            <select id="sort"
+                class="text-gray-500 hover:text-gray-800 align-middle bg-white border border-gray-300 rounded-md mb-4">
+                <option value="">Názov</option>
+                <option value="rating">Hodnotenie</option>
+                <option value="lastUpdated">Naposledy zmenené</option>
+            </select>
+        </div>
         <div id="list"></div>
     </main>
     <footer class="p-5 bg-white flex justify-between items-center shadow-md">
         <ul class="flex space-x-4">
             <li><a href="https://maxix.sk" class="text-gray-500 hover:text-gray-800">&copy; 2024 Maxix</a></li>
             <li>
-                <select id="lang" class="text-gray-500 hover:text-gray-800 align-middle bg-white border border-gray-300 rounded-md">
+                <select id="lang"
+                    class="text-gray-500 hover:text-gray-800 align-middle bg-white border border-gray-300 rounded-md">
                     <option value="sk">SK</option>
                     <option value="en">EN</option>
                 </select>

@@ -1,6 +1,8 @@
 let urlString = window.location.href;
 let profileName = urlString.split("mangalist/")[1];
 
+const sortElement = document.getElementById('sort');
+
 async function fetchProfileAndMangaList() {
     if (profileName == undefined) {
         if (!token) {
@@ -22,7 +24,7 @@ async function fetchProfileAndMangaList() {
     }
 
     try {
-        let response = await fetch(api + '/profile/' + profileName + '/manga');
+        let response = await fetch(api + '/profile/' + profileName + '/manga?sort=' + sortElement.value);
         if (!response.ok) {
             if (response.status == 404) {
                 window.location.href = '/404';
@@ -36,6 +38,7 @@ async function fetchProfileAndMangaList() {
         userName.textContent = user.name + " - Manga List";
 
         const mangaListDiv = document.getElementById('list');
+        mangaListDiv.innerHTML = '';
         for (let i = 0; i < user.manga.length; i++) {
             const div = document.createElement('div');
             div.classList.add('resultDivSection', 'flex', 'items-center', 'justify-between', 'border-b', 'border-gray-200', 'py-2');
@@ -56,3 +59,5 @@ async function fetchProfileAndMangaList() {
 }
 
 fetchProfileAndMangaList();
+
+sortElement.addEventListener('change', fetchProfileAndMangaList);

@@ -16,6 +16,14 @@ router.get('/:name', (req, res, next) => {
             const episodeCount = user.anime.reduce((total, anime) => total + anime.userEpisodes, 0);
             const chapterCount = user.manga.reduce((total, manga) => total + manga.userChapters, 0);
 
+            user.anime = user.anime.sort((a, b) => {
+                return a.userLastUpdated > b.userLastUpdated ? -1 : 1;
+            });
+
+            user.manga = user.manga.sort((a, b) => {
+                return a.userLastUpdated > b.userLastUpdated ? -1 : 1;
+            });
+
             res.status(200).json({
                 user,
                 stats: {
@@ -38,6 +46,22 @@ router.get('/:name/anime', (req, res, next) => {
         .then(user => {
             if (!user) return res.status(404).send({ msg: 'Používateľ nebol nájdený' });
 
+            switch (req.query.sort) {
+                case 'rating':
+                    user.anime = user.anime.sort((a, b) => {
+                        return a.userRating > b.userRating ? -1 : 1;
+                    });
+                    break;
+                case 'lastUpdated':
+                    user.anime = user.anime.sort((a, b) => {
+                        return a.userLastUpdated > b.userLastUpdated ? -1 : 1;
+                    });
+                    break;
+                default:
+                    user.anime = user.anime.sort((a, b) => {
+                        return a.id.title > b.id.title ? -1 : 1;
+                    });
+            }
             res.status(200).json(user);
         })
         .catch(err => {
@@ -51,6 +75,23 @@ router.get('/:name/manga', (req, res, next) => {
         .populate('manga.id')
         .then(user => {
             if (!user) return res.status(404).send({ msg: 'Používateľ nebol nájdený' });
+
+            switch (req.query.sort) {
+                case 'rating':
+                    user.manga = user.manga.sort((a, b) => {
+                        return a.userRating > b.userRating ? -1 : 1;
+                    });
+                    break;
+                case 'lastUpdated':
+                    user.manga = user.manga.sort((a, b) => {
+                        return a.userLastUpdated > b.userLastUpdated ? -1 : 1;
+                    });
+                    break;
+                default:
+                    user.manga = user.manga.sort((a, b) => {
+                        return a.id.title > b.id.title ? -1 : 1;
+                    });
+            }
 
             res.status(200).json(user);
         })
