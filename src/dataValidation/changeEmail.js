@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const emailSchema = Joi.object({
+const schema = Joi.object({
     password: Joi.string()
         .min(8)
         .required()
@@ -21,8 +21,8 @@ const emailSchema = Joi.object({
         })
 });
 
-async function validateRegister(data) {
-    return await emailSchema.validateAsync(data);
+async function validateSchema(data) {
+    return await schema.validateAsync(data);
 }
 
-module.exports = validateRegister;
+module.exports = validateSchema;

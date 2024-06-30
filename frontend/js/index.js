@@ -70,7 +70,12 @@ function appendLastUpdatedItem(itemsDiv, item, type) {
   innerDiv.classList.add('w-44', 'mx-auto');
 
   const link = document.createElement('a');
-  link.href = `${location.protocol}//${location.hostname}/${type}/${item.slug}`;
+  if (location.hostname === 'localhost') {
+    // Just for development
+    link.href = `${location.protocol}//${location.hostname}:${location.port}/${type}/${item.slug}`;
+  } else {
+    link.href = `${location.protocol}//${location.hostname}/${type}/${item.slug}`;
+  }
 
   const img = document.createElement('img');
   img.id = `${type}-img`;

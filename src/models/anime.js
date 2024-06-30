@@ -5,7 +5,6 @@ const animeSchema = new mongoose.Schema({
     name: String,
     slug: {
         type: String,
-        required: true,
         unique: true
     },
     description: String,
@@ -15,7 +14,10 @@ const animeSchema = new mongoose.Schema({
     banner: String,
     img: String,
     trailer: String,
-    status: String,
+    status: {
+        type: String,
+        enum: ['ongoing', 'completed', 'upcoming']
+    },
     studio: String,
     lastUpdated: {
         type: Date,

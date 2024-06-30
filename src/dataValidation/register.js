@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const registerSchema = Joi.object({
+const schema = Joi.object({
   name: Joi.string()
     .alphanum()
     .min(3)
@@ -34,8 +34,8 @@ const registerSchema = Joi.object({
     })
 });
 
-async function validateRegister(data) {
-  return await registerSchema.validateAsync(data);
+async function validateSchema(data) {
+  return await schema.validateAsync(data);
 }
 
-module.exports = validateRegister;
+module.exports = validateSchema;
