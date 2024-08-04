@@ -13,36 +13,38 @@ async function syncSelectWithStorage() {
 }
 
 async function loadLanguage(lang) {
-  const response = await fetch(`/../locales/${lang}.json`);
+  const response = await fetch(`/locales/${lang}.json`);
   return response.json();
 }
 
 async function initializeTranslation() {
   await syncSelectWithStorage();
 
-  const languages = ['en', 'sk'];
   const resources = {};
-
-  for (const lang of languages) {
-    resources[lang] = await loadLanguage(lang);
-  }
+  resources[language] = await loadLanguage(language);
 
   i18next.init({
     lng: language,
     resources
   }, function (err, t) {
-    $('[data-translate]').each(function () {
-      $(this).text(i18next.t($(this).data('translate')));
+    document.querySelectorAll('[data-translate]').forEach(function (element) {
+      element.textContent = i18next.t(element.getAttribute('data-translate'));
     });
   });
 
   if (langSelect) {
-    langSelect.addEventListener('change', function () {
-      localStorage.setItem('language', langSelect.value);
-      i18next.changeLanguage(langSelect.value, function (err, t) {
-        if (err) return console.log('something went wrong loading', err);
-        $('[data-translate]').each(function () {
-          $(this).text(i18next.t($(this).data('translate')));
+    langSelect.addEventListener('change', async function () {
+      const newLang = langSelect.value;
+      localStorage.setItem('language', newLang);
+      const newResources = {};
+      newResources[newLang] = await loadLanguage(newLang);
+      i18next.init({
+        lng: newLang,
+        resources: newResources
+      }, function (err, t) {
+        if (err) return;
+        document.querySelectorAll('[data-translate]').forEach(function (element) {
+          element.textContent = i18next.t(element.getAttribute('data-translate'));
         });
       });
     });
@@ -51,8 +53,12 @@ async function initializeTranslation() {
   const observer = new MutationObserver((mutationsList) => {
     for (let mutation of mutationsList) {
       if (mutation.type === 'childList') {
-        $(mutation.addedNodes).find('[data-translate]').each(function () {
-          $(this).text(i18next.t($(this).data('translate')));
+        mutation.addedNodes.forEach(function (node) {
+          if (node.nodeType === 1) {
+            node.querySelectorAll('[data-translate]').forEach(function (element) {
+              element.textContent = i18next.t(element.getAttribute('data-translate'));
+            });
+          }
         });
       }
     }

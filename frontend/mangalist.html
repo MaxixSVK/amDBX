@@ -17,14 +17,18 @@
         <div class="flex items-center space-x-4">
             <a href="/" class="flex items-center">
                 <img src="/assets/logo.png" alt="amDBX" class="h-12">
-                <span class="text-2xl font-semibold"data-translate="title"></span>
+                <span class="text-2xl font-semibold" data-translate="title"></span>
             </a>
         </div>
         <div class="flex items-center space-x-2">
             <button onclick="searchModalDisplay()"
-                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded">Vyhľadávanie</button>
+                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded">
+                <i class="fas fa-search"></i>
+            </button>
             <a href="/login" id="login-link"
-                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded">Účet</a>
+                class="border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 py-2 px-4 rounded">
+                <i class="fas fa-user"></i>
+            </a>
         </div>
     </header>
     <search class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidden" id="search-modal">
@@ -66,14 +70,12 @@
             <ul class="flex space-x-4">
                 <li><a href="http://maxix.sk/status" class="text-gray-500 hover:text-gray-800">Status</a></li>
                 <li><a href="https://github.com/MaxixSVK" class="text-gray-500 hover:text-gray-800">Github</a></li>
-                <li><a href="https://discord.gg/KqwTjKX4BY" class="text-gray-500 hover:text-gray-800">Discord</a></li>
             </ul>
         </nav>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.11.5/i18next.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.12.2/i18next.min.js" integrity="sha512-ZXn9Gf3oOZdrXCTKCA3rSJGazyh+/BMChDcOr9Vt4GxYI1SFwZRreS+72LluaGa87nNGrIKjnNl3zG2OLRmGeQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="/js/main.js"></script>
     <script src="/js/language.js"></script>
     <script src="/js/entryControl.js"></script>

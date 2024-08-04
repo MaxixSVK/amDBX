@@ -22,5 +22,5 @@ if (localStorage.getItem('token')) {
             console.error('Error:', error);
         });
 } else {
-    document.getElementById('login-link').innerText = 'Prihlásiť sa';
+    document.getElementById('login-link').innerHTML = '<i class="fas fa-sign-in-alt"></i>';
 }
