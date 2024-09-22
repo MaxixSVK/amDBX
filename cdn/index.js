@@ -4,6 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const path = require('path');
+const sanitize = require('sanitize-filename');
 
 require('dotenv').config();
 
@@ -76,7 +77,7 @@ app.get('/:name', (req, res) => {
         }
     };
 
-    const fileName = path.basename(req.params.name);
+    const fileName = sanitize(path.basename(req.params.name));
     res.sendFile(fileName, options, function (err) {
         if (err) {
             res.status(err.status).end();
